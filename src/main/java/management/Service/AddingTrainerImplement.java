@@ -59,6 +59,13 @@ public class AddingTrainerImplement implements AddingTrainer {
 
     }
 
+    @Override
+    public Map<String, Trainer> getTrainers() {
+        return trainers;
+    }
+
+
+
 
 
 

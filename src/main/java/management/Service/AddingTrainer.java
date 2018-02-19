@@ -3,12 +3,15 @@ package management.Service;
 import management.entity.Trainer;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public interface AddingTrainer {
 
 
   Integer  addingTrainer(Trainer trainer);
    Trainer gettingTrainer(String name);
+    Map<String, Trainer> getTrainers();
 
 
     //    POST:

@@ -50,6 +50,10 @@ public class UserController {
     }
 
 
+    @GetMapping("/gettingTrainers")
+    public Map<String, Trainer> GetTrainers(){
+        return addingTrainer.getTrainers();
+    }
 
 
     @GetMapping("/gettingCources")
