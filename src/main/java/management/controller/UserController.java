@@ -39,7 +39,6 @@ import java.util.Map;
 public class UserController {
 
 
-
     @Autowired
     UserService userService;
 
@@ -52,70 +51,61 @@ public class UserController {
     @Autowired
     AddingCourseInt addingCourse;
 
-   @GetMapping("/id")
-   public Integer geting(){
-       return 1;
-   }
+    @GetMapping("/id")
+    public Integer geting() {
+        return 1;
+    }
 
-   @PostMapping("/login")
-   public boolean login(@RequestBody LoginUser user){
+    @PostMapping("/login")
+    public boolean login(@RequestBody LoginUser user) {
 
-      return userService.login(user);
-
-
-
-   }
+        return userService.login(user);
 
 
-//    @RequestMapping(value = "/book/{id}")
-//    @ResponseBody
-//
-//    public ResponseEntity<Book> get(@PathVariable("id") long id) {
-//        Book book = bookService.get(id);
-//        return ResponseEntity.ok().body(book);
-//    }
+    }
+
+
 
 
     @GetMapping("/gettingCources")
-    public Map<String ,AddingCourse> course(){
-       return addingCourse.li();
+    public Map<String, AddingCourse> course() {
+        return addingCourse.li();
     }
 
 
     @GetMapping("/gettingTrainer/{name}")
-    public Trainer gettingTrainer(@PathVariable("name") String name){
-       Trainer trainer = addingTrainer.gettingTrainer(name);
-       return trainer;
+    public Trainer gettingTrainer(@PathVariable("name") String name) {
+        Trainer trainer = addingTrainer.gettingTrainer(name);
+        return trainer;
     }
 
     @PostMapping("/trainer")
-    public Integer addingTrainer(@RequestBody Trainer trainer){
+    public Integer addingTrainer(@RequestBody Trainer trainer) {
 
-       return addingTrainer.addingTrainer(trainer);
+        return addingTrainer.addingTrainer(trainer);
     }
-
-
 
 
     @PostMapping("/user")
-    public ResponseEntity save(@RequestBody User user){
+    public ResponseEntity save(@RequestBody User user) {
 
 
         int id = userService.save(user);
-         System.out.println("rrrr");
+        System.out.println("rrrr");
         return ResponseEntity.ok().body("new user created with id" + id);
 
     }
+
     @PostMapping("/proposeCourse")
-    public Integer ProposeCourse(@RequestBody ProposeCourse course){
+    public Integer ProposeCourse(@RequestBody ProposeCourse course) {
 
-       return courseService.proposeCourse(course);
+        return courseService.proposeCourse(course);
     }
+
     @PostMapping("/addingCourse")
-    public Integer AddingCourse(@RequestBody AddingCourse course){
-       return addingCourse.addCourse(course);
+    public Integer AddingCourse(@RequestBody AddingCourse course) {
+        return addingCourse.addCourse(course);
     }
-
 
 
 }
