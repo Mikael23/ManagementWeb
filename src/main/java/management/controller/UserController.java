@@ -8,22 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-//
-//@PostMapping("/book")
-//public ResponseEntity<?> save(@RequestBody Book book) {
-//        long id = bookService.save(book);
-//        return ResponseEntity.ok().body("New Book has been saved with ID:" + id);
-//        }
 
-
-//
-//@POST
-//public String add(UniversityCreationRequest req) throws SQLException, ExecutionException, InterruptedException {
-//
-//        String id = universityService.add(req.name, req.city, req.address);
-//
-//        return id;
-//        }
 
 
 import management.Service.CourseService;
