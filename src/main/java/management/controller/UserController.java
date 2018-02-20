@@ -1,21 +1,18 @@
 package management.controller;
 
 
-import management.Service.*;
-import management.entity.*;
+import management.DTO.*;
+import management.services.Interfaces.AddingCourseInt;
+import management.services.Interfaces.AddingTrainer;
+import management.services.Interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
-
-
-import management.Service.CourseService;
+import management.services.Interfaces.CourseService;
 
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody LoginUser user) {
+    public boolean login(@RequestBody User user) {
 
         return userService.login(user);
 
@@ -50,14 +47,16 @@ public class UserController {
     }
 
 
-    @GetMapping("/gettingTrainers")
-    public Map<String, Trainer> GetTrainers(){
+
+
+    @GetMapping("/Trainers")
+    public Map<String, Trainer> GetTrainers() {
         return addingTrainer.getTrainers();
     }
 
 
     @GetMapping("/gettingCources")
-    public Map<String, AddingCourse> course() {
+    public Map<String, Course> course() {
         return addingCourse.li();
     }
 
@@ -86,15 +85,34 @@ public class UserController {
     }
 
     @PostMapping("/proposeCourse")
-    public Integer ProposeCourse(@RequestBody ProposeCourse course) {
+    public Integer ProposeCourse(@RequestBody Course course) {
 
         return courseService.proposeCourse(course);
     }
 
     @PostMapping("/addingCourse")
-    public Integer AddingCourse(@RequestBody AddingCourse course) {
+    public Integer AddingCourse(@RequestBody Course course) {
         return addingCourse.addCourse(course);
     }
+
+    @GetMapping("/allProposedCourses")
+    public Map<String, Course> allProposedCourses() {
+        return courseService.gettingProposedCources();
+    }
+
+    @DeleteMapping("admin/suggestedcourses/delete/{name}/{id}")
+    public String deletedSuggestedCources(@PathVariable("name")String name, @PathVariable("id") int id){
+    return courseService.deletedSuggestedCources(id,name);
+    }
+
+
+
+
+//
+//    DELETE:
+//            /admin/suggestedcourses/delete – удаление предложения курса по нажатию «отклонить»
+//    Body: {suggestedcourseid : delete}
+//    Response: 200 or 401
 
 
 }

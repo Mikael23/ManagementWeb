@@ -1,13 +1,13 @@
-package management.Service;
+package management.Service.implementations;
 
+import management.DTO.Course;
 import management.controller.UserController;
-import management.entity.AddingCourse;
-import management.entity.Trainer;
+import management.DTO.Trainer;
+import management.services.Interfaces.AddingCourseInt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AddingCourseImplem implements AddingCourseInt {
 
     private final AtomicInteger idCounter = new AtomicInteger();
-    private Map<String, AddingCourse> addedCourse = new HashMap<String, AddingCourse>();
+    private Map<String, Course> addedCourse = new HashMap<String, Course>();
     public  AddingTrainerImplement trainers = new AddingTrainerImplement();
 
 
@@ -25,7 +25,7 @@ public class AddingCourseImplem implements AddingCourseInt {
 
 
 
-    public int addCourse(AddingCourse course) {
+    public int addCourse(Course course) {
 
         Integer id = idCounter.getAndIncrement();
 
@@ -49,7 +49,7 @@ public class AddingCourseImplem implements AddingCourseInt {
         }
 
 
-        course.trainer = trainer;
+        course.trainerName = trainer.name;
 
 
 
@@ -63,7 +63,7 @@ public class AddingCourseImplem implements AddingCourseInt {
     }
 
     @Override
-    public Map<String, AddingCourse> li() {
+    public Map<String, Course> li() {
         return addedCourse;
     }
 

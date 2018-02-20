@@ -1,8 +1,7 @@
-package management.Service;
+package management.Service.implementations;
 
-import management.entity.LoginUser;
-import management.entity.ProposeCourse;
-import management.entity.User;
+import management.DTO.User;
+import management.services.Interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class UserServiceImplemen implements UserService {
         return id;
     }
 
-    public boolean login(LoginUser user) {
+    public boolean login(User user) {
         //String role = user.role;
 
         String email = user.email;

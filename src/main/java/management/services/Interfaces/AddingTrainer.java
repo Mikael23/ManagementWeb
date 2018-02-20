@@ -1,6 +1,6 @@
-package management.Service;
+package management.services.Interfaces;
 
-import management.entity.Trainer;
+import management.DTO.Trainer;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package management.entity;
+package management.DTO;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -16,10 +16,10 @@ public class User {
 //
 
 
-   @JsonProperty("name") public  String name;
+    @JsonProperty("name") public  String name;
   @JsonProperty("surname")  public String surname;
- @JsonProperty("email")   public String email;
-   @JsonProperty("password") public String password;
+  @JsonProperty("email")   public String email;
+  @JsonProperty("password") public String password;
 
     public Integer getId() {
         return id;

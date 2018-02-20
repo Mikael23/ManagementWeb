@@ -1,7 +1,7 @@
-package management.Service;
+package management.Service.implementations;
 
-import management.entity.ProposeCourse;
-import management.entity.Trainer;
+import management.DTO.Trainer;
+import management.services.Interfaces.AddingTrainer;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -60,7 +60,8 @@ public class AddingTrainerImplement implements AddingTrainer {
     }
 
     @Override
-    public Map<String, Trainer> getTrainers() {
+    public Map<String, Trainer> getTrainers()
+    {
         return trainers;
     }
 

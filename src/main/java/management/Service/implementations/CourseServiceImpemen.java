@@ -1,7 +1,7 @@
-package management.Service;
+package management.Service.implementations;
 
-import management.entity.AddingCourse;
-import management.entity.ProposeCourse;
+import management.DTO.Course;
+import management.services.Interfaces.CourseService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -13,13 +13,13 @@ public class CourseServiceImpemen implements CourseService {
 
 
     private final AtomicInteger idCounter = new AtomicInteger();
-    private Map<String,ProposeCourse> courses = new HashMap<String, ProposeCourse>();
-    private Map<String,AddingCourse> Addedcourses = new HashMap<String, AddingCourse>();
+    private Map<String,Course> courses = new HashMap<>();
+    private Map<String,Course> Addedcourses = new HashMap<String, Course>();
 
 
 
 
-    public int proposeCourse(ProposeCourse course) {
+    public int proposeCourse(Course course) {
 
      System.out.println(course.Coursename);
 
@@ -27,12 +27,38 @@ public class CourseServiceImpemen implements CourseService {
                 return 401;
             }
             int id = idCounter.getAndIncrement();
-            course.idCourse=id;
+            course.id=id;
             courses.put(course.Coursename,course);
             return id;
         }
 
-    public int addCourse(AddingCourse course) {
+    @Override
+    public Map<String, Course> gettingProposedCources() {
+        return courses;
+    }
+
+    @Override
+    public String deletedSuggestedCources(int id,String name) {
+
+        Course course = courses.get(name);
+
+        if(course.id==id){
+            courses.remove(name);
+            return "Deleted";
+        }
+
+
+
+
+
+        return "No object";
+
+
+
+
+    }
+
+    public int addCourse(Course course) {
 
 
 

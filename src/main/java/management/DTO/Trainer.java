@@ -1,4 +1,4 @@
-package management.entity;
+package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
