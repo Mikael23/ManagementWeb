@@ -3,6 +3,7 @@ package management.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -115,5 +116,7 @@ public class Course {
     public String userName;
     @JsonProperty("userPhone")
     public Integer userPhone;
+//    @JsonProperty("choosenCources")
+//    List<Integer>choosenCorces;
 
 }

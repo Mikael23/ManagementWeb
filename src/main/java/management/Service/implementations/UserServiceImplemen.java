@@ -58,5 +58,21 @@ public class UserServiceImplemen implements UserService {
         return false;
     }
 
+    @Override
+    public User update(User user) {
+
+
+        Integer user1 = user.id;
+        users.remove(user1);
+
+        users.put(user1,user);
+
+        return user;
+
+    }
+
+///trainerid/update – обновляет информацию профиля пользователя
+//    Body: {name, surname, old password, new password, repeat new password,
+//            phone, city, skype, viber, whatsapp, telegram, vk, facebook, instagram }
 
 }
