@@ -22,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
         SecurityAutoConfiguration.class })
 
 //Test test
+//Test2 test
 public class App {
 
 
