@@ -20,6 +20,8 @@ import org.springframework.context.annotation.ComponentScan;
         JpaRepositoriesAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
         SecurityAutoConfiguration.class })
+
+//Test test
 public class App {
 
 
