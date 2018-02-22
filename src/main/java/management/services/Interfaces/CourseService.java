@@ -15,6 +15,7 @@ public interface CourseService {
     Map<String,Course> gettingProposedCources();
     String deletedSuggestedCources(int id,String name);
 
+
 }
 
 

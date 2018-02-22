@@ -3,8 +3,6 @@ package management.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Course {
@@ -12,6 +10,7 @@ public class Course {
     @JsonProperty("name")  public String name;
     @JsonProperty ("description") public String description;
     @JsonProperty("trainerName")  public String trainerName;
+
 
 
 
@@ -23,10 +22,10 @@ public class Course {
         this.date = date;
     }
 
-    @JsonProperty("duration") public double [] qw = new double[2] ;
+    @JsonProperty("duration") public double [] suggestedTimes = new double[2] ;
 
-    public void setQw(double[] qw) {
-        this.qw = qw;
+    public void setSuggestedTimes(double[] suggestedTimes) {
+        this.suggestedTimes = suggestedTimes;
     }
 
     @JsonProperty("quantatity") public Integer quantatity;
@@ -130,6 +129,23 @@ public class Course {
     public Integer userPhone;
     @JsonProperty("data")
     public Integer date;
+
+    public double[] getSuggestedTimes() {
+        return suggestedTimes;
+    }
+
+    public Integer getChoosenTime() {
+        return choosenTime;
+    }
+
+    public void setChoosenTime(Integer choosenTime) {
+        this.choosenTime = choosenTime;
+    }
+
+    @JsonProperty("ChoosenTime")
+    public Integer choosenTime;
+
+
 
 
 

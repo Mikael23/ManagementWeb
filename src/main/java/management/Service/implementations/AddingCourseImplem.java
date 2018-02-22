@@ -69,40 +69,6 @@ public class AddingCourseImplem implements AddingCourseInt {
                 addedCourse;
     }
 
-    @Override
-    public double[] addingCourseInterval(Course course) {
-
-        Integer date = course.date;
-        Integer id = course.id;
-        String name = course.name;
-        Course course1 =  addedCourse.get(name);
-
-        addedCourse.remove(name);
-
-        course1.date = date;
-
-
-        
-        course1.qw = course.qw;
-
-
-
-
-         addedCourse.put(name,course1);
-
-
-  System.out.println();
-
-  for(Course course2:addedCourse.values()){
-      System.out.println(course2);
-
-  }
-
-        return course1.qw;
-
-
-
-    }
 
 
 }

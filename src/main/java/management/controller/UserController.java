@@ -124,29 +124,52 @@ public class UserController {
     @PostMapping("/trainerid/addinterval/")
     public double[] AddIntervals(@RequestBody Course course){
 
-
-
-
-        System.out.println("hernya");
-
-        System.out.println(      addingCourse.addingCourseInterval(course)
-        );
-      addingCourse.addingCourseInterval(course);
-
-    ;
-
-        double [] eq =       addingCourse.addingCourseInterval(course);
-
-
-
-
-
-
+        double [] eq =       addingTrainer.addingSuggestedCourseInterval(course);
         return eq;
     }
 
 
 
+
+
+    @DeleteMapping("/trainerid/deleteinterval/{name}")
+    public double[] deleteInterval(@PathVariable("name")String name){
+
+
+        return addingTrainer.deletionOfInterval(name);
+
+
+
+    }
+
+
+    @PostMapping("/courseid/choose/{name}")
+    public List<Course> choosingTime(@PathVariable("name") String name, @RequestBody Course course){
+
+
+
+
+        return userService.choosingTime(name,course);
+
+
+
+
+    }
+
+
+//    trainerid/deleteinterval - удалить ранее
+//    заданное как свободное время, кнопочка на календаре
+//    Body: {intervalid: delete}
+//    Response: 200 or 401
+
+///courseid/choose - запись на курс на конкретное время
+//    Body: {request: {courseid, userid, chosendate, chosentime, note, confirmed = false}}
+//    Response: вернуть ошибку, если пользователь уже записан на это время
+//    Если все успешно, данные дата и время попадают в неподтвержденные записи
+//    у администратора, и как неподтвержденные - в личный кабинет пользователя, тренеру отправляется
+//    оповещение на e-mail о новой записи. Выбранное время перестает быть свободным. В базу данных заносится
+//    параметр confirmed = false, который поменяется на true после подтверждения. У интервала по intervalid значение busy меняется на true.
+//    Заявке присваивается id - requestid.
 
 
 

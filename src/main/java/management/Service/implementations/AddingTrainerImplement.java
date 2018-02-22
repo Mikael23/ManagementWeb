@@ -25,8 +25,6 @@ public class AddingTrainerImplement implements AddingTrainer {
     AddingCourseInt courseService;
 
 
-
-
     public Integer addingTrainer(Trainer trainer) {
 
         int id = idCounter.getAndIncrement();
@@ -43,59 +41,89 @@ public class AddingTrainerImplement implements AddingTrainer {
         Trainer trainerr = trainers.get(trainer.name);
 
 
-
-
-
         return id;
     }
 
 
-    public Trainer gettingTrainer(String name){
+    public Trainer gettingTrainer(String name) {
 
 
-       Trainer trainer = trainers.get(name);
+        Trainer trainer = trainers.get(name);
 
 
-
-
-
-
-        for(String namee: trainers.keySet()){
+        for (String namee : trainers.keySet()) {
             System.out.println("vot" + namee);
         }
 
 
         System.out.println(trainer.toString());
-       return trainer;
+        return trainer;
 
     }
 
     @Override
-    public Map<String, Trainer> getTrainers()
-    {
+    public Map<String, Trainer> getTrainers() {
         return trainers;
     }
 
 
-
-
-
     public List<String> listOfcources(Trainer trainer) {
-        List<String>cources = new ArrayList<>();
+        List<String> cources = new ArrayList<>();
 
-        for(Course course : courseService.li().values()){
-              if(course.trainerName.equals(trainer.name)){
-                  cources.add(course.name);
-              }
+        for (Course course : courseService.li().values()) {
+            if (course.trainerName.equals(trainer.name)) {
+                cources.add(course.name);
+            }
         }
 
 
-        for(Course namee:courseService.li().values()){
-              if(namee.equals(namee)){
-                  cources.add(namee.Coursename);
-              }
-          }
-          return cources;
+        for (Course namee : courseService.li().values()) {
+            if (namee.equals(namee)) {
+                cources.add(namee.Coursename);
+            }
+        }
+        return cources;
+    }
+
+    @Override
+    public double[] deletionOfInterval(String name) {
+
+
+        Course course = courseService.li().get(name);
+
+        courseService.li().remove(course);
+
+
+        double[] suggestedTimes = {0};
+        course.suggestedTimes = suggestedTimes;
+
+//
+        return course.suggestedTimes;
+    }
+
+    @Override
+    public double[] addingSuggestedCourseInterval(Course course) {
+
+
+        Integer date = course.date;
+        Integer id = course.id;
+        String name = course.name;
+        Course course1 = courseService.li().get(name);
+
+        courseService.li().remove(name);
+
+
+        course1.date = date;
+
+
+        course1.suggestedTimes = course.suggestedTimes;
+
+        courseService.li().put(name, course1);
+
+
+        return course1.suggestedTimes;
+
+
     }
 
 

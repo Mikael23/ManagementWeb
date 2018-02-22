@@ -1,7 +1,10 @@
 package management.services.Interfaces;
 
+import management.DTO.Course;
 import management.DTO.User;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface UserService {
@@ -9,6 +12,8 @@ public interface UserService {
     int save(User user);
     boolean login(User user);
     User update(User user);
+
+    List<Course> choosingTime(String name, Course course);
 
 
 

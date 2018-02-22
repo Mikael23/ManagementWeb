@@ -1,10 +1,13 @@
 package management.Service.implementations;
 
+import management.DTO.Course;
 import management.DTO.User;
 import management.services.Interfaces.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 @Service
@@ -68,6 +71,35 @@ public class UserServiceImplemen implements UserService {
         users.put(user1,user);
 
         return user;
+
+    }
+
+    @Override
+    public List<Course> choosingTime(String name, Course course) {
+
+
+       double [] suggestedTimes = new double[2] ;
+
+
+
+       Course course1 = new Course();
+       course1.name = course.name;
+       course1.choosenTime = course.choosenTime;
+
+
+     User user1 =  users.get(name);
+     List<Course> courcesOfUsers = new ArrayList<>();
+     courcesOfUsers.add(course);
+
+     user1.courcesOfUsers.put(name,courcesOfUsers);
+
+     List<Course>er = user1.courcesOfUsers.get(name);
+
+
+
+
+       return er;
+
 
     }
 

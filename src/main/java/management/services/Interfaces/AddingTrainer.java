@@ -1,8 +1,10 @@
 package management.services.Interfaces;
 
+import management.DTO.Course;
 import management.DTO.Trainer;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,9 @@ public interface AddingTrainer {
    Trainer gettingTrainer(String name);
     Map<String, Trainer> getTrainers();
     List<String> listOfcources(Trainer trainer);
+    double[] deletionOfInterval(String name);
+    double[]addingSuggestedCourseInterval(Course course);
+
 
 
     //    POST:

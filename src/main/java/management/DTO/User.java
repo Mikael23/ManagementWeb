@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
 import java.text.DateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 public class User {
@@ -39,8 +42,19 @@ public class User {
         this.role = role;
     }
 
+
     @JsonProperty("role")public String role;
 
+
+    public Map<String, List<Course>> getCourcesOfUsers() {
+        return courcesOfUsers;
+    }
+
+    public void setCourcesOfUsers(Map<String, List<Course>> courcesOfUsers) {
+        this.courcesOfUsers = courcesOfUsers;
+    }
+
+   public Map<String,List<Course>>courcesOfUsers = new HashMap<>();
 
 
 

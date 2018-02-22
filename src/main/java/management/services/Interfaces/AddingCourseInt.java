@@ -14,5 +14,5 @@ public interface AddingCourseInt {
 
     int addCourse(Course course);
     Map<String,Course> li();
-    double[] addingCourseInterval(Course course);
+
 }
