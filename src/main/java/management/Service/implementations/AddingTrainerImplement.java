@@ -1,10 +1,15 @@
 package management.Service.implementations;
 
+import management.DTO.Course;
 import management.DTO.Trainer;
+import management.services.Interfaces.AddingCourseInt;
 import management.services.Interfaces.AddingTrainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,6 +20,9 @@ public class AddingTrainerImplement implements AddingTrainer {
 
     private final AtomicInteger idCounter = new AtomicInteger();
     public final Map<String, Trainer> trainers = new HashMap<>();
+
+    @Autowired
+    AddingCourseInt courseService;
 
 
 
@@ -68,9 +76,16 @@ public class AddingTrainerImplement implements AddingTrainer {
 
 
 
-
-
-
+    @Override
+    public List<String> listOfcources(String name) {
+        List<String>cources = new ArrayList<>();
+          for(Course namee:courseService.li().values()){
+              if(namee.equals(namee)){
+                  cources.add(namee.Coursename);
+              }
+          }
+          return cources;
+    }
 
 
 }

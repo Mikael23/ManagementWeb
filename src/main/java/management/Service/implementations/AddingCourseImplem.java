@@ -25,6 +25,7 @@ public class AddingCourseImplem implements AddingCourseInt {
 
 
 
+
     public int addCourse(Course course) {
 
         Integer id = idCounter.getAndIncrement();
@@ -64,7 +65,8 @@ public class AddingCourseImplem implements AddingCourseInt {
 
     @Override
     public Map<String, Course> li() {
-        return addedCourse;
+        return
+                addedCourse;
     }
 
 

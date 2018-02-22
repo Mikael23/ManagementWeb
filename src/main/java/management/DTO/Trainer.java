@@ -8,6 +8,16 @@ public class Trainer {
     public String name;
     @JsonProperty("description")
     public String description;
+    @JsonProperty("courseId")
+    public Integer courseId;
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
 
     @Override
     public String toString() {

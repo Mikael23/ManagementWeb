@@ -11,7 +11,7 @@ public class Course {
     @JsonProperty("name")  public String name;
     @JsonProperty ("description") public String description;
     @JsonProperty("trainerName")  public String trainerName;
-    @JsonProperty("duration") public Integer duration;
+    @JsonProperty("duration") public List<Integer> duration;
     @JsonProperty("quantatity") public Integer quantatity;
     @JsonProperty("id") public Integer id;
 
@@ -42,11 +42,11 @@ public class Course {
         this.trainerName = trainerName;
     }
 
-    public Integer getDuration() {
+    public List<Integer> getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(List<Integer> duration) {
         this.duration = duration;
     }
 
@@ -99,6 +99,7 @@ public class Course {
     }
 
     public Integer getUserPhone() {
+
         return userPhone;
     }
 
@@ -116,6 +117,11 @@ public class Course {
     public String userName;
     @JsonProperty("userPhone")
     public Integer userPhone;
+    @JsonProperty("data")
+    public Integer date;
+
+
+
 //    @JsonProperty("choosenCources")
 //    List<Integer>choosenCorces;
 
