@@ -13,7 +13,7 @@ public interface AddingTrainer {
   Integer  addingTrainer(Trainer trainer);
    Trainer gettingTrainer(String name);
     Map<String, Trainer> getTrainers();
-    List<String> listOfcources(String name);
+    List<String> listOfcources(Trainer trainer);
 
 
     //    POST:

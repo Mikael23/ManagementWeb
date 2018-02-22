@@ -13,13 +13,7 @@ public class Course {
     @JsonProperty ("description") public String description;
     @JsonProperty("trainerName")  public String trainerName;
 
-    public int[] getQw() {
-        return qw;
-    }
 
-    public void setQw(int[] qw) {
-        this.qw = qw;
-    }
 
     public Integer getDate() {
         return date;
@@ -29,7 +23,12 @@ public class Course {
         this.date = date;
     }
 
-    @JsonProperty("duration") public int [] qw = new int [2] ;
+    @JsonProperty("duration") public double [] qw = new double[2] ;
+
+    public void setQw(double[] qw) {
+        this.qw = qw;
+    }
+
     @JsonProperty("quantatity") public Integer quantatity;
     @JsonProperty("id") public Integer id;
 

@@ -1,6 +1,7 @@
 package management.Service.implementations;
 
 import management.DTO.Course;
+import management.DTO.CourseResponse;
 import management.services.Interfaces.CourseService;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,10 @@ public class CourseServiceImpemen implements CourseService {
     private Map<String,Course> Addedcourses = new HashMap<String, Course>();
 
 
-
+    @Override
+    public CourseResponse courseresponse() {
+        return null;
+    }
 
     public int proposeCourse(Course course) {
 

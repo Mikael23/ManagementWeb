@@ -10,7 +10,7 @@ import java.util.Map;
 public interface CourseService {
 
 
-    CourseResponse courseresponse()
+    CourseResponse courseresponse();
     int proposeCourse(Course course);
     Map<String,Course> gettingProposedCources();
     String deletedSuggestedCources(int id,String name);

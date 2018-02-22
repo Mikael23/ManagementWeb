@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import management.services.Interfaces.CourseService;
 
 import javax.inject.Singleton;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -117,29 +115,34 @@ public class UserController {
 
         Trainer trainer = addingTrainer.gettingTrainer(name);
 
-        List<String> cource = addingTrainer.listOfcources(name);
+        List<String> cource = addingTrainer.listOfcources(trainer);
 
         return cource;
     }
 
 
     @PostMapping("/trainerid/addinterval/")
-    public Integer AddIntervals(@RequestBody Course course){
+    public double[] AddIntervals(@RequestBody Course course){
+
+
+
+
+        System.out.println("hernya");
+
+        System.out.println(      addingCourse.addingCourseInterval(course)
+        );
+      addingCourse.addingCourseInterval(course);
+
+    ;
+
+        double [] eq =       addingCourse.addingCourseInterval(course);
 
 
 
 
 
 
-        double [] eq = new double[2];
-
-
-
-        Course course1 = new Course();
-        course1.date = course.date;
-        course1.qw =course.qw;
-
-      return 1;
+        return eq;
     }
 
 

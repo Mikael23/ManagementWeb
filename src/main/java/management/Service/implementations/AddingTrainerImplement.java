@@ -57,6 +57,9 @@ public class AddingTrainerImplement implements AddingTrainer {
 
 
 
+
+
+
         for(String namee: trainers.keySet()){
             System.out.println("vot" + namee);
         }
@@ -76,10 +79,18 @@ public class AddingTrainerImplement implements AddingTrainer {
 
 
 
-    @Override
-    public List<String> listOfcources(String name) {
+
+    public List<String> listOfcources(Trainer trainer) {
         List<String>cources = new ArrayList<>();
-          for(Course namee:courseService.li().values()){
+
+        for(Course course : courseService.li().values()){
+              if(course.trainerName.equals(trainer.name)){
+                  cources.add(course.name);
+              }
+        }
+
+
+        for(Course namee:courseService.li().values()){
               if(namee.equals(namee)){
                   cources.add(namee.Coursename);
               }
