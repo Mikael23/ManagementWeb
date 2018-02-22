@@ -24,6 +24,8 @@ import java.util.Map;
 public class UserController {
 
 
+
+
     @Autowired
     UserService userService;
 
@@ -117,27 +119,31 @@ public class UserController {
 
         List<String> cource = addingTrainer.listOfcources(name);
 
-
-
-
         return cource;
     }
 
 
+    @PostMapping("/trainerid/addinterval/")
+    public Integer AddIntervals(@RequestBody Course course){
 
 
 
 
-///trainerid/addinteval – предложить время для выбора юзера
-//    Должна быть возможность подгрузить courseid, которые ведет тренер.
-//    Выбрать дату, выбрать интервал времени from – to, рассчитанный на одно занятие.
-//    Get-запрос: /trainerid/courses – по которому в response courseid, которые ведет тренер.
-//    Отметить курсы, на которые можно записаться именно в этот промежуток времени.
-//    Кнопка “добавить еще один интервал времени”.
-//    Body: {{intervals}: {interval: {suggesteddate, suggestedtime,
-//            {courseid – курсы, на которые можно записаться в это время}, busy = false}}
-//        Response: 200 or 401, назначить интервалам id – intervalid, вычислить intervalduration
-//                = suggestedtime + max duration (взять самую большую duration курса, который есть в body) + 30 min, добавить в массив
+
+
+        double [] eq = new double[2];
+
+
+
+        Course course1 = new Course();
+        course1.date = course.date;
+        course1.qw =course.qw;
+
+      return 1;
+    }
+
+
+
 
 
 

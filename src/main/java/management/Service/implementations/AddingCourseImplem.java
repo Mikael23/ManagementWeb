@@ -69,5 +69,31 @@ public class AddingCourseImplem implements AddingCourseInt {
                 addedCourse;
     }
 
+    @Override
+    public Integer addingCourseInterval(Course course) {
+
+        Integer date = course.date;
+        Integer id = course.id;
+        String name = course.name;
+        Course course1 =  addedCourse.get(name);
+
+        course1.date = date;
+
+        course1.qw = course.qw;
+
+
+
+
+
+
+
+
+
+        return course.id;
+
+
+
+    }
+
 
 }
