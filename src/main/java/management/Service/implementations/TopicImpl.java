@@ -23,19 +23,24 @@ public class TopicImpl implements TopicInt{
     @Override
     public List<TopicDTO> getAllTopics() {
         List<Topic> topics = TestRepository.getTopicsStore();
-        System.out.println(topics);
         List<TopicDTO> topicsDTO = new ArrayList<>();
         for (Topic topic: topics) {
                topicsDTO.add(TopicDTO.refactorTopic(topic));
         }
 
-        System.out.println(topics);
+
         return topicsDTO;
     }
 
     @Override
     public List<TopicSwfDTO> getAllTopicsSwf() {
-        return null;
+        List<Topic> topics = TestRepository.getTopicsStore();
+        List<TopicSwfDTO> topicsSwfDTO = new ArrayList<>();
+        for (Topic topic: topics) {
+            topicsSwfDTO.add(TopicSwfDTO.refactorTopic(topic));
+        }
+
+        return topicsSwfDTO;
     }
 
     @Override

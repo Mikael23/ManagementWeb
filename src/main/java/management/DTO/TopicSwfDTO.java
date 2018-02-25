@@ -2,6 +2,7 @@ package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import management.testData.Topic;
 
 public class TopicSwfDTO {
     @JsonProperty("topicName")
@@ -17,6 +18,13 @@ public class TopicSwfDTO {
     public TopicSwfDTO(String name, String swfLinc) {
         this.name = name;
         this.swfLinc = swfLinc;
+    }
+
+    public static TopicSwfDTO refactorTopic(Topic topic){
+        String name = topic.getName();
+        String swfLinc = topic.getSwfLinc();
+
+        return new TopicSwfDTO(name, swfLinc);
     }
 
     public String getName() {
