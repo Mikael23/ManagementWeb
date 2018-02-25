@@ -13,7 +13,7 @@ public interface UserService {
     boolean login(User user);
     User update(User user);
 
-    List<Course> choosingTime(String name, Course course);
+    List<Course> choosingTime(String name, Course course) throws Exception;
 
 
 

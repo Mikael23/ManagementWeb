@@ -14,18 +14,18 @@ public class Course {
 
 
 
-    public Integer getDate() {
-        return date;
+    public double[] getSuggestedData() {
+        return SuggestedData;
     }
 
-    public void setDate(Integer date) {
-        this.date = date;
+    public void setSuggestedData(double[] suggestedData) {
+        this.SuggestedData = suggestedData;
     }
 
-    @JsonProperty("duration") public double [] suggestedTimes = new double[2] ;
+
 
     public void setSuggestedTimes(double[] suggestedTimes) {
-        this.suggestedTimes = suggestedTimes;
+        this.SuggestedTimes = suggestedTimes;
     }
 
     @JsonProperty("quantatity") public Integer quantatity;
@@ -127,25 +127,43 @@ public class Course {
     public String userName;
     @JsonProperty("userPhone")
     public Integer userPhone;
-    @JsonProperty("data")
-    public Integer date;
+
 
     public double[] getSuggestedTimes() {
-        return suggestedTimes;
+        return SuggestedTimes;
     }
 
-    public Integer getChoosenTime() {
-        return choosenTime;
+    public Double getChoosenTime() {
+        return ChoosenTime;
     }
 
-    public void setChoosenTime(Integer choosenTime) {
-        this.choosenTime = choosenTime;
+    public void setChoosenTime(Double choosenTime) {
+        this.ChoosenTime = choosenTime;
     }
+
+
+
+    public Double getChoosenData() {
+        return ChoosenData;
+    }
+
+    public void setChoosenData(Double choosenData) {
+        ChoosenData = choosenData;
+    }
+
+    @JsonProperty("ChoosenData")
+    public Double ChoosenData;
+
 
     @JsonProperty("ChoosenTime")
-    public Integer choosenTime;
+    public Double ChoosenTime;
 
 
+    @JsonProperty("SuggestedTimes")
+    public double [] SuggestedTimes = new double[2] ;
+
+    @JsonProperty("SuggestedData")
+    public double[] SuggestedData;
 
 
 

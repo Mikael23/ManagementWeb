@@ -15,6 +15,6 @@ public interface AddingCourseInt {
 
     int addCourse(Course course);
     Map<String,Course> li();
-    CourseDateAndTimesResponse gettingFreeTimesandDuration(Integer id);
+    CourseDateAndTimesResponse gettingFreeTimesandDuration(Integer id) throws Exception;
 
 }

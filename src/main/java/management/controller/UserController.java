@@ -136,7 +136,7 @@ public class UserController {
 
 
     @PostMapping("/courseid/choose/{name}")
-    public List<Course> choosingTime(@PathVariable("name") String name, @RequestBody Course course) {
+    public List<Course> choosingTime(@PathVariable("name") String name, @RequestBody Course course) throws Exception {
 
 
         return userService.choosingTime(name, course);
@@ -146,7 +146,8 @@ public class UserController {
 
     @GetMapping("/courseid/datestimes/{courseid}")
 
-    public CourseDateAndTimesResponse courseDateAndTimesResponse(@PathVariable("courseid") Integer courseid){
+    public CourseDateAndTimesResponse courseDateAndTimesResponse(@PathVariable("courseid") Integer courseid) throws Exception {
+
 
         CourseDateAndTimesResponse courseDateAndTimesResponse = addingCourse.gettingFreeTimesandDuration(courseid);
 
@@ -156,7 +157,15 @@ public class UserController {
         return courseDateAndTimesResponse;
 
     }
-
+//
+///courseid/choose – запись на курс на конкретное время
+//    Body: {request: {courseid, userid, chosendate, chosentime, note, confirmed = false}}
+//    Response: вернуть ошибку, если пользователь уже записан на это время
+//    Если все успешно, данные дата и время попадают в неподтвержденные записи
+//    у администратора, и как неподтвержденные – в личный кабинет пользователя,
+//    тренеру отправляется оповещение на e-mail о новой записи. Выбранное время перестает
+//    быть свободным. В базу данных заносится параметр confirmed = false, который поменяется на true
+//    после подтверждения. У интервала по intervalid значение busy меняется на true. Заявке присваивается id – requestid.
 
 
 }

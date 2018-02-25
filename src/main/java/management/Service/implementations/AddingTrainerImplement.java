@@ -95,33 +95,36 @@ public class AddingTrainerImplement implements AddingTrainer {
 
 
         double[] suggestedTimes = {0};
-        course.suggestedTimes = suggestedTimes;
+        course.SuggestedTimes = suggestedTimes;
+
+        courseService.addCourse(course);
 
 //
-        return course.suggestedTimes;
+        return course.SuggestedTimes;
     }
 
     @Override
     public double[] addingSuggestedCourseInterval(Course course) {
 
 
-        Integer date = course.date;
-        Integer id = course.id;
+        double[] date = course.SuggestedData;
+        double[] times = course.SuggestedTimes;
+      //  Integer id = course.id;
         String name = course.name;
         Course course1 = courseService.li().get(name);
 
         courseService.li().remove(name);
 
 
-        course1.date = date;
+        course1.SuggestedData = date;
 
 
-        course1.suggestedTimes = course.suggestedTimes;
+        course1.SuggestedTimes = times;
 
         courseService.li().put(name, course1);
 
 
-        return course1.suggestedTimes;
+        return course1.SuggestedTimes;
 
 
     }

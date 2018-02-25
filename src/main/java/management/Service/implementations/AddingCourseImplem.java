@@ -6,11 +6,8 @@ import management.controller.UserController;
 import management.DTO.Trainer;
 import management.services.Interfaces.AddingCourseInt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.xml.ws.Response;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -74,20 +71,25 @@ public class AddingCourseImplem implements AddingCourseInt {
     }
 
 
-    public CourseDateAndTimesResponse gettingFreeTimesandDuration(Integer courseId) {
+    public CourseDateAndTimesResponse gettingFreeTimesandDuration(Integer courseId) throws Exception {
 
         CourseDateAndTimesResponse courseDateAndTimesResponse = new CourseDateAndTimesResponse();
+        System.out.println(courseId);
         for(Course course:addedCourse.values()){
-            if(courseId.equals(course)){
+            if(courseId.equals(course.id)){
                 courseDateAndTimesResponse.quantity = course.quantity;
-                courseDateAndTimesResponse.suggestedTimes = course.suggestedTimes;
+                System.out.println(courseDateAndTimesResponse.quantity);
+
+                courseDateAndTimesResponse.suggestedTimes = course.SuggestedTimes;
+                System.out.println(courseDateAndTimesResponse.suggestedTimes);
                 courseDateAndTimesResponse.trainerName = course.trainerName;
+                System.out.println(courseDateAndTimesResponse.trainerName);
                 courseDateAndTimesResponse.name = course.name;
             }
         }
 
         if(courseDateAndTimesResponse==null){
-            return (CourseDateAndTimesResponse) ResponseEntity.notFound();
+            throw new Exception("Not Found");
         }
 
        return courseDateAndTimesResponse;
