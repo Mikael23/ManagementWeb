@@ -2,17 +2,15 @@ package management.controller;
 
 
 import management.DTO.*;
-import management.services.Interfaces.AddingCourseInt;
-import management.services.Interfaces.AddingTrainer;
-import management.services.Interfaces.UserService;
+import management.services.Interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import management.services.Interfaces.CourseService;
-
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,7 +18,7 @@ import java.util.Map;
 
 public class UserController {
 
-
+//  Mik's interfaces
     @Autowired
     UserService userService;
 
@@ -32,6 +30,72 @@ public class UserController {
     AddingTrainer addingTrainer;
     @Autowired
     AddingCourseInt addingCourse;
+
+//    Evgeniy's interfaces
+    @Autowired
+    TopicInt topicInterFace;
+
+    @Autowired
+    CourseInt courseInterfase;
+
+    @Autowired
+    UserInt userInterfase;
+
+//    Evgeniy's methods
+
+    @GetMapping("/top")
+    public int getInt() {
+        System.out.println(topicInterFace.getAllTopics() + "controller");
+        return 1;
+
+    }
+
+    @GetMapping("/topics")
+    public List<TopicDTO> getTopics() {
+
+        return topicInterFace.getAllTopics();
+
+    }
+
+    @GetMapping("/topicsSwf")
+    public List<TopicSwfDTO> getTopicsSwf() {
+
+        return topicInterFace.getAllTopicsSwf();
+
+    }
+
+    @GetMapping("/{courseId}/datestimes")
+    public List<CourseDateDTO> getDatesTimes(@PathVariable("courseId") Integer courseId) {
+
+        return courseInterfase.getCourseSchedule(courseId);
+
+    }
+
+    @PostMapping("/course/choose")
+    public ResponseEntity<String> saveUsersTimeCourse(@RequestBody  UsersCourseDTO chosenCourse){ //response create or no
+        HttpStatus res = HttpStatus.OK;
+        if(userInterfase.createUsersCourse(chosenCourse) == 1) {
+            res = HttpStatus.NOT_MODIFIED;
+        }
+
+        return new ResponseEntity<String>(res);
+
+    }
+
+    @PutMapping("/{userid}/update")
+    public ResponseEntity<Integer> updateUsersData(@PathVariable("userid") Integer userid, @RequestBody UserDTO user){
+
+        return new ResponseEntity<Integer>(HttpStatus.OK);
+    }
+
+    @PostMapping("/Topic")
+    public ResponseEntity<String> newTopic(@RequestBody  TopicDTO topic){ //response create or no
+        int responce = topicInterFace.addNewTopic(topic);
+        HttpStatus res = HttpStatus.OK;
+
+        return new ResponseEntity<String>(res);
+
+    }
 
     @GetMapping("/id")
     public Integer geting() {
@@ -48,7 +112,7 @@ public class UserController {
 
 
 
-
+//  Mik's methods
     @GetMapping("/Trainers")
     public Map<String, Trainer> GetTrainers() {
         return addingTrainer.getTrainers();
