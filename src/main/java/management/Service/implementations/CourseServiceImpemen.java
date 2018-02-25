@@ -1,6 +1,7 @@
 package management.Service.implementations;
 
 import management.DTO.Course;
+import management.DTO.CourseDateAndTimesResponse;
 import management.DTO.CourseResponse;
 import management.services.Interfaces.CourseService;
 import org.springframework.stereotype.Service;
@@ -62,14 +63,7 @@ public class CourseServiceImpemen implements CourseService {
 
     }
 
-    public int addCourse(Course course) {
 
-
-
-
-
-        return 0;
-    }
 
 
 ///admin/addcourse - добавить курс на страницу курсов:

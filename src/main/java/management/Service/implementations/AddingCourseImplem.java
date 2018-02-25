@@ -1,12 +1,16 @@
 package management.Service.implementations;
 
 import management.DTO.Course;
+import management.DTO.CourseDateAndTimesResponse;
 import management.controller.UserController;
 import management.DTO.Trainer;
 import management.services.Interfaces.AddingCourseInt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.xml.ws.Response;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -69,6 +73,25 @@ public class AddingCourseImplem implements AddingCourseInt {
                 addedCourse;
     }
 
+
+    public CourseDateAndTimesResponse gettingFreeTimesandDuration(Integer courseId) {
+
+        CourseDateAndTimesResponse courseDateAndTimesResponse = new CourseDateAndTimesResponse();
+        for(Course course:addedCourse.values()){
+            if(courseId.equals(course)){
+                courseDateAndTimesResponse.quantity = course.quantity;
+                courseDateAndTimesResponse.suggestedTimes = course.suggestedTimes;
+                courseDateAndTimesResponse.trainerName = course.trainerName;
+                courseDateAndTimesResponse.name = course.name;
+            }
+        }
+
+        if(courseDateAndTimesResponse==null){
+            return (CourseDateAndTimesResponse) ResponseEntity.notFound();
+        }
+
+       return courseDateAndTimesResponse;
+    }
 
 
 }

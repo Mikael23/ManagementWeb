@@ -1,6 +1,7 @@
 package management.services.Interfaces;
 
 import management.DTO.Course;
+import management.DTO.CourseDateAndTimesResponse;
 import management.DTO.CourseResponse;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public interface CourseService {
     int proposeCourse(Course course);
     Map<String,Course> gettingProposedCources();
     String deletedSuggestedCources(int id,String name);
+
+
 
 
 }
