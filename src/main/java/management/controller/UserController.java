@@ -88,8 +88,9 @@ public class UserController {
         return new ResponseEntity<Integer>(HttpStatus.OK);
     }
 
-    @PostMapping("/Topic")
+    @PostMapping("/topic")
     public ResponseEntity<String> newTopic(@RequestBody  TopicDTO topic){ //response create or no
+        System.out.println("Controller" + topic);
         int responce = topicInterFace.addNewTopic(topic);
         HttpStatus res = HttpStatus.OK;
 

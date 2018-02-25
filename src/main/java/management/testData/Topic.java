@@ -56,4 +56,14 @@ public class Topic {
     public void setImgLinc(String imgLinc) {
         this.imgLinc = imgLinc;
     }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "name='" + name + '\'' +
+                ", discription='" + discription + '\'' +
+                ", swfLinc='" + swfLinc + '\'' +
+                ", imgLinc='" + imgLinc + '\'' +
+                '}';
+    }
 }

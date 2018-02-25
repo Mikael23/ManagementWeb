@@ -6,9 +6,12 @@ import management.DTO.TopicSwfDTO;
 import management.services.Interfaces.TopicInt;
 import management.testData.TestRepository;
 import management.testData.Topic;
+import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TopicImpl implements TopicInt{
 
     @Override
@@ -19,8 +22,15 @@ public class TopicImpl implements TopicInt{
 
     @Override
     public List<TopicDTO> getAllTopics() {
+        List<Topic> topics = TestRepository.getTopicsStore();
+        System.out.println(topics);
+        List<TopicDTO> topicsDTO = new ArrayList<>();
+        for (Topic topic: topics) {
+               topicsDTO.add(TopicDTO.refactorTopic(topic));
+        }
 
-        return null;
+        System.out.println(topics);
+        return topicsDTO;
     }
 
     @Override
@@ -31,11 +41,15 @@ public class TopicImpl implements TopicInt{
     @Override
     public int addNewTopic(TopicDTO topicDto) {
         Topic topic = new Topic();
+        System.out.println(topicDto.getName());
         topic.setName(topicDto.getName());
         topic.setDiscription(topicDto.getDiscription());
         topic.setImgLinc(topicDto.getImgLinc());
         topic.setSwfLinc(topicDto.getSwfLinc());
         String res = TestRepository.addT(topic);
+
+        System.out.println(topic);
+        System.out.println(TestRepository.getTopicsStore());
         return 0;
     }
 }

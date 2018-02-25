@@ -13,6 +13,12 @@ public class TopicSwfDTO {
     public TopicSwfDTO() {
 
     }
+
+    public TopicSwfDTO(String name, String swfLinc) {
+        this.name = name;
+        this.swfLinc = swfLinc;
+    }
+
     public String getName() {
         return name;
     }
@@ -24,5 +30,13 @@ public class TopicSwfDTO {
     }
     public void setSwfLinc(String swfLinc) {
         this.swfLinc = swfLinc;
+    }
+
+    @Override
+    public String toString() {
+        return "TopicSwfDTO{" +
+                "name='" + name + '\'' +
+                ", swfLinc='" + swfLinc + '\'' +
+                '}';
     }
 }
