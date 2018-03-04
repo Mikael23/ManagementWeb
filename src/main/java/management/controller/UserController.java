@@ -2,7 +2,9 @@ package management.controller;
 
 
 import management.DTO.*;
-import management.services.Interfaces.AddingCourseInt;
+import management.ORM.Course;
+import management.ORM.Trainer;
+import management.ORM.User;
 import management.services.Interfaces.AddingTrainer;
 import management.services.Interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import management.services.Interfaces.CourseService;
+import management.services.Interfaces.CourseServiceInt;
 
-import javax.inject.Singleton;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@Singleton
+
 
 public class UserController {
 
@@ -27,7 +28,7 @@ public class UserController {
 
 
     @Autowired
-    CourseService courseService;
+    CourseServiceInt courseService;
 
     @Autowired
     AddingTrainer addingTrainer;
