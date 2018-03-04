@@ -46,6 +46,8 @@ public class Course {
     @JsonProperty("massiveOfFreetimes")
     List<Course>freeTimes;
 
+    //new
+
     @JsonProperty("massiveOfFreeDdates")
     List<Course>freeDates;
 

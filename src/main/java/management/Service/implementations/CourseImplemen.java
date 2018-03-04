@@ -17,6 +17,7 @@ public class CourseImplemen implements CourseServiceInt {
     private static AtomicInteger ID_GENERATOR = new AtomicInteger();
 
     @PersistenceContext
+            //new
     EntityManager em;
     @Override
     public DtoGettingCancelledRequest gettingCancelledRequest() {
