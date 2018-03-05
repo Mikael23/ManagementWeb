@@ -1,4 +1,4 @@
-package management.ORM;
+package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

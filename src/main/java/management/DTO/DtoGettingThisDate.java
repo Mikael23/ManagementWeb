@@ -1,7 +1,6 @@
 package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import management.ORM.Course;
 
 public class DtoGettingThisDate {
 

@@ -1,7 +1,7 @@
 package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import management.ORM.Course;
+import management.ORM.entity.Course;
 
 import java.util.List;
 

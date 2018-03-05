@@ -1,15 +1,11 @@
-package management.ORM;
+package management.ORM.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import management.ORM.Course;
 
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 public class User {

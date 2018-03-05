@@ -1,9 +1,9 @@
 package management.services.Interfaces;
 
 import management.DTO.*;
-import management.ORM.Course;
-import management.ORM.Trainer;
-import management.ORM.User;
+import management.ORM.entity.Course;
+import management.ORM.entity.Trainer;
+import management.ORM.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

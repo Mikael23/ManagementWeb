@@ -1,9 +1,9 @@
 package management.Service.implementations;
 
 import management.DTO.*;
-import management.ORM.Course;
-import management.ORM.Trainer;
-import management.ORM.User;
+import management.ORM.entity.Course;
+import management.ORM.entity.Trainer;
+import management.ORM.entity.User;
 import management.services.Interfaces.CourseServiceInt;
 
 import javax.persistence.EntityManager;

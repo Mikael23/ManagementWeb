@@ -1,4 +1,4 @@
-package management.ORM;
+package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,22 +11,6 @@ import java.util.List;
 public class Course {
 
 
-
-    public List<Course> getFreeTimes() {
-        return freeTimes;
-    }
-
-    public void setFreeTimes(List<Course> freeTimes) {
-        this.freeTimes = freeTimes;
-    }
-
-    public List<Course> getFreeDates() {
-        return freeDates;
-    }
-
-    public void setFreeDates(List<Course> freeDates) {
-        this.freeDates = freeDates;
-    }
 
 
 
@@ -240,5 +224,21 @@ public class Course {
         ChoosenData = choosenData;
     }
 
+
+    public List<Course> getFreeTimes() {
+        return freeTimes;
+    }
+
+    public void setFreeTimes(List<Course> freeTimes) {
+        this.freeTimes = freeTimes;
+    }
+
+    public List<Course> getFreeDates() {
+        return freeDates;
+    }
+
+    public void setFreeDates(List<Course> freeDates) {
+        this.freeDates = freeDates;
+    }
 
 }
