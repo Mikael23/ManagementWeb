@@ -9,16 +9,10 @@ public class DtoPostAddingCourse {
     @JsonProperty
     Integer trainerIdl;
 
-    @JsonProperty
-    boolean confirmed;
 
-    public boolean isConfirmed() {
-        return confirmed;
-    }
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
+
+
 
     public Integer getCourseId() {
         return courseId;

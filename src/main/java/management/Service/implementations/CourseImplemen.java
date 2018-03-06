@@ -5,19 +5,22 @@ import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.User;
 import management.services.Interfaces.CourseServiceInt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-
+@Repository
 public class CourseImplemen implements CourseServiceInt {
     private static AtomicInteger ID_GENERATOR = new AtomicInteger();
 
+
     @PersistenceContext
-            //new
     EntityManager em;
     @Override
     public DtoGettingCancelledRequest gettingCancelledRequest() {
@@ -35,23 +38,38 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
     @Override
+@Transactional
     public DtoPostAddingCourse addingCourse(Course course) {
 
         Integer id = ID_GENERATOR.getAndIncrement();
         Course course1 = new Course();
         course1.id = id;
-        course1.name = course.name;
+        course1.nameOfCourse = course.nameOfCourse;
         course1.description = course.description;
         course1.trainerName = course.trainerName;
         course1.duration = course.duration;
         course1.quantatity = course.quantatity;
+        course1.kindOfCourse=course.kindOfCourse;
 
-       Trainer trainer =  em.find(Trainer.class,course.trainerName);
-       trainer.listOfCources.add(course1);
+
+
+
+//        Body: {courseid, name of the course, description, trainerid, duration,
+//                quantity (максимальное количество записей на сессию), confirmed = true}
+//        Response: courseid связать с trainerid , поля yourname и phone удалить, поле confirmed поменять на true.
+//                Ошибка может быть в случае, если такой courseid уже существует.
+
+
+
        em.persist(course1);
-       em.persist(trainer);
+       DtoPostAddingCourse dtoPostAddingCourse = new DtoPostAddingCourse();
+       dtoPostAddingCourse.setCourseId(course1.id);
+       dtoPostAddingCourse.setTrainerIdl(1);
 
-        return null;
+
+
+
+        return dtoPostAddingCourse;
     }
 
     @Override

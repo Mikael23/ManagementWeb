@@ -5,21 +5,37 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class User {
+@Table(name = "UserTable")
+public class User implements Serializable {
 
-//
-//    Body: {user: {name, surname, email, password, repeatpassword, phone, dateofbirth,
-//            city – заполнение всех полей обязательно; skype, viber, whatsapp, telegram, vk, facebook, instagram – не обязательно
-//
+@OneToOne
+public Schedule schedule;
 
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public List<Course> getListOfRecords() {
+        return listOfRecords;
+    }
+
+    public void setListOfRecords(List<Course> listOfRecords) {
+        this.listOfRecords = listOfRecords;
+    }
 
     @JsonProperty("name")
     public String name;
     @JsonProperty("surname")
     public String surname;
+
     @JsonProperty("email")
     public String email;
     @JsonProperty("password")
@@ -28,8 +44,9 @@ public class User {
     public String repeatPassword;
     @JsonProperty("role")
     public String role;
-    @JsonProperty("courses")
-    public List<Course> listOfCources;
+
+
+//    public List<Course> listOfCources;
     @Id
     @JsonProperty("Id")
     public Integer id;
@@ -119,13 +136,13 @@ public class User {
         this.role = role;
     }
 
-    public List<Course> getListOfCources() {
-        return listOfCources;
-    }
-
-    public void setListOfCources(List<Course> listOfCources) {
-        this.listOfCources = listOfCources;
-    }
+//    public List<Course> getListOfCources() {
+//        return listOfCources;
+//    }
+//
+//    public void setListOfCources(List<Course> listOfCources) {
+//        this.listOfCources = listOfCources;
+//    }
 
     public Integer getId() {
         return id;

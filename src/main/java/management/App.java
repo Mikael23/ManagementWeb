@@ -11,19 +11,14 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.time.LocalDateTime;
+
 
 @SpringBootApplication
-@ComponentScan({"management.config"})
-@EnableAutoConfiguration(exclude = {
-        JndiConnectionFactoryAutoConfiguration.class,
-        DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
-        JpaRepositoriesAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class,
-        SecurityAutoConfiguration.class })
-
 //Test test
 //Test3 test
 public class App {
+
 
 
     public static void main(String[] args) {

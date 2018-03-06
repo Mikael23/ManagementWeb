@@ -3,21 +3,31 @@ package management.ORM.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Trainer {
+@Table(name="Trainer")
+
+public class Trainer extends User implements Serializable {
+
+   @Id
+   public String email;
 
 
 
-//    /trainers – получить список действующих тренеров
-//    Response: trainers: {name, description, photo,
-//            {массив name of the courses, которые ведет тренер + topic, к которому относится курс}}
+    public String photoLink;
 
+    @Override
+    public String getEmail() {
+        return email;
+    }
 
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @JsonProperty("surname")
     public String surname;
@@ -26,24 +36,21 @@ public class Trainer {
     @JsonProperty("listOfCources")
     public List<Course>listOfCources;
 
-    @JsonProperty("date")
-    public Integer date;
-    @JsonProperty("time")
-    public Integer time;
+//    public Integer date;
+//
+//    public Integer time;
 
 
-    @JsonProperty("waitingList")
+    @ManyToMany
     public List<User>waitingLists;
 
     @JsonProperty("name")
     public String name;
-    @JsonProperty("description")
-    public String description;
-//    @JsonProperty("courseId")
-//    public Integer courseId;
 
-    @Id
-       @JsonProperty("id")
+    public String description;
+
+
+
     public Integer id;
 
     public String getName() {
@@ -78,21 +85,21 @@ public class Trainer {
         this.id = id;
     }
 
-    public Integer getDate() {
-        return date;
-    }
-
-    public void setDate(Integer date) {
-        this.date = date;
-    }
-
-    public Integer getTime() {
-        return time;
-    }
-
-    public void setTime(Integer time) {
-        this.time = time;
-    }
+//    public Integer getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Integer date) {
+//        this.date = date;
+//    }
+//
+//    public Integer getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(Integer time) {
+//        this.time = time;
+//    }
 
     public List<User> getWaitingLists() {
         return waitingLists;
@@ -117,7 +124,13 @@ public class Trainer {
     public void setListOfCources(List<Course> listOfCources) {
         this.listOfCources = listOfCources;
     }
+    public String getPhotoLink() {
+        return photoLink;
+    }
 
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+    }
 
 
 
@@ -132,8 +145,3 @@ public class Trainer {
 
 
 
-
-//    POST:
-//            /admin/addtrainer - добавить тренера на страницу тренеров:
-//    Body: {name, description, photo}
-//    Response: 200 or 401

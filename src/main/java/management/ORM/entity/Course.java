@@ -4,60 +4,63 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.List;
 
 @Entity
-@Table
-public class Course {
+@Table(name="Course")
+
+public class Course implements Serializable {
 
 
 
 
 
-    @JsonProperty("confirmed")
-    boolean confirmed;
+   public boolean confirmed;
 
+   @OneToOne
+   public Schedule schedule;
+//
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "Users_Cources",
-            joinColumns = { @JoinColumn(name = "course_name") },
-            inverseJoinColumns = { @JoinColumn(name = "user_email") }
-    )
+            joinColumns = { @JoinColumn(name = "Course_nameOfCourse") },
+          inverseJoinColumns = { @JoinColumn(name = "user_email") }
+   )
     @JsonProperty
     public List<User> listOfUsers;
 
+    public List<User> getListOfUsers() {
+        return listOfUsers;
+    }
 
-    @JsonProperty("massiveOfFreetimes")
-    List<Course>freeTimes;
-
-    //new file here
-
-    @JsonProperty("massiveOfFreeDdates")
-    List<Course>freeDates;
+    public void setListOfUsers(List<User> listOfUsers) {
+        this.listOfUsers = listOfUsers;
+    }
 
     @JsonProperty("name")
     public String name;
+
+
+    @Column(name = "description")
     @JsonProperty("description")
     public String description;
-    @Id
+
     @JsonProperty("trainerName")
     public String trainerName;
-    @JsonProperty("ChoosenData")
-    public Double ChoosenData;
+//    @JsonProperty("ChoosenData")
+//    public Double ChoosenData;
 
     @JsonProperty("Duration")
     public Integer duration;
-    @JsonProperty("ChoosenTime")
-    public Double ChoosenTime;
 
 
-    @JsonProperty("SuggestedTimes")
-    public double[] SuggestedTimes = new double[2];
 
-    @JsonProperty("SuggestedData")
-    public double[] SuggestedData;
-    @JsonProperty("coursename")
-    public String Coursename;
+
+    @JsonProperty("nameOfCourse")
+    public String nameOfCourse;
+
     @JsonProperty("kindOfCourse")
     public String kindOfCourse;
     @JsonProperty("quantity")
@@ -66,24 +69,19 @@ public class Course {
 
     @JsonProperty("quantatity")
     public Integer quantatity;
-    @JsonProperty("id")
 
+
+    @Id
+    @JsonProperty("id")
     public Integer id;
 
     @ManyToOne
     @JsonProperty
     public Trainer trainer;
 
-    public List<Course> getListOfRecords() {
-        return listOfRecords;
-    }
 
-    public void setListOfRecords(List<Course> listOfRecords) {
-        this.listOfRecords = listOfRecords;
-    }
 
-    @JsonProperty("listOfRecords")
-    List<Course>listOfRecords;
+
 
 
     public boolean isConfirmed() {
@@ -94,26 +92,14 @@ public class Course {
         this.confirmed = confirmed;
     }
 
-    public List<User> getListOfUsers() {
-        return listOfUsers;
-    }
+//    public List<User> getListOfUsers() {
+//        return listOfUsers;
+//    }
+//
+//    public void setListOfUsers(List<User> listOfUsers) {
+//        this.listOfUsers = listOfUsers;
+//    }
 
-    public void setListOfUsers(List<User> listOfUsers) {
-        this.listOfUsers = listOfUsers;
-    }
-
-    public double[] getSuggestedData() {
-        return SuggestedData;
-    }
-
-    public void setSuggestedData(double[] suggestedData) {
-        this.SuggestedData = suggestedData;
-    }
-
-
-    public void setSuggestedTimes(double[] suggestedTimes) {
-        this.SuggestedTimes = suggestedTimes;
-    }
 
 
     public String getName() {
@@ -162,11 +148,11 @@ public class Course {
     }
 
     public String getCoursename() {
-        return Coursename;
+        return nameOfCourse;
     }
 
     public void setCoursename(String coursename) {
-        Coursename = coursename;
+        this.nameOfCourse = coursename;
     }
 
     public String getKindOfCourse() {
@@ -203,42 +189,5 @@ public class Course {
 //    }
 
 
-    public double[] getSuggestedTimes() {
-        return SuggestedTimes;
-    }
-
-    public Double getChoosenTime() {
-        return ChoosenTime;
-    }
-
-    public void setChoosenTime(Double choosenTime) {
-        this.ChoosenTime = choosenTime;
-    }
-
-
-    public Double getChoosenData() {
-        return ChoosenData;
-    }
-
-    public void setChoosenData(Double choosenData) {
-        ChoosenData = choosenData;
-    }
-
-
-    public List<Course> getFreeTimes() {
-        return freeTimes;
-    }
-
-    public void setFreeTimes(List<Course> freeTimes) {
-        this.freeTimes = freeTimes;
-    }
-
-    public List<Course> getFreeDates() {
-        return freeDates;
-    }
-
-    public void setFreeDates(List<Course> freeDates) {
-        this.freeDates = freeDates;
-    }
 
 }

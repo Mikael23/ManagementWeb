@@ -21,9 +21,9 @@ public class Controller {
 
     @Autowired
     CourseServiceInt courseServiceInt;
-    @Autowired
+    //@Autowired
     TrainerInter trainerInter;
-    @Autowired
+  //  @Autowired
     UserService userService;
 
 //
