@@ -31,7 +31,7 @@ public interface CourseServiceInt {
 //
 
 
-    DtoPostAddingCourse addingCourse(Course course);
+    DtoPostAddingCourse addingCourse(Course course) throws Exception;
 
 //
 //    POST:

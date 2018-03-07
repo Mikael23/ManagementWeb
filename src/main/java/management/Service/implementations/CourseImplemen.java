@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 @Repository
 public class CourseImplemen implements CourseServiceInt {
     private static AtomicInteger ID_GENERATOR = new AtomicInteger();
@@ -22,6 +23,7 @@ public class CourseImplemen implements CourseServiceInt {
 
     @PersistenceContext
     EntityManager em;
+
     @Override
     public DtoGettingCancelledRequest gettingCancelledRequest() {
         return null;
@@ -38,8 +40,9 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
     @Override
-@Transactional
-    public DtoPostAddingCourse addingCourse(Course course) {
+    @Transactional
+    public DtoPostAddingCourse addingCourse(Course course) throws Exception {
+///admin/addcourse - добавить course и привязать его к тренеру:
 
         Integer id = ID_GENERATOR.getAndIncrement();
         Course course1 = new Course();
@@ -49,26 +52,16 @@ public class CourseImplemen implements CourseServiceInt {
         course1.trainerName = course.trainerName;
         course1.duration = course.duration;
         course1.quantatity = course.quantatity;
-        course1.kindOfCourse=course.kindOfCourse;
-
-
-
-
-//        Body: {courseid, name of the course, description, trainerid, duration,
-//                quantity (максимальное количество записей на сессию), confirmed = true}
-//        Response: courseid связать с trainerid , поля yourname и phone удалить, поле confirmed поменять на true.
-//                Ошибка может быть в случае, если такой courseid уже существует.
-
-
-
-       em.persist(course1);
-       DtoPostAddingCourse dtoPostAddingCourse = new DtoPostAddingCourse();
-       dtoPostAddingCourse.setCourseId(course1.id);
-       dtoPostAddingCourse.setTrainerIdl(1);
-
-
-
-
+        course1.kindOfCourse = course.kindOfCourse;
+        Course course2 = em.find(Course.class, course.nameOfCourse);
+        System.out.println(course2);
+        if(course2!=null){
+            throw new Exception("We have had already this objet");
+        }
+        em.persist(course1);
+        DtoPostAddingCourse dtoPostAddingCourse = new DtoPostAddingCourse();
+        dtoPostAddingCourse.setCourseId(course1.id);
+        dtoPostAddingCourse.setTrainerIdl(1);
         return dtoPostAddingCourse;
     }
 

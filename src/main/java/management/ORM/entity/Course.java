@@ -57,7 +57,7 @@ public class Course implements Serializable {
 
 
 
-
+    @Id
     @JsonProperty("nameOfCourse")
     public String nameOfCourse;
 
@@ -71,7 +71,7 @@ public class Course implements Serializable {
     public Integer quantatity;
 
 
-    @Id
+
     @JsonProperty("id")
     public Integer id;
 

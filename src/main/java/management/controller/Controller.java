@@ -21,7 +21,7 @@ public class Controller {
 
     @Autowired
     CourseServiceInt courseServiceInt;
-    //@Autowired
+    @Autowired
     TrainerInter trainerInter;
   //  @Autowired
     UserService userService;
@@ -188,7 +188,7 @@ public class Controller {
 
 
     @PostMapping("/admin/addcourse")
-    public DtoPostAddingCourse postAddingCourse(@RequestBody Course course) {
+    public DtoPostAddingCourse postAddingCourse(@RequestBody Course course) throws Exception {
         //    /admin/addcourse - добавить course и привязать его к тренеру:
         return courseServiceInt.addingCourse(course);
     }
@@ -207,7 +207,7 @@ public class Controller {
     @PostMapping("/admin/addtrainer")
     public Integer addingTrainer(@RequestBody Trainer trainer){
 
-//    /admin/addtrainer - добавить тренера на страницу тренеров:
+
         return trainerInter.addingTrainer(trainer);
     }
 
