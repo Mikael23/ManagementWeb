@@ -23,7 +23,7 @@ public class Controller {
     CourseServiceInt courseServiceInt;
     @Autowired
     TrainerInter trainerInter;
-  //  @Autowired
+    @Autowired
     UserService userService;
 
 //
@@ -61,7 +61,7 @@ public class Controller {
     }
 
     @PostMapping("/registration")
-    public DtoPostRegistration registration(@RequestBody User user) {
+    public DtoPostRegistration registration(@RequestBody User user) throws Exception {
 
 //            /registration
         return userService.registration(user);
@@ -69,7 +69,7 @@ public class Controller {
 
 
     @PostMapping("/login")
-    public DTOlogging loging(@RequestBody User user) {
+    public DTOlogging loging(@RequestBody User user) throws Exception {
         //            /login
         return userService.logging(user);
     }

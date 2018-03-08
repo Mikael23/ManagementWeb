@@ -36,13 +36,15 @@ public interface UserService {
 //
 
 
-    DTOlogging logging(User user);
-//    POST:
-//            /registration
-//    Body:  {name, surname, email, password, repeatpassword, phone, dateofbirth,
-//            city – заполнение всех полей обязательно; skype, viber, whatsapp, telegram, vk, facebook, instagram – не обязательно}, role=user}
-//Response: назначить id юзеру – userid, направление на страницу, с которой был запуск регистрации,
-//        назначить role – по умолчанию всегда user (на trainer может изменить администратор).
+    DTOlogging logging(User user) throws Exception;
+
+
+
+
+///login
+//    Body: {email, password}
+//    Response: userid, name, surname, role: trainer or user, в зависимости от роли выстраивается
+//    кабинет пользователя как тренера или юзера. После логина - направлению на страницу, с которой был запуск логина.
 
 
     DtoUpdatingProfile update(User user);
@@ -94,7 +96,7 @@ public interface UserService {
 //        После логина - направлению на страницу, с которой был запуск логина.
 
 
-    DtoPostRegistration registration(User user);
+    DtoPostRegistration registration(User user) throws Exception;
 //POST:
 //        /registration
 //        Body:  {name, surname, email, password, repeatpassword, phone, dateofbirth,

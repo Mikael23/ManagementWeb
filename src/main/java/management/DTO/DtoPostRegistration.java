@@ -6,19 +6,22 @@ public class DtoPostRegistration {
 
 
     @JsonProperty
-    public Integer UserId;
     public String role;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String login;
 
     public DtoPostRegistration() {
     }
 
-    public Integer getUserId() {
-        return UserId;
-    }
 
-    public void setUserId(Integer userId) {
-        UserId = userId;
-    }
 
     public String getRole() {
         return role;

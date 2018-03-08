@@ -6,8 +6,6 @@ public class DTOlogging {
 
 
 
-   @JsonProperty
-    public  Integer userId;
 
   @JsonProperty
     public String name;

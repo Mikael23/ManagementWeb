@@ -12,8 +12,8 @@ import java.util.List;
 @Table(name = "UserTable")
 public class User implements Serializable {
 
-@OneToOne
-public Schedule schedule;
+    @OneToOne
+    public Schedule schedule;
 
     public Schedule getSchedule() {
         return schedule;
@@ -35,7 +35,7 @@ public Schedule schedule;
     public String name;
     @JsonProperty("surname")
     public String surname;
-
+    @Id
     @JsonProperty("email")
     public String email;
     @JsonProperty("password")
@@ -46,12 +46,12 @@ public Schedule schedule;
     public String role;
 
 
-//    public List<Course> listOfCources;
-    @Id
+    //    public List<Course> listOfCources;
+
     @JsonProperty("Id")
     public Integer id;
     @JsonProperty("NumPhone")
-    public int NumPhone;
+    public String NumPhone;
     @JsonProperty("DateOfBirth")
     public int dateOfBirth;
     @JsonProperty("city")
@@ -63,7 +63,7 @@ public Schedule schedule;
     @JsonProperty("whats'up")
     public Integer whatsupp;
     @JsonProperty("telegram")
-    public Integer telegramm;
+    public String telegramm;
     @JsonProperty("Vk")
     public String VK;
     @JsonProperty("facebook")
@@ -85,7 +85,7 @@ public Schedule schedule;
 
     @ManyToMany(mappedBy = "listOfUsers")
     @JsonProperty("record")
-    public List<Course>listOfRecords;
+    public List<Course> listOfRecords;
 
 
     public String getName() {
@@ -152,11 +152,11 @@ public Schedule schedule;
         this.id = id;
     }
 
-    public int getNumPhone() {
+    public String getNumPhone() {
         return NumPhone;
     }
 
-    public void setNumPhone(int numPhone) {
+    public void setNumPhone(String numPhone) {
         NumPhone = numPhone;
     }
 
@@ -200,11 +200,11 @@ public Schedule schedule;
         this.whatsupp = whatsupp;
     }
 
-    public Integer getTelegramm() {
+    public String getTelegramm() {
         return telegramm;
     }
 
-    public void setTelegramm(Integer telegramm) {
+    public void setTelegramm(String telegramm) {
         this.telegramm = telegramm;
     }
 
@@ -235,14 +235,6 @@ public Schedule schedule;
     @JsonCreator
     public User() {
     }
-
-
-
-
-
-
-
-
 
 
 //

@@ -8,9 +8,9 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "Trainer")
+@Table(name = "TableOfTrainers")
 
-public class Trainer extends User implements Serializable {
+public class Trainer implements Serializable {
 
     @Id
     public String email;
@@ -28,17 +28,21 @@ public class Trainer extends User implements Serializable {
     public String description;
 
 
-    @Override
+
     public String getEmail() {
         return email;
     }
 
-    @Override
+
     public void setEmail(String email) {
         this.email = email;
     }
 
+
+
+    @JsonProperty("photoLink")
     public String photoLink;
+
 
 
     @OneToMany
@@ -49,8 +53,8 @@ public class Trainer extends User implements Serializable {
 //
 //    public Integer time;
 
-
-    public Integer id;
+  @GeneratedValue
+    public Integer idTrainer;
 
     public String getName() {
         return name;
@@ -76,13 +80,7 @@ public class Trainer extends User implements Serializable {
 //        this.courseId = courseId;
 
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
 //    public Integer getDate() {
 //        return date;

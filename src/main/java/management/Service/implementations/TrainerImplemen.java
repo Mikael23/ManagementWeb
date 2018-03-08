@@ -22,6 +22,7 @@ public class TrainerImplemen implements TrainerInter {
 
     @PersistenceContext
     EntityManager em;
+
     @Override
     public List<DtoGettingCourcesOnTrainerId> getingCourseOnTrainerId(Integer id) {
         return null;
@@ -61,12 +62,23 @@ public class TrainerImplemen implements TrainerInter {
     @Transactional
     public Integer addingTrainer(Trainer trainer) {
         System.out.println(trainer.email);
-        em.persist(trainer);
 
-        Trainer trainer1 = em.find(Trainer.class,trainer.email);
-        if (trainer1==null){
+        Trainer trainer2 = em.find(Trainer.class, trainer.email);
+        if (trainer2 != null) {
+            System.out.println("We have already got this trainer");
             return 401;
         }
+
+        em.persist(trainer);
+
+
+        Trainer trainer1 = em.find(Trainer.class, trainer.email);
+
+        if (trainer1 == null) {
+            System.out.println("We couldnt add the trainer");
+            return 401;
+        }
+
         return 200;
     }
 
