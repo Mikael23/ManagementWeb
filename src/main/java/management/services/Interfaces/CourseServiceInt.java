@@ -2,7 +2,6 @@ package management.services.Interfaces;
 
 import management.DTO.*;
 import management.ORM.entity.Course;
-import management.ORM.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,7 +69,15 @@ public interface CourseServiceInt {
 //        quantity (максимальное количество записей на сессию), yourname, phone }
 
 
-    int proposeCourse(Course course, User user);
+    int proposeCourse(Course course) throws Exception;
+
+
+
+
+
+
+
+
 
 
     Map<String, Course> gettingProposedCources();

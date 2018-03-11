@@ -38,8 +38,13 @@ public class Controller {
     }
 
     @PostMapping("/proposeCourse")
-    public Integer ppoposeOfCourse(@RequestBody Course course, @RequestBody User user) {
-        return courseServiceInt.proposeCourse(course, user);
+    public Integer ppoposeOfCourse(@RequestBody Course course) throws Exception {
+
+
+
+        return courseServiceInt.proposeCourse(course);
+
+
         ///proposecourse (может предложить любой человек, не проходя регистрацию)
 
     }

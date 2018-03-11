@@ -1,6 +1,10 @@
 package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import management.ORM.entity.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DtoGettingTrainers {
 
@@ -11,16 +15,16 @@ public class DtoGettingTrainers {
     @JsonProperty
   public  String URLPhoto;
 
-    public String[] getNameOfCources() {
+    public List<String> getNameOfCources() {
         return nameOfCources;
     }
 
-    public void setNameOfCources(String[] nameOfCources) {
+    public void setNameOfCources(List<String> nameOfCources) {
         this.nameOfCources = nameOfCources;
     }
 
     @JsonProperty
-    public String[]nameOfCources;
+    public List<String>nameOfCources= new ArrayList<>();
 
     public String getNameOfTopic() {
         return nameOfTopic;

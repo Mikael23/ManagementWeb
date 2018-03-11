@@ -8,12 +8,15 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "TableOfTrainers")
+@Table(name = "Trainer")
 
 public class Trainer implements Serializable {
 
     @Id
     public String email;
+
+    @JsonProperty
+    public String nameOfCourse;
 
     @JsonProperty("surname")
     public String surname;
@@ -118,7 +121,7 @@ public class Trainer implements Serializable {
         return listOfCources;
     }
 
-    public void setListOfCources(List<Course> listOfCources) {
+    public void setListOfCources(List<Course>listOfCources) {
         this.listOfCources = listOfCources;
     }
 

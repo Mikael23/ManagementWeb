@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,11 +64,16 @@ public class TrainerImplemen implements TrainerInter {
     public Integer addingTrainer(Trainer trainer) {
         System.out.println(trainer.email);
 
+
         Trainer trainer2 = em.find(Trainer.class, trainer.email);
         if (trainer2 != null) {
             System.out.println("We have already got this trainer");
             return 401;
         }
+
+
+        Course course = new Course();
+
 
         em.persist(trainer);
 
@@ -104,7 +110,36 @@ public class TrainerImplemen implements TrainerInter {
 
     @Override
     public List<DtoGettingTrainers> getTrainers() {
-        return null;
+
+        List<Trainer> listOfTrainers = new ArrayList<>();
+        List<Course> courseList = new ArrayList<>();
+        DtoGettingTrainers dtoGettingTrainers = new DtoGettingTrainers();
+        List<DtoGettingTrainers> dtoGettingTrainersList = new ArrayList<>();
+//
+//        TypedQuery<Country> query =
+//                em.createQuery("SELECT c FROM Country c", Country.class);
+//        List<Country> results = query.getResultList();
+
+        String jpql = "SELECT r FROM Trainer r";
+        listOfTrainers = em.createQuery(jpql, Trainer.class).getResultList();
+
+        for (Trainer trainer : listOfTrainers) {
+            dtoGettingTrainers.description = trainer.description;
+            dtoGettingTrainers.name = trainer.name;
+            System.out.println(trainer.listOfCources.toString());
+
+            for (Course nameOfCourse : trainer.listOfCources) {
+                System.out.println("hello");
+                System.out.println(nameOfCourse);
+                dtoGettingTrainers.nameOfCources.add(nameOfCourse.nameOfCourse);
+            }
+
+            dtoGettingTrainersList.add(dtoGettingTrainers);
+
+        }
+
+
+        return dtoGettingTrainersList;
     }
 
     @Override

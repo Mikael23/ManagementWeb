@@ -5,39 +5,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.List;
 
 @Entity
-@Table(name="Course")
+@Table(name = "Course")
 
 public class Course implements Serializable {
 
 
+    @JsonProperty
+    public String phoneInitiator;
+
+    @JsonProperty
+    public String initiatorCourse;
 
 
 
-   public boolean confirmed;
+    public boolean confirmed;
 
-   @OneToOne
-   public Schedule schedule;
-//
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @OneToOne
+    public Schedule schedule;
+    //
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "Users_Cources",
-            joinColumns = { @JoinColumn(name = "Course_nameOfCourse") },
-          inverseJoinColumns = { @JoinColumn(name = "user_email") }
-   )
+            joinColumns = {@JoinColumn(name = "Course_nameOfCourse")},
+            inverseJoinColumns = {@JoinColumn(name = "user_email")}
+    )
     @JsonProperty
     public List<User> listOfUsers;
 
-    public List<User> getListOfUsers() {
-        return listOfUsers;
-    }
-
-    public void setListOfUsers(List<User> listOfUsers) {
-        this.listOfUsers = listOfUsers;
-    }
 
     @JsonProperty("name")
     public String name;
@@ -56,7 +53,6 @@ public class Course implements Serializable {
     public Integer duration;
 
 
-
     @Id
     @JsonProperty("nameOfCourse")
     public String nameOfCourse;
@@ -71,7 +67,6 @@ public class Course implements Serializable {
     public Integer quantatity;
 
 
-
     @JsonProperty("id")
     public Integer id;
 
@@ -81,17 +76,6 @@ public class Course implements Serializable {
 
 
 
-
-
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
 //    public List<User> getListOfUsers() {
 //        return listOfUsers;
 //    }
@@ -99,7 +83,6 @@ public class Course implements Serializable {
 //    public void setListOfUsers(List<User> listOfUsers) {
 //        this.listOfUsers = listOfUsers;
 //    }
-
 
 
     public String getName() {
@@ -166,9 +149,24 @@ public class Course implements Serializable {
     public Integer getQuantity() {
         return quantity;
     }
+    public String getInitiatorCourse() {
+        return initiatorCourse;
+    }
+
+    public void setInitiatorCourse(String initiatorCourse) {
+        this.initiatorCourse = initiatorCourse;
+    }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getPhoneInitiator() {
+        return phoneInitiator;
+    }
+
+    public void setPhoneInitiator(String phoneInitiator) {
+        this.phoneInitiator = phoneInitiator;
     }
 
 //    public String getUserName() {
@@ -187,7 +185,22 @@ public class Course implements Serializable {
 //    public void setUserPhone(Integer userPhone) {
 //        this.userPhone = userPhone;
 //    }
+public List<User> getListOfUsers() {
+    return listOfUsers;
+}
 
+    public void setListOfUsers(List<User> listOfUsers) {
+        this.listOfUsers = listOfUsers;
+    }
+
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
 
 
 }

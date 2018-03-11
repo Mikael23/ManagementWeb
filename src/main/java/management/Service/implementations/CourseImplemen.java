@@ -5,7 +5,6 @@ import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.User;
 import management.services.Interfaces.CourseServiceInt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,11 +52,26 @@ public class CourseImplemen implements CourseServiceInt {
         course1.duration = course.duration;
         course1.quantatity = course.quantatity;
         course1.kindOfCourse = course.kindOfCourse;
+
         Course course2 = em.find(Course.class, course.nameOfCourse);
         System.out.println(course2);
-        if(course2!=null){
-            throw new Exception("We have had already this objet");
+        if (course2 != null) {
+            throw new Exception("We have had already this nameOfCourse");
         }
+
+        Trainer trainer = new Trainer();
+        trainer.email=course1.trainerName;
+
+
+        trainer = em.find(Trainer.class,trainer.email);
+        if(trainer==null){
+            throw new Exception("Sorry we dont have this trainer in our list");
+        }
+        em.remove(trainer);
+        trainer.nameOfCourse=course1.nameOfCourse;
+        trainer.listOfCources.add(course1);
+        em.persist(trainer);
+
         em.persist(course1);
         DtoPostAddingCourse dtoPostAddingCourse = new DtoPostAddingCourse();
         dtoPostAddingCourse.setCourseId(course1.id);
@@ -81,8 +95,36 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
     @Override
-    public int proposeCourse(Course course, User user) {
-        return 0;
+    @Transactional
+    public int proposeCourse(Course course) throws Exception {
+
+        Course course1 = new Course();
+
+        User user1 = new User();
+        user1.email = course.initiatorCourse;
+
+        User user = em.find(User.class,user1.email);
+
+        if(user==null){
+
+            throw new Exception("You have to log in before proposing the course");
+        }
+
+        course1.nameOfCourse = course.nameOfCourse;
+
+        Course course2 = em.find(Course.class,course1.nameOfCourse);
+        if(course2!=null){
+            throw new Exception("Please change the name of course");
+        }
+        course1.description = course.description;
+        course1.duration = course.duration;
+        course1.quantity = course.quantity;
+        course1.initiatorCourse = course.initiatorCourse;
+        course1.phoneInitiator = course.phoneInitiator;
+        course1.confirmed = true;
+        em.persist(course1);
+
+        return 200;
     }
 
     @Override
