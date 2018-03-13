@@ -113,6 +113,8 @@ public interface TrainerInter {
 
     double[] addingSuggestedCourseInterval(Course course);
 
+    Integer makerTrainer(String userName) throws Exception;
+
 
     //    POST:
 //            /admin/addtrainer - добавить тренера на страницу тренеров:

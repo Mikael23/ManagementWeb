@@ -169,4 +169,27 @@ public class TrainerImplemen implements TrainerInter {
     public double[] addingSuggestedCourseInterval(Course course) {
         return new double[0];
     }
+
+    @Transactional
+    @Override
+    public Integer makerTrainer(String userName) throws Exception {
+
+
+        User user = em.find(User.class,userName);
+        if(user==null){
+            throw new Exception("We dont have this user");
+        }
+
+        Trainer trainer = new Trainer();
+        em.remove(user);
+        trainer.email=user.email;
+        trainer.surname=user.surname;
+
+        user.role="trainer";
+
+        em.persist(trainer);
+        em.persist(user);
+
+  return 200;
+    }
 }

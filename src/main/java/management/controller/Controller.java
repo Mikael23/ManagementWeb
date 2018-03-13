@@ -221,7 +221,22 @@ public class Controller {
 
 
 
+    @PostMapping("/admin/maketrainer/")
+    public Integer makertrainer(@RequestBody User user) throws Exception {
 
+        return trainerInter.makerTrainer(user.email);
+    }
+
+
+
+
+
+//
+//    PUT:
+//            /admin/maketrainer – меняет роль юзера на тренера.
+//    В окошке начать вводить e-mail. Выбрать нужного юзера. По его userid:
+//    Body: {userid, параметр role меняется на “trainer”, }.
+//    Response: 200 or 401.
 
 
 
