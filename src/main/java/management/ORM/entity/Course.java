@@ -2,6 +2,9 @@ package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -53,7 +56,7 @@ public class Course implements Serializable {
     public Integer duration;
 
 
-    @Id
+  @Id
     @JsonProperty("nameOfCourse")
     public String nameOfCourse;
 
@@ -67,11 +70,15 @@ public class Course implements Serializable {
     public Integer quantatity;
 
 
+
     @JsonProperty("id")
     public Integer id;
 
-    @ManyToOne
+
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonProperty
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Trainer trainer;
 
 

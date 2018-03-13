@@ -12,7 +12,7 @@ public class DtoGettingProposedCourse {
     @JsonProperty
     public String yourname;
     @JsonProperty
-    public Integer phone;
+    public String phone;
     @JsonProperty
    public Integer courseId;
     @JsonProperty
@@ -68,11 +68,11 @@ public class DtoGettingProposedCourse {
         this.yourname = yourname;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

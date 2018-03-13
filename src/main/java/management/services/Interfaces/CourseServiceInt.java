@@ -21,7 +21,9 @@ public interface CourseServiceInt {
 //    Response: 200, 401.
 
 
-    Integer removeCourse(Integer courseId);
+    Integer removeCourse(Integer courseId) throws Exception;
+
+
 
 //    admin/removecourse
 //    Body: {courseid: remove}
@@ -52,7 +54,7 @@ public interface CourseServiceInt {
 //
 
 
-    Integer deletionProposedCourse(Integer courseId);
+    Integer deletionProposedCourse(String courseId) throws Exception;
 //
 ///admin/proposedcourses/reject – удаление предложения курса по нажатию «отклонить»
 //    Body: {courseid (если уже сформирован): delete}

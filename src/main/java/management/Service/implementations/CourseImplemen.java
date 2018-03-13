@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,15 +34,59 @@ public class CourseImplemen implements CourseServiceInt {
         return null;
     }
 
+    @Transactional
     @Override
-    public Integer removeCourse(Integer courseId) {
-        return null;
+    public Integer removeCourse(Integer courseId) throws Exception {
+        //   String jpql = "Select r from Course r where confirmed = false";
+        String jpql = "Select r from Course r where confirmed=true";
+
+        String jpql2 = "Select r from Trainer r";
+
+        List<Trainer> listOfTrainers = em.createQuery(jpql2, Trainer.class).getResultList();
+
+        List<Course> listOfCourses = em.createQuery(jpql, Course.class).getResultList();
+        String name = null;
+
+        if (listOfCourses == null) {
+            throw new Exception("401, nothing to remove");
+        }
+        for (Course course : listOfCourses) {
+            if (course.id == courseId) {
+
+                name = course.nameOfCourse;
+
+
+            }
+        }
+
+
+        Course course = em.find(Course.class, name);
+
+        for (Trainer trainer : listOfTrainers) {
+            if (trainer.listOfCources.contains(course)) {
+                System.out.println(trainer.listOfCources.contains(course));
+                Integer in = trainer.listOfCources.indexOf(course);
+                trainer.listOfCources.remove(course);
+
+                return 200;
+
+
+            }
+        }
+
+       // em.remove(course);
+
+
+
+
+        return 401;
+
     }
 
     @Override
     @Transactional
     public DtoPostAddingCourse addingCourse(Course course) throws Exception {
-///admin/addcourse - добавить course и привязать его к тренеру:
+
 
         Integer id = ID_GENERATOR.getAndIncrement();
         Course course1 = new Course();
@@ -55,23 +100,21 @@ public class CourseImplemen implements CourseServiceInt {
 
         Course course2 = em.find(Course.class, course.nameOfCourse);
         System.out.println(course2);
-        if (course2 != null) {
-            throw new Exception("We have had already this nameOfCourse");
-        }
+
 
         Trainer trainer = new Trainer();
-        trainer.email=course1.trainerName;
+        trainer.email = course1.trainerName;
 
 
-        trainer = em.find(Trainer.class,trainer.email);
-        if(trainer==null){
+        trainer = em.find(Trainer.class, trainer.email);
+        if (trainer == null) {
             throw new Exception("Sorry we dont have this trainer in our list");
         }
         em.remove(trainer);
-        trainer.nameOfCourse=course1.nameOfCourse;
+        trainer.nameOfCourse = course1.nameOfCourse;
         trainer.listOfCources.add(course1);
         em.persist(trainer);
-
+        course1.confirmed = true;
         em.persist(course1);
         DtoPostAddingCourse dtoPostAddingCourse = new DtoPostAddingCourse();
         dtoPostAddingCourse.setCourseId(course1.id);
@@ -85,13 +128,58 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
     @Override
-    public Integer deletionProposedCourse(Integer courseId) {
-        return null;
+    @Transactional
+    public Integer deletionProposedCourse(String courseName) throws Exception {
+
+        List<Course> cources = new ArrayList<>();
+
+        String jpql = "Select r from Course r where confirmed = false";
+
+
+        cources = em.createQuery(jpql, Course.class).getResultList();
+        if (cources == null) {
+            throw new Exception("There is nothing to remove, 401");
+        }
+
+        for (Course course : cources) {
+            System.out.println(course.nameOfCourse);
+            if (course.nameOfCourse.equals(courseName)) {
+                System.out.println("Udalyaem");
+                Course course1 = em.find(Course.class, courseName);
+                em.remove(course1);
+            }
+        }
+
+
+        return 200;
     }
 
     @Override
     public List<DtoGettingProposedCourse> getingProposedCourse() {
-        return null;
+        List<Course> list = new ArrayList<>();
+
+        String jpql = "SELECT r FROM Course r where confirmed=false";
+        list = em.createQuery(jpql, Course.class).getResultList();
+
+
+        List<DtoGettingProposedCourse> list1 = new ArrayList<>();
+
+
+        for (Course course : list) {
+            DtoGettingProposedCourse dtoGettingProposedCourse = new DtoGettingProposedCourse();
+            dtoGettingProposedCourse.description = course.description;
+            dtoGettingProposedCourse.duration = course.duration;
+            dtoGettingProposedCourse.nameOfCourse = course.nameOfCourse;
+            System.out.println(dtoGettingProposedCourse.nameOfCourse);
+            dtoGettingProposedCourse.quantity = course.quantity;
+            dtoGettingProposedCourse.yourname = course.initiatorCourse;
+            dtoGettingProposedCourse.phone = course.phoneInitiator;
+            list1.add(dtoGettingProposedCourse);
+        }
+
+
+        return list1;
+
     }
 
     @Override
@@ -99,29 +187,35 @@ public class CourseImplemen implements CourseServiceInt {
     public int proposeCourse(Course course) throws Exception {
 
         Course course1 = new Course();
-
+        String name = course.nameOfCourse;
         User user1 = new User();
         user1.email = course.initiatorCourse;
 
-        User user = em.find(User.class,user1.email);
+        User user = em.find(User.class, user1.email);
 
-        if(user==null){
+        if (user == null) {
 
             throw new Exception("You have to log in before proposing the course");
         }
 
         course1.nameOfCourse = course.nameOfCourse;
 
-        Course course2 = em.find(Course.class,course1.nameOfCourse);
-        if(course2!=null){
-            throw new Exception("Please change the name of course");
+        Course course2 = em.find(Course.class, course1.nameOfCourse);
+        if (course2 != null) {
+
+            name = course1.nameOfCourse + "2";
+            course.nameOfCourse = name;
+            em.persist(course);
+            return 200;
+
         }
+        course1.nameOfCourse = name;
         course1.description = course.description;
         course1.duration = course.duration;
         course1.quantity = course.quantity;
         course1.initiatorCourse = course.initiatorCourse;
         course1.phoneInitiator = course.phoneInitiator;
-        course1.confirmed = true;
+        course1.confirmed = false;
         em.persist(course1);
 
         return 200;

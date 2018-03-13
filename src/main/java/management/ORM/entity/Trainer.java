@@ -47,19 +47,24 @@ public class Trainer implements Serializable {
     public String photoLink;
 
 
+   // @OneToMany(mappedBy = "menuPlan", cascade = CascadeType.ALL, orphanRemoval = true
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonProperty("listOfCources")
     public List<Course> listOfCources;
+
+
+
 
 //    public Integer date;
 //
 //    public Integer time;
 
-  @GeneratedValue
+
     public Integer idTrainer;
 
     public String getName() {
+
         return name;
     }
 

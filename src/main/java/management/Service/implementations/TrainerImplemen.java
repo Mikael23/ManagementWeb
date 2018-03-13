@@ -61,8 +61,17 @@ public class TrainerImplemen implements TrainerInter {
 
     @Override
     @Transactional
-    public Integer addingTrainer(Trainer trainer) {
-        System.out.println(trainer.email);
+    public Integer addingTrainer(Trainer trainer) throws Exception {
+        String name = trainer.email;
+
+        User user = em.find(User.class,name);
+        if(user==null){
+            throw new Exception("We dont have this user in base");
+        }
+
+        em.remove(user);
+        user.role="trainer";
+        em.persist(user);
 
 
         Trainer trainer2 = em.find(Trainer.class, trainer.email);
@@ -70,6 +79,8 @@ public class TrainerImplemen implements TrainerInter {
             System.out.println("We have already got this trainer");
             return 401;
         }
+
+
 
 
         Course course = new Course();
@@ -115,10 +126,7 @@ public class TrainerImplemen implements TrainerInter {
         List<Course> courseList = new ArrayList<>();
         DtoGettingTrainers dtoGettingTrainers = new DtoGettingTrainers();
         List<DtoGettingTrainers> dtoGettingTrainersList = new ArrayList<>();
-//
-//        TypedQuery<Country> query =
-//                em.createQuery("SELECT c FROM Country c", Country.class);
-//        List<Country> results = query.getResultList();
+
 
         String jpql = "SELECT r FROM Trainer r";
         listOfTrainers = em.createQuery(jpql, Trainer.class).getResultList();

@@ -150,16 +150,19 @@ public class Controller {
 
     @GetMapping("admin/proposedcourses")
     public List<DtoGettingProposedCourse> newProposedCourse() {
+
+
         return courseServiceInt.getingProposedCourse();
         //admin/proposedcourses – получение новых заявок на новые курсы, фильтруется по параметру
     }
 
 
-    @DeleteMapping("/admin/proposedcourses/reject/{courseId}")
-    public Integer proposedCourseRejection(@PathVariable("courseId") Integer courseId) {
+    @DeleteMapping("/admin/proposedcourses/reject/{courseName}")
+    public Integer proposedCourseRejection(@PathVariable("courseName") String courseName) throws Exception {
 
         //            /admin/proposedcourses/reject – удаление предложения курса по нажатию «отклонить»
-        return courseServiceInt.deletionProposedCourse(courseId);
+
+        return courseServiceInt.deletionProposedCourse(courseName);
     }
 
     @GetMapping("/trainerid/{trainerId}")
@@ -200,7 +203,7 @@ public class Controller {
 
 
     @DeleteMapping("/admin/removecourse/{courseId}")
-        public Integer removeOfCourse (@PathVariable("courseId")Integer courseId){
+        public Integer removeOfCourse (@PathVariable("courseId")Integer courseId) throws Exception {
 
         //    DELETE:
 //            /admin/removecourse
@@ -210,7 +213,7 @@ public class Controller {
     }
 
     @PostMapping("/admin/addtrainer")
-    public Integer addingTrainer(@RequestBody Trainer trainer){
+    public Integer addingTrainer(@RequestBody Trainer trainer) throws Exception {
 
 
         return trainerInter.addingTrainer(trainer);

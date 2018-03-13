@@ -56,7 +56,7 @@ public interface TrainerInter {
 //
 
 
-    Integer addingTrainer(Trainer trainer);
+    Integer addingTrainer(Trainer trainer) throws Exception;
 
     Trainer gettingTrainer(String name);
 
