@@ -51,7 +51,7 @@ public class CourseImplemen implements CourseServiceInt {
             throw new Exception("401, nothing to remove");
         }
         for (Course course : listOfCourses) {
-            if (course.id == courseId) {
+            if (course.id == courseId){
 
                 name = course.nameOfCourse;
 
