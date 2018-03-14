@@ -1,7 +1,7 @@
 package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import sun.jvm.hotspot.jdi.IntegerTypeImpl;
+
 
 public class DtoTrainerCancellationRecords {
 

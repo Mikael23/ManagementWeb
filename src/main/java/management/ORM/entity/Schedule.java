@@ -1,16 +1,16 @@
 package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.scene.input.DataFormat;
+
+
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.xml.crypto.Data;
+
 import java.io.Serializable;
-import java.util.Date;
+
 import java.util.List;
 
 
