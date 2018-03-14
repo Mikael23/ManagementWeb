@@ -151,6 +151,22 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Override
+    public List<String> returningTrainerNames() {
+
+        String jpql = "SELECT r FROM Trainer r";
+
+        List<Trainer>listOfNameOfTrainers = em.createQuery(jpql,Trainer.class).getResultList();
+        List<String>trainerNames = new ArrayList<>();
+
+        for (Trainer trainer:listOfNameOfTrainers) {
+            trainerNames.add(trainer.email);
+        }
+
+
+        return trainerNames;
+    }
+
+    @Override
     public DtoCancellation cancellation(String messageToUser) {
         return null;
     }

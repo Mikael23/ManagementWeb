@@ -228,7 +228,11 @@ public class Controller {
     }
 
 
+    @GetMapping("/admin/trainersid")
+    public  List<String>namesOfTrainer(){
 
+        return trainerInter.returningTrainerNames();
+    }
 
 
 //

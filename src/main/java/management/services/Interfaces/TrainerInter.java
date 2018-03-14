@@ -99,6 +99,9 @@ public interface TrainerInter {
 // POST:
 
 
+    List<String>returningTrainerNames();
+
+
     DtoCancellation cancellation(String messageToUser);
 
 // GET:
