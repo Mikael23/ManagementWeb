@@ -2,7 +2,6 @@ package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -36,7 +35,7 @@ public class Course implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "user_email")}
     )
     @JsonProperty
-    public List<User> listOfUsers;
+    public List<AllUsers> listOfAllUsers;
 
 
     @JsonProperty("name")
@@ -83,12 +82,12 @@ public class Course implements Serializable {
 
 
 
-//    public List<User> getListOfUsers() {
-//        return listOfUsers;
+//    public List<AllUsers> getListOfAllUsers() {
+//        return listOfAllUsers;
 //    }
 //
-//    public void setListOfUsers(List<User> listOfUsers) {
-//        this.listOfUsers = listOfUsers;
+//    public void setListOfAllUsers(List<AllUsers> listOfAllUsers) {
+//        this.listOfAllUsers = listOfAllUsers;
 //    }
 
 
@@ -192,12 +191,12 @@ public class Course implements Serializable {
 //    public void setUserPhone(Integer userPhone) {
 //        this.userPhone = userPhone;
 //    }
-public List<User> getListOfUsers() {
-    return listOfUsers;
+public List<AllUsers> getListOfAllUsers() {
+    return listOfAllUsers;
 }
 
-    public void setListOfUsers(List<User> listOfUsers) {
-        this.listOfUsers = listOfUsers;
+    public void setListOfAllUsers(List<AllUsers> listOfAllUsers) {
+        this.listOfAllUsers = listOfAllUsers;
     }
 
 

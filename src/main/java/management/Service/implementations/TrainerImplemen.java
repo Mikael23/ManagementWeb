@@ -3,7 +3,7 @@ package management.Service.implementations;
 import management.DTO.*;
 import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
-import management.ORM.entity.User;
+import management.ORM.entity.AllUsers;
 import management.services.Interfaces.TrainerInter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,14 +64,14 @@ public class TrainerImplemen implements TrainerInter {
     public Integer addingTrainer(Trainer trainer) throws Exception {
         String name = trainer.email;
 
-        User user = em.find(User.class,name);
-        if(user==null){
-            throw new Exception("We dont have this user in base");
+        AllUsers allUsers = em.find(AllUsers.class, name);
+        if (allUsers == null) {
+            throw new Exception("We dont have this allUsers in base");
         }
 
-        em.remove(user);
-        user.role="trainer";
-        em.persist(user);
+        em.remove(allUsers);
+        allUsers.role = "trainer";
+        em.persist(allUsers);
 
 
         Trainer trainer2 = em.find(Trainer.class, trainer.email);
@@ -79,8 +79,6 @@ public class TrainerImplemen implements TrainerInter {
             System.out.println("We have already got this trainer");
             return 401;
         }
-
-
 
 
         Course course = new Course();
@@ -110,7 +108,7 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Override
-    public DtoAddingToWaitingLis addToWaitingList(User user) {
+    public DtoAddingToWaitingLis addToWaitingList(AllUsers allUsers) {
         return null;
     }
 
@@ -124,7 +122,7 @@ public class TrainerImplemen implements TrainerInter {
 
         List<Trainer> listOfTrainers = new ArrayList<>();
         List<Course> courseList = new ArrayList<>();
-        DtoGettingTrainers dtoGettingTrainers = new DtoGettingTrainers();
+
         List<DtoGettingTrainers> dtoGettingTrainersList = new ArrayList<>();
 
 
@@ -132,6 +130,8 @@ public class TrainerImplemen implements TrainerInter {
         listOfTrainers = em.createQuery(jpql, Trainer.class).getResultList();
 
         for (Trainer trainer : listOfTrainers) {
+            DtoGettingTrainers dtoGettingTrainers = new DtoGettingTrainers();
+            System.out.println(trainer.name);
             dtoGettingTrainers.description = trainer.description;
             dtoGettingTrainers.name = trainer.name;
             System.out.println(trainer.listOfCources.toString());
@@ -175,21 +175,22 @@ public class TrainerImplemen implements TrainerInter {
     public Integer makerTrainer(String userName) throws Exception {
 
 
-        User user = em.find(User.class,userName);
-        if(user==null){
-            throw new Exception("We dont have this user");
+        AllUsers allUsers = em.find(AllUsers.class, userName);
+        if (allUsers == null) {
+            throw new Exception("We dont have this allUsers");
         }
 
         Trainer trainer = new Trainer();
-        em.remove(user);
-        trainer.email=user.email;
-        trainer.surname=user.surname;
+        em.remove(allUsers);
+        trainer.email = allUsers.email;
+        trainer.surname = allUsers.surname;
+        trainer.name= allUsers.name;
 
-        user.role="trainer";
+        allUsers.role = "trainer";
 
         em.persist(trainer);
-        em.persist(user);
+        em.persist(allUsers);
 
-  return 200;
+        return 200;
     }
 }

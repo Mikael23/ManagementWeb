@@ -1,14 +1,13 @@
 package management.Service.implementations;
 
 import management.DTO.*;
+import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
-import management.ORM.entity.User;
 import management.services.Interfaces.UserService;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -23,12 +22,12 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public int save(User user) {
+    public int save(AllUsers allUsers) {
         return 0;
     }
 
     @Override
-    public boolean login(User user) {
+    public boolean login(AllUsers allUsers) {
         return false;
     }
 
@@ -43,30 +42,30 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public DTOlogging logging(User user) throws Exception {
+    public DTOlogging logging(AllUsers allUsers) throws Exception {
 
-        User user1 = em.find(User.class,user.email);
-        if(user1==null){
+        AllUsers allUsers1 = em.find(AllUsers.class, allUsers.email);
+        if(allUsers1 ==null){
             throw new Exception("please logg in");
         }
 
-        String password = user1.password;
-        String EnteredPassword = user.password;
+        String password = allUsers1.password;
+        String EnteredPassword = allUsers.password;
         if(!password.equals(EnteredPassword)){
             throw new Exception("incorrect password");
         }
 
         DTOlogging dtOlogging = new DTOlogging();
-        dtOlogging.role=user1.role;
-        dtOlogging.name=user1.name;
-        dtOlogging.surname=user1.surname;
+        dtOlogging.role= allUsers1.role;
+        dtOlogging.name= allUsers1.name;
+        dtOlogging.surname= allUsers1.surname;
 
         return dtOlogging;
 
     }
 
     @Override
-    public DtoUpdatingProfile update(User user) {
+    public DtoUpdatingProfile update(AllUsers allUsers) {
         return null;
     }
 
@@ -76,7 +75,7 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public DTOlogging dtoLogging(User user) {
+    public DTOlogging dtoLogging(AllUsers allUsers) {
 
         return null;
     }
@@ -87,22 +86,22 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public DtoGettingThisDateN dtoGettinThisDateN(User user) {
+    public DtoGettingThisDateN dtoGettinThisDateN(AllUsers allUsers) {
         return null;
     }
    @Transactional
     @Override
-    public DtoPostRegistration registration(User user) throws Exception {
+    public DtoPostRegistration registration(AllUsers allUsers) throws Exception {
 
 
 
-        User user1=em.find(User.class,user.email);
-        if(user1!=null){
-            throw new Exception("We have got this user already");
+        AllUsers allUsers1 =em.find(AllUsers.class, allUsers.email);
+        if(allUsers1 !=null){
+            throw new Exception("We have got this allUsers already");
         }
-         System.out.println(user.id);
-        String pas = user.password;
-        String repeatOfPas = user.repeatPassword;
+         System.out.println(allUsers.id);
+        String pas = allUsers.password;
+        String repeatOfPas = allUsers.repeatPassword;
         if(!pas.equals(repeatOfPas)){
             throw new Exception("The passwords are not equals");
         }
@@ -128,11 +127,11 @@ public class UserImplemen implements UserService {
 
 
 
-       em.persist(user);
+       em.persist(allUsers);
        DtoPostRegistration dtoPostRegistration = new DtoPostRegistration();
-       dtoPostRegistration.role = user.role;
-       dtoPostRegistration.login=user.email;
-       dtoPostRegistration.role="User";
+       dtoPostRegistration.role = allUsers.role;
+       dtoPostRegistration.login= allUsers.email;
+       dtoPostRegistration.role="AllUsers";
 
 
 

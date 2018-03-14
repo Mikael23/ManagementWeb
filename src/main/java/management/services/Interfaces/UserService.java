@@ -1,9 +1,9 @@
 package management.services.Interfaces;
 
 import management.DTO.*;
+import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
-import management.ORM.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +15,9 @@ public interface UserService {
     List<DtoGettingAllUserRecords> gettingAllUserRecords(Integer userId);
 
 
-    int save(User user);
+    int save(AllUsers allUsers);
 
-    boolean login(User user);
+    boolean login(AllUsers allUsers);
 
 
     String addingTrainer(Trainer trainer);
@@ -36,7 +36,7 @@ public interface UserService {
 //
 
 
-    DTOlogging logging(User user) throws Exception;
+    DTOlogging logging(AllUsers allUsers) throws Exception;
 
 
 
@@ -47,7 +47,7 @@ public interface UserService {
 //    кабинет пользователя как тренера или юзера. После логина - направлению на страницу, с которой был запуск логина.
 
 
-    DtoUpdatingProfile update(User user);
+    DtoUpdatingProfile update(AllUsers allUsers);
 
 //    PUT: - кнопка «редактировать личные данные»
 //            /userid/update – обновляет информацию профиля пользователя
@@ -58,7 +58,7 @@ public interface UserService {
 
     String choosingTime(Course course, String email) throws Exception;
 
-    DTOlogging dtoLogging(User user);
+    DTOlogging dtoLogging(AllUsers allUsers);
 
 
     DtoPuttingCancellTime puttingCancellTime(Course course, Integer userId);
@@ -72,7 +72,7 @@ public interface UserService {
 //    date и time снова становятся свободными: поле busy меняется на false, поле confirmed меняется на false.
 
 
-    DtoGettingThisDateN dtoGettinThisDateN(User user);
+    DtoGettingThisDateN dtoGettinThisDateN(AllUsers allUsers);
 
 
 //    /userid/”текущая дата, от которой будет выстраиваться месяц” –
@@ -96,7 +96,7 @@ public interface UserService {
 //        После логина - направлению на страницу, с которой был запуск логина.
 
 
-    DtoPostRegistration registration(User user) throws Exception;
+    DtoPostRegistration registration(AllUsers allUsers) throws Exception;
 //POST:
 //        /registration
 //        Body:  {name, surname, email, password, repeatpassword, phone, dateofbirth,

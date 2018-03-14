@@ -1,9 +1,9 @@
 package management.services.Interfaces;
 
 import management.DTO.*;
+import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
-import management.ORM.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public interface TrainerInter {
 //    /trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
 
 
-    DtoAddingToWaitingLis addToWaitingList(User user);
+    DtoAddingToWaitingLis addToWaitingList(AllUsers allUsers);
 
 
 //    Если свободные дата и время найдены, то response: date и time.

@@ -23,7 +23,7 @@ public class Trainer implements Serializable {
 
 
     @ManyToMany
-    public List<User> waitingLists;
+    public List<AllUsers> waitingLists;
 
     @JsonProperty("name")
     public String name;
@@ -49,7 +49,7 @@ public class Trainer implements Serializable {
 
    // @OneToMany(mappedBy = "menuPlan", cascade = CascadeType.ALL, orphanRemoval = true
 
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "nameOfCourse")
     @JsonProperty("listOfCources")
     public List<Course> listOfCources;
 
@@ -106,11 +106,11 @@ public class Trainer implements Serializable {
 //        this.time = time;
 //    }
 
-    public List<User> getWaitingLists() {
+    public List<AllUsers> getWaitingLists() {
         return waitingLists;
     }
 
-    public void setWaitingLists(List<User> waitingLists) {
+    public void setWaitingLists(List<AllUsers> waitingLists) {
         this.waitingLists = waitingLists;
     }
 

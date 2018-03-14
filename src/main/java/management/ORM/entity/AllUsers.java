@@ -8,9 +8,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "User")
-public class User implements Serializable {
+@Entity(name = "User")
+@Table(name = "AllUsers")
+public class AllUsers implements Serializable {
 
     @OneToOne
     public Schedule schedule;
@@ -83,7 +83,7 @@ public class User implements Serializable {
 //    @JoinTable(name = "User_Course",joinColumns ={@JoinColumn(name = "user_email")},
 //    inverseJoinColumns = {@JoinColumn(name = "course_id")})
 
-    @ManyToMany(mappedBy = "listOfUsers")
+    @ManyToMany(mappedBy = "listOfAllUsers")
     @JsonProperty("record")
     public List<Course> listOfRecords;
 
@@ -233,7 +233,7 @@ public class User implements Serializable {
     }
 
     @JsonCreator
-    public User() {
+    public AllUsers() {
     }
 
 

@@ -4,7 +4,7 @@ package management.controller;
 import management.DTO.*;
 import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
-import management.ORM.entity.User;
+import management.ORM.entity.AllUsers;
 import management.services.Interfaces.CourseServiceInt;
 import management.services.Interfaces.TrainerInter;
 import management.services.Interfaces.UserService;
@@ -66,17 +66,17 @@ public class Controller {
     }
 
     @PostMapping("/registration")
-    public DtoPostRegistration registration(@RequestBody User user) throws Exception {
+    public DtoPostRegistration registration(@RequestBody AllUsers allUsers) throws Exception {
 
 //            /registration
-        return userService.registration(user);
+        return userService.registration(allUsers);
     }
 
 
     @PostMapping("/login")
-    public DTOlogging loging(@RequestBody User user) throws Exception {
+    public DTOlogging loging(@RequestBody AllUsers allUsers) throws Exception {
         //            /login
-        return userService.logging(user);
+        return userService.logging(allUsers);
     }
 
     @GetMapping("/cancelledtime/userid/{messageTouser}")
@@ -114,9 +114,9 @@ public class Controller {
     }
 
     @PutMapping("/userid/update/")
-    public DtoUpdatingProfile updatingProfile(@RequestBody User user) {
+    public DtoUpdatingProfile updatingProfile(@RequestBody AllUsers allUsers) {
         // /userid/update – обновляет информацию профиля пользователя
-        return userService.update(user);
+        return userService.update(allUsers);
     }
 
     @GetMapping("/trainerid/waitinglist/{userId}")
@@ -222,9 +222,9 @@ public class Controller {
 
 
     @PostMapping("/admin/maketrainer/")
-    public Integer makertrainer(@RequestBody User user) throws Exception {
+    public Integer makertrainer(@RequestBody AllUsers allUsers) throws Exception {
 
-        return trainerInter.makerTrainer(user.email);
+        return trainerInter.makerTrainer(allUsers.email);
     }
 
 

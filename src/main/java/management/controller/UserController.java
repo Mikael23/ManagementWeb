@@ -23,7 +23,7 @@ public class UserController {
 //    }
 //
 //    @PostMapping("/login")
-//    public boolean login(@RequestBody User user) {
+//    public boolean login(@RequestBody AllUsers user) {
 //
 //        return userService.login(user);
 //
@@ -57,7 +57,7 @@ public class UserController {
 //
 //
 //    @PostMapping("/user")
-//    public ResponseEntity save(@RequestBody User user) {
+//    public ResponseEntity save(@RequestBody AllUsers user) {
 //
 //
 //        int id = userService.save(user);

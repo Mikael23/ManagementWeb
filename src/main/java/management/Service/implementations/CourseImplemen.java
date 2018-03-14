@@ -3,7 +3,7 @@ package management.Service.implementations;
 import management.DTO.*;
 import management.ORM.entity.Course;
 import management.ORM.entity.Trainer;
-import management.ORM.entity.User;
+import management.ORM.entity.AllUsers;
 import management.services.Interfaces.CourseServiceInt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -188,12 +188,12 @@ public class CourseImplemen implements CourseServiceInt {
 
         Course course1 = new Course();
         String name = course.nameOfCourse;
-        User user1 = new User();
-        user1.email = course.initiatorCourse;
+        AllUsers allUsers1 = new AllUsers();
+        allUsers1.email = course.initiatorCourse;
 
-        User user = em.find(User.class, user1.email);
+        AllUsers allUsers = em.find(AllUsers.class, allUsers1.email);
 
-        if (user == null) {
+        if (allUsers == null) {
 
             throw new Exception("You have to log in before proposing the course");
         }
