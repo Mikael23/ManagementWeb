@@ -15,10 +15,10 @@ import java.util.List;
 public class Course implements Serializable {
 
 
-    @JsonProperty
+ //  @ManyToOne
+    //private Topic topic;
     public String phoneInitiator;
 
-    @JsonProperty
     public String initiatorCourse;
 
 
@@ -28,55 +28,53 @@ public class Course implements Serializable {
     @OneToOne
     public Schedule schedule;
     //
+
+
+
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "Users_Cources",
             joinColumns = {@JoinColumn(name = "Course_nameOfCourse")},
             inverseJoinColumns = {@JoinColumn(name = "user_email")}
     )
-    @JsonProperty
+
     public List<AllUsers> listOfAllUsers;
 
 
-    @JsonProperty("name")
     public String name;
 
 
     @Column(name = "description")
-    @JsonProperty("description")
     public String description;
 
-    @JsonProperty("trainerName")
     public String trainerName;
 //    @JsonProperty("ChoosenData")
 //    public Double ChoosenData;
 
-    @JsonProperty("Duration")
     public Integer duration;
 
 
-  @Id
-    @JsonProperty("nameOfCourse")
+    @Id
     public String nameOfCourse;
 
-    @JsonProperty("kindOfCourse")
     public String kindOfCourse;
-    @JsonProperty("quantity")
+   // @JsonProperty("quantity")
     public Integer quantity;
 
 
-    @JsonProperty("quantatity")
+    //@JsonProperty("quantatity")
     public Integer quantatity;
 
 
 
-    @JsonProperty("id")
+   // @JsonProperty("id")
     public Integer id;
 
 
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JsonProperty
+    //@JsonProperty
     @OnDelete(action = OnDeleteAction.CASCADE)
     public Trainer trainer;
 

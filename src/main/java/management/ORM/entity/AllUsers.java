@@ -39,7 +39,7 @@ public class AllUsers implements Serializable {
     @JsonProperty("email")
     public String email;
     @JsonProperty("password")
-    public String password;
+    public String password; // Eto nado
     @JsonProperty("repeatPassword")
     public String repeatPassword;
     @JsonProperty("role")
@@ -48,6 +48,7 @@ public class AllUsers implements Serializable {
 
     //    public List<Course> listOfCources;
 
+    @GeneratedValue
     @JsonProperty("Id")
     public Integer id;
     @JsonProperty("NumPhone")
