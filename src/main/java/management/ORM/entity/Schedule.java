@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name="Schedule")
+@Table(name="schedule")
 
 public class Schedule implements Serializable {
 

@@ -8,15 +8,13 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "Trainer")
+@Table(name = "trainer")
 
 public class Trainer implements Serializable {
 
     @Id
     public String email;
 
-    @JsonProperty
-    public String nameOfCourse;
 
     @JsonProperty("surname")
     public String surname;
@@ -30,6 +28,23 @@ public class Trainer implements Serializable {
 
     public String description;
 
+    public String getNameCourse() {
+        return nameCourse;
+    }
+
+    public void setNameCourse(String nameCourse) {
+        this.nameCourse = nameCourse;
+    }
+
+    public Integer getIdTrainer() {
+        return idTrainer;
+    }
+
+    public void setIdTrainer(Integer idTrainer) {
+        this.idTrainer = idTrainer;
+    }
+
+    public String nameCourse;
 
 
     public String getEmail() {
@@ -47,9 +62,8 @@ public class Trainer implements Serializable {
     public String photoLink;
 
 
-   // @OneToMany(mappedBy = "menuPlan", cascade = CascadeType.ALL, orphanRemoval = true
 
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "nameOfCourse")
+    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonProperty("listOfCources")
     public List<Course> listOfCources;
 

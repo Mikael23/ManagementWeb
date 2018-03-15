@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "User")
-@Table(name = "AllUsers")
+@Table(name = "allUsers")
 public class AllUsers implements Serializable {
 
     @OneToOne

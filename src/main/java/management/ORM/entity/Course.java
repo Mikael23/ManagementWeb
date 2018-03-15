@@ -10,17 +10,16 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "Course")
+@Table(name = "course")
 
 public class Course implements Serializable {
 
 
- //  @ManyToOne
+    //  @ManyToOne
     //private Topic topic;
     public String phoneInitiator;
 
     public String initiatorCourse;
-
 
 
     public boolean confirmed;
@@ -28,8 +27,6 @@ public class Course implements Serializable {
     @OneToOne
     public Schedule schedule;
     //
-
-
 
 
     @ManyToMany(cascade = {CascadeType.ALL})
@@ -49,8 +46,7 @@ public class Course implements Serializable {
     public String description;
 
     public String trainerName;
-//    @JsonProperty("ChoosenData")
-//    public Double ChoosenData;
+
 
     public Integer duration;
 
@@ -59,7 +55,7 @@ public class Course implements Serializable {
     public String nameOfCourse;
 
     public String kindOfCourse;
-   // @JsonProperty("quantity")
+    // @JsonProperty("quantity")
     public Integer quantity;
 
 
@@ -67,17 +63,15 @@ public class Course implements Serializable {
     public Integer quantatity;
 
 
-
-   // @JsonProperty("id")
+    // @JsonProperty("id")
     public Integer id;
 
 
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     //@JsonProperty
     @OnDelete(action = OnDeleteAction.CASCADE)
     public Trainer trainer;
-
 
 
 //    public List<AllUsers> getListOfAllUsers() {
@@ -153,6 +147,7 @@ public class Course implements Serializable {
     public Integer getQuantity() {
         return quantity;
     }
+
     public String getInitiatorCourse() {
         return initiatorCourse;
     }
@@ -181,7 +176,7 @@ public class Course implements Serializable {
 //        this.userName = userName;
 //    }
 
-//    public Integer getUserPhone() {
+    //    public Integer getUserPhone() {
 //
 //        return userPhone;
 //    }
@@ -189,9 +184,9 @@ public class Course implements Serializable {
 //    public void setUserPhone(Integer userPhone) {
 //        this.userPhone = userPhone;
 //    }
-public List<AllUsers> getListOfAllUsers() {
-    return listOfAllUsers;
-}
+    public List<AllUsers> getListOfAllUsers() {
+        return listOfAllUsers;
+    }
 
     public void setListOfAllUsers(List<AllUsers> listOfAllUsers) {
         this.listOfAllUsers = listOfAllUsers;

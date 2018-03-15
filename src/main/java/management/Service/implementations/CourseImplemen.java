@@ -109,7 +109,7 @@ public class CourseImplemen implements CourseServiceInt {
             throw new Exception("Sorry we dont have this trainer in our list");
         }
         em.remove(trainer);
-        trainer.nameOfCourse = course1.nameOfCourse;
+        trainer.nameCourse = course1.nameOfCourse;
         trainer.listOfCources.add(course1);
         em.persist(trainer);
         course1.confirmed = true;
