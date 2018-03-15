@@ -226,7 +226,7 @@ public class CourseImplemen implements CourseServiceInt {
 //        String jpql = "SELECT r FROM Course r where confirmed=false";
 //        list = em.createQuery(jpql, Course.class).getResultList();
 
-        String jpql = "SELECT r FROM Course where confirmed=true";
+        String jpql = "SELECT r FROM Course r where confirmed=true";
         List<Course> listCources = new ArrayList<>();
         listCources = em.createQuery(jpql, Course.class).getResultList();
 
