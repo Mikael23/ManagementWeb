@@ -81,6 +81,10 @@ public interface CourseServiceInt {
 
 
 
+    List<DtoGettingCourses> gettingCources();
+
+
+
 
     Map<String, Course> gettingProposedCources();
 
@@ -88,7 +92,6 @@ public interface CourseServiceInt {
 
     int addCourse(Course course);
 
-    Map<String, Course> li();
 
     CourseDateAndTimesResponse gettingFreeTimesandDuration(Integer id) throws Exception;
 

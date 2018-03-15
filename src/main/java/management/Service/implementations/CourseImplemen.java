@@ -51,7 +51,7 @@ public class CourseImplemen implements CourseServiceInt {
             throw new Exception("401, nothing to remove");
         }
         for (Course course : listOfCourses) {
-            if (course.id == courseId){
+            if (course.id == courseId) {
 
                 name = course.nameOfCourse;
 
@@ -74,9 +74,7 @@ public class CourseImplemen implements CourseServiceInt {
             }
         }
 
-       // em.remove(course);
-
-
+        // em.remove(course);
 
 
         return 401;
@@ -222,6 +220,33 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
     @Override
+    public List<DtoGettingCourses> gettingCources() {
+
+//
+//        String jpql = "SELECT r FROM Course r where confirmed=false";
+//        list = em.createQuery(jpql, Course.class).getResultList();
+
+        String jpql = "SELECT r FROM Course where confirmed=true";
+        List<Course> listCources = new ArrayList<>();
+        listCources = em.createQuery(jpql, Course.class).getResultList();
+
+        List<DtoGettingCourses> list = new ArrayList<>();
+        for (Course course : listCources) {
+            DtoGettingCourses dtoGettingCourses = new DtoGettingCourses();
+            dtoGettingCourses.courseId = course.id;
+            dtoGettingCourses.description = course.description;
+            dtoGettingCourses.duration = course.duration;
+            dtoGettingCourses.nameOfCourse = course.nameOfCourse;
+            dtoGettingCourses.trainerId = course.trainerName;
+            list.add(dtoGettingCourses);
+        }
+
+        return list;
+
+
+    }
+
+    @Override
     public Map<String, Course> gettingProposedCources() {
         return null;
     }
@@ -236,7 +261,6 @@ public class CourseImplemen implements CourseServiceInt {
         return 0;
     }
 
-    @Override
     public Map<String, Course> li() {
         return null;
     }
