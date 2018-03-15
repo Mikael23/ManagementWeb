@@ -41,7 +41,6 @@ public class Controller {
     public Integer ppoposeOfCourse(@RequestBody Course course) throws Exception {
 
 
-
         return courseServiceInt.proposeCourse(course);
 
 
@@ -203,11 +202,11 @@ public class Controller {
 
 
     @DeleteMapping("/admin/removecourse/{courseId}")
-        public Integer removeOfCourse (@PathVariable("courseId")Integer courseId) throws Exception {
+    public Integer removeOfCourse(@PathVariable("courseId") Integer courseId) throws Exception {
 
         //    DELETE:
 //            /admin/removecourse
-        return  courseServiceInt.removeCourse(courseId);
+        return courseServiceInt.removeCourse(courseId);
 
 
     }
@@ -220,7 +219,6 @@ public class Controller {
     }
 
 
-
     @PostMapping("/admin/maketrainer/")
     public Integer makertrainer(@RequestBody AllUsers allUsers) throws Exception {
 
@@ -229,9 +227,16 @@ public class Controller {
 
 
     @GetMapping("/admin/trainersid")
-    public  List<String>namesOfTrainer(){
+    public List<String> namesOfTrainer() {
 
         return trainerInter.returningTrainerNames();
+    }
+
+
+    @GetMapping("/admin/courses")
+    public List<DtoGettingCourses> gettingCources() {
+
+        return courseServiceInt.gettingCources();
     }
 
 
@@ -241,7 +246,6 @@ public class Controller {
 //    В окошке начать вводить e-mail. Выбрать нужного юзера. По его userid:
 //    Body: {userid, параметр role меняется на “trainer”, }.
 //    Response: 200 or 401.
-
 
 
 }
