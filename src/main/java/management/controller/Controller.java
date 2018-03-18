@@ -113,7 +113,7 @@ public class Controller {
     }
 
     @PutMapping("/userid/update/")
-    public DtoUpdatingProfile updatingProfile(@RequestBody AllUsers allUsers) {
+    public DtoUpdatingProfile updatingProfile(@RequestBody AllUsers allUsers) throws Exception {
         // /userid/update – обновляет информацию профиля пользователя
         return userService.update(allUsers);
     }

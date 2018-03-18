@@ -20,6 +20,21 @@ public class DtoUpdatingProfile {
         this.surname = surname;
     }
 
+
+
+
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String email;
+
     @JsonProperty
     public String name;
 @JsonProperty
