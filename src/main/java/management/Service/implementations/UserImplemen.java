@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -23,10 +24,7 @@ public class UserImplemen implements UserService {
         return null;
     }
 
-    @Override
-    public int save(AllUsers allUsers) {
-        return 0;
-    }
+
 
     @Override
     public boolean login(AllUsers allUsers) {
@@ -34,9 +32,25 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public String addingTrainer(Trainer trainer) {
-        return null;
+    public List<String> allUserId() {
+//        String jpql = "SELECT r FROM Course r where confirmed=true";
+
+
+        String jpql = "SELECT r FROM User r";
+
+        List<AllUsers> users = em.createQuery(jpql, AllUsers.class).getResultList();
+        List<String> usersId = new ArrayList<>();
+
+        for (AllUsers user : users) {
+            usersId.add(user.email);
+        }
+
+        return usersId;
+
+
     }
+
+
 
     @Override
     public DtoGettingThisDateN gettingDateOfUser(Integer id) {
@@ -197,7 +211,7 @@ public class UserImplemen implements UserService {
         DtoPostRegistration dtoPostRegistration = new DtoPostRegistration();
         dtoPostRegistration.role = allUsers.role;
         dtoPostRegistration.login = allUsers.email;
-        dtoPostRegistration.role = "AllUsers";
+        dtoPostRegistration.role = "User";
 
 
         return dtoPostRegistration;

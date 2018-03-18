@@ -240,6 +240,20 @@ public class Controller {
     }
 
 
+
+    @GetMapping("admin/usersid")
+    public List<String>usersId(){
+        return userService.allUserId();
+    }
+
+//
+//
+//    GET:
+//            /admin/usersid - нужно иметь возможность подгрузить все userid
+//    Response: {массив из всех userid}.
+
+
+
 //
 //    PUT:
 //            /admin/maketrainer – меняет роль юзера на тренера.

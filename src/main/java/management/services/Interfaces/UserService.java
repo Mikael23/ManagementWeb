@@ -15,12 +15,23 @@ public interface UserService {
     List<DtoGettingAllUserRecords> gettingAllUserRecords(Integer userId);
 
 
-    int save(AllUsers allUsers);
 
     boolean login(AllUsers allUsers);
 
 
-    String addingTrainer(Trainer trainer);
+
+
+
+    List<String>allUserId();
+
+
+//    GET:
+//            /admin/usersid - нужно иметь возможность подгрузить все userid
+//    Response: {массив из всех userid}.
+
+
+
+
 
 
     DtoGettingThisDateN gettingDateOfUser(Integer id);
