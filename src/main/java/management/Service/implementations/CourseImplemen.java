@@ -300,6 +300,7 @@ public class CourseImplemen implements CourseServiceInt {
             dtoGettingCourses.courseId = course.id;
             dtoGettingCourses.description = course.description;
             dtoGettingCourses.duration = course.duration;
+            dtoGettingCourses.quantity=course.quantity;
             dtoGettingCourses.nameOfCourse = course.nameOfCourse;
             dtoGettingCourses.trainerId = course.trainerName;
             list.add(dtoGettingCourses);
