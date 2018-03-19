@@ -241,7 +241,7 @@ public class CourseImplemen implements CourseServiceInt {
             course1.duration = course.duration;
         }
         if (course.quantity != null) {
-            course1.quantity = course.quantity;
+            course1.quantatity = course.quantatity;
         }
 
         if (course.trainerName != null) {
@@ -300,7 +300,7 @@ public class CourseImplemen implements CourseServiceInt {
             dtoGettingCourses.courseId = course.id;
             dtoGettingCourses.description = course.description;
             dtoGettingCourses.duration = course.duration;
-            dtoGettingCourses.quantity=course.quantity;
+            dtoGettingCourses.quantity=course.quantatity;
             dtoGettingCourses.nameOfCourse = course.nameOfCourse;
             dtoGettingCourses.trainerId = course.trainerName;
             list.add(dtoGettingCourses);
