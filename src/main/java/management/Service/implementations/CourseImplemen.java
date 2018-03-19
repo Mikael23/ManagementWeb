@@ -219,6 +219,70 @@ public class CourseImplemen implements CourseServiceInt {
         return 200;
     }
 
+    @Transactional
+    @Override
+    public Integer etitionOfCourse(Course course) throws Exception {
+
+        Course course1 = em.find(Course.class, course.nameOfCourse);
+
+        if (course1 == null) {
+            throw new Exception("No found course");
+        }
+
+
+        if (course.nameOfCourse != null) {
+            course1.nameOfCourse = course.nameOfCourse;
+        }
+        if (course.description != null) {
+            course1.description = course.description;
+        }
+
+        if (course.duration != null) {
+            course1.duration = course.duration;
+        }
+        if (course.quantity != null) {
+            course1.quantity = course.quantity;
+        }
+
+        if (course.trainerName != null) {
+
+            Trainer trainer = new Trainer();
+            trainer.email = course.trainerName;
+
+            trainer = em.find(Trainer.class, trainer.email);
+            if (trainer == null) {
+                throw new Exception("Sorry we dont have this trainer in our list");
+            }
+
+            trainer.nameCourse = course1.nameOfCourse;
+            trainer.listOfCources.remove(course);
+
+           // trainer.listOfCources.add(course1);
+            em.persist(trainer);
+        }
+        if (course.trainerName == null) {
+            Trainer trainer = new Trainer();
+            trainer.email = course1.trainerName;
+            trainer.listOfCources.remove(course1);
+          //  trainer.listOfCources.add(course1);
+
+
+        }
+
+        Course course2 = em.find(Course.class, course.nameOfCourse);
+        em.remove(course2);
+        em.persist(course1);
+
+//
+//
+//        admin/editcourse – изменение параметров подгруженных курсов
+//        Body: {courseid, name of the course, description, trainerid, duration, quantity (максимальное количество записей на сессию)
+//            Response: перезапись измененных данных, кроме courseid (его нельзя менять). 200 or 401.
+
+        return 200;
+
+    }
+
     @Override
     public List<DtoGettingCourses> gettingCources() {
 

@@ -75,6 +75,7 @@ public interface CourseServiceInt {
 
 
 
+    Integer etitionOfCourse(Course course) throws Exception;
 
 
 

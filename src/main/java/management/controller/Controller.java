@@ -240,26 +240,18 @@ public class Controller {
     }
 
 
-
     @GetMapping("admin/usersid")
-    public List<String>usersId(){
+    public List<String> usersId() {
         return userService.allUserId();
     }
 
-//
-//
-//    GET:
-//            /admin/usersid - нужно иметь возможность подгрузить все userid
-//    Response: {массив из всех userid}.
+
+    @PostMapping("/admin/editcourse/")
+    public Integer courseEdition(@RequestBody Course course) throws Exception {
+        return courseServiceInt.etitionOfCourse(course);
+    }
 
 
-
-//
-//    PUT:
-//            /admin/maketrainer – меняет роль юзера на тренера.
-//    В окошке начать вводить e-mail. Выбрать нужного юзера. По его userid:
-//    Body: {userid, параметр role меняется на “trainer”, }.
-//    Response: 200 or 401.
 
 
 }
