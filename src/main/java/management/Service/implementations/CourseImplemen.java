@@ -240,14 +240,17 @@ public class CourseImplemen implements CourseServiceInt {
         if (course.duration != null) {
             course1.duration = course.duration;
         }
-        if (course.quantity != null) {
+        if (course.quantatity != null) {
             course1.quantatity = course.quantatity;
         }
 
         if (course.trainerName != null) {
 
+            System.out.println("Trener ne raven nulyu");
+
+
             Trainer trainer = new Trainer();
-            trainer.email = course.trainerName;
+            trainer.email = course1.trainerName;
 
             trainer = em.find(Trainer.class, trainer.email);
             if (trainer == null) {
@@ -255,21 +258,33 @@ public class CourseImplemen implements CourseServiceInt {
             }
 
             trainer.nameCourse = course1.nameOfCourse;
-            trainer.listOfCources.remove(course);
+            trainer.listOfCources.remove(course1);
+            Trainer trainer1 = new Trainer();
+            Trainer trainer2 = em.find(Trainer.class,course.trainerName);
+            trainer2.listOfCources.add(course1);
+            course1.trainerName=course.trainerName;
+            em.remove(course1);
 
+            em.persist(course1);
+            return 200;
            // trainer.listOfCources.add(course1);
-            em.persist(trainer);
+         //   em.persist(trainer);
         }
         if (course.trainerName == null) {
-            Trainer trainer = new Trainer();
-            trainer.email = course1.trainerName;
-            trainer.listOfCources.remove(course1);
-          //  trainer.listOfCources.add(course1);
+            Trainer trainer = em.find(Trainer.class,course1.trainerName);
 
+            trainer.listOfCources.remove(course1);
+            trainer.listOfCources.add(course1);
+            System.out.println("Trener  raven nulyu");
+
+            em.remove(course1);
+            em.persist(course1);
+            return 200;
 
         }
 
         Course course2 = em.find(Course.class, course.nameOfCourse);
+
         em.remove(course2);
         em.persist(course1);
 
