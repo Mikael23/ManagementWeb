@@ -195,6 +195,7 @@ public class Controller {
         //  /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
     }
 
+    @CrossOrigin
 
     @PostMapping("/admin/addcourse")
     public DtoPostAddingCourse postAddingCourse(@RequestBody Course course) throws Exception {
