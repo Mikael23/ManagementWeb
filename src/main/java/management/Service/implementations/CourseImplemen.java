@@ -93,8 +93,8 @@ public class CourseImplemen implements CourseServiceInt {
         course1.description = course.description;
         course1.trainerName = course.trainerName;
         course1.duration = course.duration;
-        course1.quantatity = course.quantatity;
-        course1.kindOfCourse = course.kindOfCourse;
+        course1.quantity = course.quantity;
+
 
         Course course2 = em.find(Course.class, course.nameOfCourse);
         System.out.println(course2);
@@ -240,8 +240,8 @@ public class CourseImplemen implements CourseServiceInt {
         if (course.duration != null) {
             course1.duration = course.duration;
         }
-        if (course.quantatity != null) {
-            course1.quantatity = course.quantatity;
+        if (course.quantity!= null) {
+            course1.quantity = course.quantity;
         }
 
         if (course.trainerName != null) {
@@ -315,7 +315,7 @@ public class CourseImplemen implements CourseServiceInt {
             dtoGettingCourses.courseId = course.id;
             dtoGettingCourses.description = course.description;
             dtoGettingCourses.duration = course.duration;
-            dtoGettingCourses.quantity=course.quantatity;
+            dtoGettingCourses.quantity=course.quantity;
             dtoGettingCourses.nameOfCourse = course.nameOfCourse;
             dtoGettingCourses.trainerId = course.trainerName;
             list.add(dtoGettingCourses);

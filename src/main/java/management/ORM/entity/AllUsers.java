@@ -39,9 +39,11 @@ public class AllUsers implements Serializable {
     @JsonProperty("email")
     public String email;
     @JsonProperty("password")
-    public String password; // Eto nado
+
+   public String password; // Eto nado
+    @Transient
     @JsonProperty("repeatPassword")
-    public String repeatPassword;
+    transient public String repeatPassword;
     @JsonProperty("role")
     public String role;
 

@@ -3,6 +3,7 @@ package management.controller;
 
 import management.DTO.*;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.AllUsers;
 import management.services.Interfaces.CourseServiceInt;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+
 
 public class Controller {
 
@@ -179,11 +181,11 @@ public class Controller {
         return trainerInter.getingCourseOnTrainerId(trainerId);
     }
 
-
-    @PostMapping("trainerid/addinterval/{trainerId}")
-    public Integer addingInterval(@PathVariable("trainerId") Integer trainerId, @RequestBody Course course) {
+    @CrossOrigin
+    @PostMapping("trainerid/addinterval/")
+    public Integer addingInterval( @RequestBody Schedule schedule) {
         ///trainerid/addinterval – непосредственно добавление интервала.
-        return trainerInter.addingInterval(trainerId, course);
+        return trainerInter.addingInterval(schedule);
     }
 
 

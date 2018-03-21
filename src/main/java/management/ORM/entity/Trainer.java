@@ -57,17 +57,13 @@ public class Trainer implements Serializable {
     }
 
 
-
     @JsonProperty("photoLink")
     public String photoLink;
 
 
-
-    @OneToMany(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonProperty("listOfCources")
     public List<Course> listOfCources;
-
-
 
 
 //    public Integer date;
@@ -100,8 +96,6 @@ public class Trainer implements Serializable {
 //
 //    public void setCourseId(Integer courseId) {
 //        this.courseId = courseId;
-
-
 
 
 //    public Integer getDate() {
@@ -140,7 +134,7 @@ public class Trainer implements Serializable {
         return listOfCources;
     }
 
-    public void setListOfCources(List<Course>listOfCources) {
+    public void setListOfCources(List<Course> listOfCources) {
         this.listOfCources = listOfCources;
     }
 

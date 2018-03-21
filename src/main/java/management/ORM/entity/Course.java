@@ -51,16 +51,23 @@ public class Course implements Serializable {
     public Integer duration;
 
 
+    public String getNameOfCourse() {
+        return nameOfCourse;
+    }
+
+    public void setNameOfCourse(String nameOfCourse) {
+        this.nameOfCourse = nameOfCourse;
+    }
+
     @Id
     public String nameOfCourse;
 
-    public String kindOfCourse;
-    // @JsonProperty("quantity")
-    public Integer quantity;
+
+    
 
 
     //@JsonProperty("quantatity")
-    public Integer quantatity;
+    public Integer quantity;
 
 
     // @JsonProperty("id")
@@ -112,13 +119,7 @@ public class Course implements Serializable {
     }
 
 
-    public Integer getQuantatity() {
-        return quantatity;
-    }
 
-    public void setQuantatity(Integer quantatity) {
-        this.quantatity = quantatity;
-    }
 
     public Integer getId() {
         return id;
@@ -136,14 +137,7 @@ public class Course implements Serializable {
         this.nameOfCourse = coursename;
     }
 
-    public String getKindOfCourse() {
-        return kindOfCourse;
-    }
-
-    public void setKindOfCourse(String kindOfCourse) {
-        this.kindOfCourse = kindOfCourse;
-    }
-
+  
     public Integer getQuantity() {
         return quantity;
     }

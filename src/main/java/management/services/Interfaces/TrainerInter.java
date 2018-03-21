@@ -3,6 +3,7 @@ package management.services.Interfaces;
 import management.DTO.*;
 import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,10 @@ public interface TrainerInter {
 //            /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
 
 
-    Integer addingInterval(Integer id, Course course);
+    Integer addingInterval(Schedule schedule);
+
+
+
     //    /trainerid/addinterval – непосредственно добавление интервала.
 
 

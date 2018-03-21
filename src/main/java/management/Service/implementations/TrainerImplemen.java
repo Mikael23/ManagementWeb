@@ -2,6 +2,7 @@ package management.Service.implementations;
 
 import management.DTO.*;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.AllUsers;
 import management.services.Interfaces.TrainerInter;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,9 +37,47 @@ public class TrainerImplemen implements TrainerInter {
         return null;
     }
 
+    @Transactional
     @Override
-    public Integer addingInterval(Integer id, Course course) {
-        return null;
+    public Integer addingInterval(Schedule schedule) {
+
+
+
+
+        Schedule schedule1 = new Schedule();
+
+        String dateTime = schedule.data;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime,formatter);
+        String courseName = schedule.courseName;
+        System.out.println(courseName);
+        Course course=em.find(Course.class,courseName);
+        String trainerName = schedule.trainername;
+        Trainer trainer = em.find(Trainer.class,trainerName);
+        System.out.println(dateTime1.toString());
+        schedule1.dates.add(dateTime1);
+        schedule1.courseName=course.nameOfCourse;
+        schedule1.trainername=trainer.email;
+        em.persist(schedule1);
+
+
+
+
+
+
+//        Поля дата, время, подгруженные курсы (которые можно выбрать галочками).
+//                Кнопка «добавить» запоминает выбранное и отображает в соседней форме.
+//                Поля дата, время, галочки на выбранных курсах обнуляются, чтобы можно было добавить еще один интервал.
+//        По кнопке «сохранить» выполняется запрос.
+//        Body: interval: date, массив из {time, {массив выбранных courseid}, busy=false}.
+//
+//        String str = "1986-04-08 12:30";
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+
+
+
+        return 200;
     }
 
     @Override
