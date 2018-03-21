@@ -12,16 +12,16 @@ import java.util.List;
 @Table(name = "allUsers")
 public class AllUsers implements Serializable {
 
-    @OneToOne
-    public Schedule schedule;
+//    @OneToOne
+//    public Schedule schedule;
 
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
+//    public Schedule getSchedule() {
+//        return schedule;
+//    }
+//
+//    public void setSchedule(Schedule schedule) {
+//        this.schedule = schedule;
+//    }
 
     public List<Course> getListOfRecords() {
         return listOfRecords;

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,6 +49,7 @@ public class Schedule implements Serializable {
     @Transient
     public String trainername;
 
+    @Id
     public String courseName;
 
 
@@ -62,7 +64,7 @@ public class Schedule implements Serializable {
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
 
-    public List<LocalDateTime>dates;
+    public List<LocalDateTime>dates=new ArrayList<>();
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
@@ -81,7 +83,8 @@ public class Schedule implements Serializable {
 
 
 
-    @Id
+
+
    // public String courseName;
 
     public Integer UserId;
@@ -120,19 +123,6 @@ public class Schedule implements Serializable {
 
 
 
-
-    @ElementCollection(targetClass=Integer.class)
-    public  List<Integer> datesTimes;
-
-
-
-    public List<Integer> getDatesTimes() {
-        return datesTimes;
-    }
-
-    public void setDatesTimes(List<Integer> datesTimes) {
-        this.datesTimes = datesTimes;
-    }
 
 
 

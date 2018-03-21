@@ -49,13 +49,16 @@ public class TrainerImplemen implements TrainerInter {
         String dateTime = schedule.data;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime1 = LocalDateTime.parse(dateTime,formatter);
+
         String courseName = schedule.courseName;
         System.out.println(courseName);
         Course course=em.find(Course.class,courseName);
         String trainerName = schedule.trainername;
         Trainer trainer = em.find(Trainer.class,trainerName);
-        System.out.println(dateTime1.toString());
-        schedule1.dates.add(dateTime1);
+        System.out.println(dateTime1);
+        List<LocalDateTime>lists = new ArrayList<>();
+        lists.add(dateTime1);
+          schedule1.dates.add(dateTime1);
         schedule1.courseName=course.nameOfCourse;
         schedule1.trainername=trainer.email;
         em.persist(schedule1);

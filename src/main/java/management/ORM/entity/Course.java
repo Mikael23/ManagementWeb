@@ -24,8 +24,8 @@ public class Course implements Serializable {
 
     public boolean confirmed;
 
-    @OneToOne
-    public Schedule schedule;
+//    @OneToOne
+//    public Schedule schedule;
     //
 
 
