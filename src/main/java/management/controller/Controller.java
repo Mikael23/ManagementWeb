@@ -12,6 +12,7 @@ import management.services.Interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -50,6 +51,11 @@ public class Controller {
 
     }
 
+    @PostMapping("/courseid/choose")
+    public Integer choosingTime(@RequestBody Schedule schedule) throws Exception {
+        return userService.choosingTime(schedule);
+    }
+
     @GetMapping("/courseid/datestimes/{nameCourse}")
     public DtoGettingDatesAndTimes freeDatesandTimes(@PathVariable("nameCourse") String nameCourse) {
 
@@ -59,12 +65,12 @@ public class Controller {
     }
 
 
-    @PostMapping("/courseid/choose")
-    public String recordForCourse(@RequestBody Course course) {
-
-        //            /courseid/choose – запись на курс на конкретное время
-        return courseServiceInt.choosingAndBookingforCourse(course);
-    }
+//    @PostMapping("/courseid/choose")
+//    public String recordForCourse(@RequestBody Course course) {
+//
+//        //            /courseid/choose – запись на курс на конкретное время
+//        return courseServiceInt.choosingAndBookingforCourse(course);
+//    }
 
     @PostMapping("/registration")
     public DtoPostRegistration registration(@RequestBody AllUsers allUsers) throws Exception {
@@ -183,7 +189,7 @@ public class Controller {
 
     @CrossOrigin
     @PostMapping("trainerid/addinterval/")
-    public Integer addingInterval( @RequestBody Schedule schedule) {
+    public Integer addingInterval( @RequestBody Schedule schedule) throws Exception {
         ///trainerid/addinterval – непосредственно добавление интервала.
         return trainerInter.addingInterval(schedule);
     }

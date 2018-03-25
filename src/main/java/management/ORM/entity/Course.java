@@ -2,12 +2,17 @@ package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "course")
@@ -21,22 +26,31 @@ public class Course implements Serializable {
 
     public String initiatorCourse;
 
+    @Transient
+    LocalDateTime UserChoosenTime;
+
+
 
     public boolean confirmed;
+
+    public boolean isTimeConfirmedForUser() {
+        return timeConfirmedForUser;
+    }
+
+    public void setTimeConfirmedForUser(boolean timeConfirmedForUser) {
+        this.timeConfirmedForUser = timeConfirmedForUser;
+    }
+
+
+    public boolean timeConfirmedForUser;
 
 //    @OneToOne
 //    public Schedule schedule;
     //
 
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "Users_Cources",
-            joinColumns = {@JoinColumn(name = "Course_nameOfCourse")},
-            inverseJoinColumns = {@JoinColumn(name = "user_email")}
-    )
-
-    public List<AllUsers> listOfAllUsers;
+    @ManyToMany(fetch = FetchType.LAZY)
+    public Set<AllUsers> listOfAllUsers = new HashSet<AllUsers>();
 
 
     public String name;
@@ -178,11 +192,11 @@ public class Course implements Serializable {
 //    public void setUserPhone(Integer userPhone) {
 //        this.userPhone = userPhone;
 //    }
-    public List<AllUsers> getListOfAllUsers() {
+    public Set<AllUsers> getListOfAllUsers() {
         return listOfAllUsers;
     }
 
-    public void setListOfAllUsers(List<AllUsers> listOfAllUsers) {
+    public void setListOfAllUsers(Set<AllUsers> listOfAllUsers) {
         this.listOfAllUsers = listOfAllUsers;
     }
 

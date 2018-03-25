@@ -3,6 +3,7 @@ package management.Service.implementations;
 import management.DTO.*;
 import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.services.Interfaces.UserService;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,6 @@ public class UserImplemen implements UserService {
     public List<DtoGettingAllUserRecords> gettingAllUserRecords(Integer userId) {
         return null;
     }
-
 
 
     @Override
@@ -49,7 +51,6 @@ public class UserImplemen implements UserService {
 
 
     }
-
 
 
     @Override
@@ -151,9 +152,53 @@ public class UserImplemen implements UserService {
 
     }
 
+    @Transactional
     @Override
-    public String choosingTime(Course course, String email) throws Exception {
-        return null;
+    public Integer choosingTime(Schedule schedule) throws Exception {
+
+//        /courseid/choose – запись на курс на конкретное время
+//        Body: { courseid, userid, date, time, confirmed = false }
+//
+//        List<Schedule> schedules = em.createQuery(jpql, Schedule.class).getResultList();
+//        DtoGettingDatesAndTimes dtoGettingDatesAndTimes = new DtoGettingDatesAndTimes();
+        String courseName = schedule.coursename;
+
+//        String dateTime = schedule.data;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+//        System.out.println(dateTime1);
+
+
+        //    String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+//        String jpql = String.format("SELECT r FROM Schedule r where  r.id=  ' " + schedule.id , Schedule.class);
+//
+////        "SELECT c FROM Country c WHERE c.name = '" + name + "'"
+//
+//        List<Schedule>schedules=em.createQuery(jpql,Schedule.class).getResultList();
+
+
+        Schedule schedule1 = em.find(Schedule.class, schedule.id);
+
+        em.remove(schedule1);
+
+
+        if (schedule1.busy == true) {
+            throw new Exception("Sorry the time is not free");
+        }
+
+        schedule1.busy = true;
+        schedule1.confirmedByTrainer = false;
+        schedule1.requestedUser = schedule.requestedUser;
+        em.persist(schedule1);
+
+
+//        Если все успешно, данные дата и время попадают в неподтвержденные записи у тренера, и как неподтвержденные – в личный
+//        кабинет пользователя, тренеру отправляется оповещение на e-mail о новой записи. Выбранное время перестает быть свободным.
+//                В базу данных заносится параметр confirmed = false,
+//        который поменяется на true после подтверждения. Значение busy меняется на true.
+
+
+        return 200;
     }
 
     @Override

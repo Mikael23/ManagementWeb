@@ -20,33 +20,20 @@ public class Schedule implements Serializable {
 
 //    boolean confirmed;
 
-    public String getTrainerName() {
-        return trainerName;
-    }
 
-    public void setTrainerName(String trainerName) {
-        this.trainerName = trainerName;
-    }
-
-    public String getCoursename() {
-        return coursename;
-    }
-
-    public void setCoursename(String coursename) {
-        this.coursename = coursename;
-    }
-
-    public List<LocalDateTime> getDates() {
-        return dates;
-    }
-
-    public void setDates(List<LocalDateTime> dates) {
-        this.dates = dates;
-    }
 
     @Column
     public String trainerName;
 
+   public boolean confirmedByTrainer;// Odobreno li trenerom ili net:
+
+    public boolean isConfirmedByTrainer() {
+        return confirmedByTrainer;
+    }
+
+    public void setConfirmedByTrainer(boolean confirmedByTrainer) {
+        this.confirmedByTrainer = confirmedByTrainer;
+    }
 
     public String coursename;
     @GeneratedValue
@@ -54,13 +41,15 @@ public class Schedule implements Serializable {
     public Integer id;
 
 
-    public LocalDateTime getDt() {
-        return dt;
+    public String getRequestedUser() {
+        return requestedUser;
     }
 
-    public void setDt(LocalDateTime dt) {
-        this.dt = dt;
+    public void setRequestedUser(String requestedUser) {
+        this.requestedUser = requestedUser;
     }
+
+    public String requestedUser; // Imya zaprashimaemogo studenta;
 
 
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
@@ -92,7 +81,10 @@ public class Schedule implements Serializable {
     boolean busyness;
 
 
-    // public String coursename;
+
+
+
+
 
 
 
@@ -133,8 +125,6 @@ public class Schedule implements Serializable {
     }
 
 
-
-
     public Integer getDate() {
         return date;
     }
@@ -152,5 +142,34 @@ public class Schedule implements Serializable {
         this.busyness = busyness;
     }
 
+    public String getTrainerName() {
+        return trainerName;
+    }
 
+    public void setTrainerName(String trainerName) {
+        this.trainerName = trainerName;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+
+    public List<LocalDateTime> getDates() {
+        return dates;
+    }
+
+    public void setDates(List<LocalDateTime> dates) {
+        this.dates = dates;
+    }
+    public LocalDateTime getDt() {
+        return dt;
+    }
+
+    public void setDt(LocalDateTime dt) {
+        this.dt = dt;
+    }
 }

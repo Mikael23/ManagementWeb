@@ -21,7 +21,7 @@ public interface TrainerInter {
 //            /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
 
 
-    Integer addingInterval(Schedule schedule);
+    Integer addingInterval(Schedule schedule) throws Exception;
 
 
 

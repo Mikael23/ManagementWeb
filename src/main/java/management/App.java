@@ -3,6 +3,8 @@ package management;
 import org.springframework.boot.SpringApplication;
 //import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 //import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 //import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 //import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 
 
 @SpringBootApplication
+
 //Test test
 //Test3 test
 

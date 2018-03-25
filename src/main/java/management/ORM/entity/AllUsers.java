@@ -3,6 +3,9 @@ package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,16 +15,7 @@ import java.util.List;
 @Table(name = "allUsers")
 public class AllUsers implements Serializable {
 
-//    @OneToOne
-//    public Schedule schedule;
 
-//    public Schedule getSchedule() {
-//        return schedule;
-//    }
-//
-//    public void setSchedule(Schedule schedule) {
-//        this.schedule = schedule;
-//    }
 
     public List<Course> getListOfRecords() {
         return listOfRecords;
@@ -40,7 +34,7 @@ public class AllUsers implements Serializable {
     public String email;
     @JsonProperty("password")
 
-   public String password; // Eto nado
+    public String password; // Eto nado
     @Transient
     @JsonProperty("repeatPassword")
     transient public String repeatPassword;
@@ -75,18 +69,7 @@ public class AllUsers implements Serializable {
     public String instagram;
 
 
-//    @ManyToMany(cascade = { CascadeType.ALL })
-//    @JoinTable(
-//            name = "Employee_Project",
-//            joinColumns = { @JoinColumn(name = "employee_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "project_id") }
-//    )
-
-//    @ManyToMany(cascade = {CascadeType.ALL})
-//    @JoinTable(name = "User_Course",joinColumns ={@JoinColumn(name = "user_email")},
-//    inverseJoinColumns = {@JoinColumn(name = "course_id")})
-
-    @ManyToMany(mappedBy = "listOfAllUsers")
+    @ManyToMany
     @JsonProperty("record")
     public List<Course> listOfRecords;
 
@@ -139,13 +122,6 @@ public class AllUsers implements Serializable {
         this.role = role;
     }
 
-//    public List<Course> getListOfCources() {
-//        return listOfCources;
-//    }
-//
-//    public void setListOfCources(List<Course> listOfCources) {
-//        this.listOfCources = listOfCources;
-//    }
 
     public Integer getId() {
         return id;

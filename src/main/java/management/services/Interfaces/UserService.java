@@ -3,6 +3,7 @@ package management.services.Interfaces;
 import management.DTO.*;
 import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +68,7 @@ public interface UserService {
 //    Response: name, surname, 200 or 401
 
 
-    String choosingTime(Course course, String email) throws Exception;
+    Integer choosingTime(Schedule schedule) throws Exception;
 
     DTOlogging dtoLogging(AllUsers allUsers);
 

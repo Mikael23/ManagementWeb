@@ -39,12 +39,15 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer addingInterval(Schedule schedule) {
+    public Integer addingInterval(Schedule schedule) throws Exception {
 
         String courseName = schedule.coursename;
 
         Course course = em.find(Course.class, courseName);
 
+        if(course==null){
+            throw new Exception("No found course");
+        }
 
         Schedule schedule1 = new Schedule();
 
@@ -64,6 +67,7 @@ public class TrainerImplemen implements TrainerInter {
         schedule1.coursename = course.nameOfCourse;
         schedule1.trainerName = trainer.email;
         em.persist(schedule1);
+
 
 
 //        Поля дата, время, подгруженные курсы (которые можно выбрать галочками).
@@ -166,7 +170,7 @@ public class TrainerImplemen implements TrainerInter {
 //                em.createQuery("SELECT c FROM CompanyEntity AS c WHERE c.name='" + inputName + "'", CompanyEntity.class);
 
 
-        
+
         String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
 
         List<Schedule> schedules = em.createQuery(jpql, Schedule.class).getResultList();
@@ -182,6 +186,8 @@ public class TrainerImplemen implements TrainerInter {
 
             dtoGettingDatesAndTimes.datesandTimes.add(formattedDateTime);
             dtoGettingDatesAndTimes.trainerName.add(schedule1.trainerName);
+            System.out.println(schedule1.id);
+            dtoGettingDatesAndTimes.setsId.add(schedule1.id);
 
         }
 

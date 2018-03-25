@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-@JsonFormat(shape= JsonFormat.Shape.ARRAY)
+
 
 @Entity
 @Table(name = "trainer")
@@ -15,19 +15,13 @@ import java.util.List;
 public class Trainer implements Serializable {
 
 
-
     @Id
     @JsonProperty("email")
 
     public String email;
 
-
     @JsonProperty("surname")
     public String surname;
-
-
-
-
 
     @ManyToMany
     public List<AllUsers> waitingLists;
@@ -37,37 +31,12 @@ public class Trainer implements Serializable {
 
     public String description;
 
-    public String getNameCourse() {
-        return nameCourse;
-    }
-
-    public void setNameCourse(String nameCourse) {
-        this.nameCourse = nameCourse;
-    }
-
-    public Integer getIdTrainer() {
-        return idTrainer;
-    }
-
-    public void setIdTrainer(Integer idTrainer) {
-        this.idTrainer = idTrainer;
-    }
-
     public String nameCourse;
-
-
-    public String getEmail() {
-        return email;
-    }
-
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 
     @JsonProperty("photoLink")
     public String photoLink;
+
+    public Integer idTrainer;
 
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -75,12 +44,18 @@ public class Trainer implements Serializable {
     public List<Course> listOfCources;
 
 
+
+
+
+
+
+
+//    Если все успешно, данные дата и время попадают в неподтвержденные записи у тренера,
+
 //    public Integer date;
 //
 //    public Integer time;
 
-
-    public Integer idTrainer;
 
     public String getName() {
 
@@ -155,6 +130,31 @@ public class Trainer implements Serializable {
         this.photoLink = photoLink;
     }
 
+
+    public String getNameCourse() {
+        return nameCourse;
+    }
+
+    public void setNameCourse(String nameCourse) {
+        this.nameCourse = nameCourse;
+    }
+
+    public Integer getIdTrainer() {
+        return idTrainer;
+    }
+
+    public void setIdTrainer(Integer idTrainer) {
+        this.idTrainer = idTrainer;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @JsonCreator
     public Trainer() {

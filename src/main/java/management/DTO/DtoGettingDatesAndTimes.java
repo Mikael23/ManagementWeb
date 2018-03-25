@@ -9,19 +9,12 @@ public class DtoGettingDatesAndTimes {
     public DtoGettingDatesAndTimes() {
     }
 
-   public List<String>datesandTimes = new LinkedList<>();
-    public List<String> trainerName=new LinkedList<>();
-
-
-
+    public List<String> datesandTimes = new LinkedList<>();
+    public List<String> trainerName = new LinkedList<>();
+    public List<Integer> setsId = new LinkedList<>();
 
 
 }
-
-
-
-
-
 
 
 ///courseid/datestimes – получаем незанятые даты и время у конкретного тренера по нажатию «Записаться на курс».
