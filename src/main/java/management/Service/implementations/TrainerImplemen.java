@@ -166,6 +166,7 @@ public class TrainerImplemen implements TrainerInter {
 //                em.createQuery("SELECT c FROM CompanyEntity AS c WHERE c.name='" + inputName + "'", CompanyEntity.class);
 
 
+        
         String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
 
         List<Schedule> schedules = em.createQuery(jpql, Schedule.class).getResultList();
