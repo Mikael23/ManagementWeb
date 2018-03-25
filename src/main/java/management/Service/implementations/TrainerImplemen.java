@@ -41,31 +41,29 @@ public class TrainerImplemen implements TrainerInter {
     @Override
     public Integer addingInterval(Schedule schedule) {
 
+        String courseName = schedule.coursename;
 
+        Course course = em.find(Course.class, courseName);
 
 
         Schedule schedule1 = new Schedule();
 
         String dateTime = schedule.data;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime,formatter);
+        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
 
-        String courseName = schedule.courseName;
-        System.out.println(courseName);
-        Course course=em.find(Course.class,courseName);
-        String trainerName = schedule.trainername;
-        Trainer trainer = em.find(Trainer.class,trainerName);
+
+        String trainerName = schedule.trainerName;
+        Trainer trainer = em.find(Trainer.class, trainerName);
         System.out.println(dateTime1);
-        List<LocalDateTime>lists = new ArrayList<>();
-        lists.add(dateTime1);
-          schedule1.dates.add(dateTime1);
-        schedule1.courseName=course.nameOfCourse;
-        schedule1.trainername=trainer.email;
+
+
+        schedule1.dates.add(dateTime1);
+        schedule1.dt = dateTime1;
+        schedule1.busy = false;
+        schedule1.coursename = course.nameOfCourse;
+        schedule1.trainerName = trainer.email;
         em.persist(schedule1);
-
-
-
-
 
 
 //        Поля дата, время, подгруженные курсы (которые можно выбрать галочками).
@@ -77,7 +75,6 @@ public class TrainerImplemen implements TrainerInter {
 //        String str = "1986-04-08 12:30";
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 //        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-
 
 
         return 200;
@@ -157,8 +154,39 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Override
-    public DtoGettingDatesAndTimes gettingDatesAndTimes(Integer id) {
-        return null;
+    public DtoGettingDatesAndTimes gettingDatesAndTimes(String name) {
+
+        Schedule schedule = new Schedule();
+//        String jpql=String.format("select r from Record r where "
+//                + "r.book.isbn=%d and r.reader.id=%d", isbn,readerId);
+        // String jpql = "Select r from Course r where confirmed = false";
+
+
+//        TypedQuery<CompanyEntity> query =
+//                em.createQuery("SELECT c FROM CompanyEntity AS c WHERE c.name='" + inputName + "'", CompanyEntity.class);
+
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+
+        List<Schedule> schedules = em.createQuery(jpql, Schedule.class).getResultList();
+        DtoGettingDatesAndTimes dtoGettingDatesAndTimes = new DtoGettingDatesAndTimes();
+        for (Schedule schedule1 : schedules) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            LocalDateTime dateTime = schedule1.dt;
+
+
+            String formattedDateTime = dateTime.format(formatter);
+
+            dtoGettingDatesAndTimes.datesandTimes.add(formattedDateTime);
+            dtoGettingDatesAndTimes.trainerName.add(schedule1.trainerName);
+
+        }
+
+
+
+        return dtoGettingDatesAndTimes;
     }
 
     @Override
@@ -199,10 +227,10 @@ public class TrainerImplemen implements TrainerInter {
 
         String jpql = "SELECT r FROM Trainer r";
 
-        List<Trainer>listOfNameOfTrainers = em.createQuery(jpql,Trainer.class).getResultList();
-        List<String>trainerNames = new ArrayList<>();
+        List<Trainer> listOfNameOfTrainers = em.createQuery(jpql, Trainer.class).getResultList();
+        List<String> trainerNames = new ArrayList<>();
 
-        for (Trainer trainer:listOfNameOfTrainers) {
+        for (Trainer trainer : listOfNameOfTrainers) {
             trainerNames.add(trainer.email);
         }
 
@@ -244,7 +272,7 @@ public class TrainerImplemen implements TrainerInter {
         em.remove(allUsers);
         trainer.email = allUsers.email;
         trainer.surname = allUsers.surname;
-        trainer.name= allUsers.name;
+        trainer.name = allUsers.name;
 
         allUsers.role = "trainer";
 

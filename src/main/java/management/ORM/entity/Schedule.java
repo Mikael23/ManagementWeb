@@ -9,33 +9,31 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 
 
 @Entity
-@Table(name="schedule")
+@Table(name = "schedule")
 
 public class Schedule implements Serializable {
 
 
 //    boolean confirmed;
 
-    public String getTrainername() {
-        return trainername;
+    public String getTrainerName() {
+        return trainerName;
     }
 
-    public void setTrainername(String trainername) {
-        this.trainername = trainername;
+    public void setTrainerName(String trainerName) {
+        this.trainerName = trainerName;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getCoursename() {
+        return coursename;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
     }
 
     public List<LocalDateTime> getDates() {
@@ -46,11 +44,14 @@ public class Schedule implements Serializable {
         this.dates = dates;
     }
 
-    @Transient
-    public String trainername;
+    @Column
+    public String trainerName;
 
+
+    public String coursename;
+    @GeneratedValue
     @Id
-    public String courseName;
+    public Integer id;
 
 
     public LocalDateTime getDt() {
@@ -61,14 +62,23 @@ public class Schedule implements Serializable {
         this.dt = dt;
     }
 
+
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    @ElementCollection(targetClass = LocalDateTime.class)
+    public List<LocalDateTime> dates = new LinkedList<>();
+
+
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    public LocalDateTime dt;
 
-    public List<LocalDateTime>dates=new ArrayList<>();
+    public Integer getId() {
+        return id;
+    }
 
-    @Column
-    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime dt;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getData() {
         return data;
@@ -82,21 +92,18 @@ public class Schedule implements Serializable {
     boolean busyness;
 
 
+    // public String coursename;
 
 
-
-   // public String courseName;
-
-    public Integer UserId;
 
     public Integer date;
 
     public String getCourse() {
-        return courseName;
+        return coursename;
     }
 
     public void setCourse(String courseName) {
-        this.courseName = courseName;
+        this.coursename = courseName;
     }
 
     public Trainer getTrainer() {
@@ -110,7 +117,6 @@ public class Schedule implements Serializable {
     public Trainer trainer;
 
 
-
     public boolean isBusy() {
         return busy;
     }
@@ -122,25 +128,12 @@ public class Schedule implements Serializable {
     public boolean busy;
 
 
-
-
-
-
-
     @JsonCreator
     public Schedule() {
     }
 
 
 
-
-    public Integer getUserId() {
-        return UserId;
-    }
-
-    public void setUserId(Integer userId) {
-        UserId = userId;
-    }
 
     public Integer getDate() {
         return date;
@@ -149,7 +142,6 @@ public class Schedule implements Serializable {
     public void setDate(Integer date) {
         this.date = date;
     }
-
 
 
     public boolean isBusyness() {

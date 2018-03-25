@@ -2,54 +2,15 @@ package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class DtoGettingDatesAndTimes {
     public DtoGettingDatesAndTimes() {
     }
 
-    @JsonProperty("SuggestedTimes")
-    public double [] SuggestedTimes = new double[2] ;
-
-    public double[] getSuggestedTimes() {
-        return SuggestedTimes;
-    }
-
-    public void setSuggestedTimes(double[] suggestedTimes) {
-        SuggestedTimes = suggestedTimes;
-    }
-
-    public double[] getSuggestedData() {
-        return SuggestedData;
-    }
-
-    public void setSuggestedData(double[] suggestedData) {
-        SuggestedData = suggestedData;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Integer[] getCoursesId() {
-        return coursesId;
-    }
-
-    public void setCoursesId(Integer[] coursesId) {
-        this.coursesId = coursesId;
-    }
-
-    @JsonProperty("SuggestedData")
-    public double[] SuggestedData;
-
-
-    @JsonProperty("Message")
-    public String message;
-
-    @JsonProperty("coursesId")
-    public Integer[]coursesId;
+   public List<String>datesandTimes = new LinkedList<>();
+    public List<String> trainerName=new LinkedList<>();
 
 
 

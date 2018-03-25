@@ -81,7 +81,12 @@ public interface TrainerInter {
 //    но ваше имя добавлено в список ожидающих, и вы будете оповещены, когда появится время для записи.
 
 
-    DtoGettingDatesAndTimes gettingDatesAndTimes(Integer id);
+    DtoGettingDatesAndTimes gettingDatesAndTimes(String name);
+
+
+
+
+
     ///courseid/datestimes – получаем незанятые даты и время у конкретного тренера по нажатию «Записаться на курс».
 //        По courseid смотрим, какие даты с каким временем свободные. Диапазон дат для записей – месяц.
 //        Если пользователь не залогинен, - переадресация на логин/регистрацию и после нее получение возможных дат и времени.

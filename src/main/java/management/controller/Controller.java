@@ -50,12 +50,12 @@ public class Controller {
 
     }
 
-    @GetMapping("/courseid/datestimes/{trainerId}")
-    public DtoGettingDatesAndTimes freeDatesandTimes(@PathVariable("trainerId") Integer trainerId) {
+    @GetMapping("/courseid/datestimes/{nameCourse}")
+    public DtoGettingDatesAndTimes freeDatesandTimes(@PathVariable("nameCourse") String nameCourse) {
 
 
 //        – получаем незанятые даты и время у конкретного тренера по нажатию «Записаться на курс».
-        return trainerInter.gettingDatesAndTimes(trainerId);
+        return trainerInter.gettingDatesAndTimes(nameCourse);
     }
 
 
@@ -158,8 +158,8 @@ public class Controller {
     }
 
 
-    @DeleteMapping("/admin/proposedcourses/reject/{courseName}")
-    public Integer proposedCourseRejection(@PathVariable("courseName") String courseName) throws Exception {
+    @DeleteMapping("/admin/proposedcourses/reject/{coursename}")
+    public Integer proposedCourseRejection(@PathVariable("coursename") String courseName) throws Exception {
 
         //            /admin/proposedcourses/reject – удаление предложения курса по нажатию «отклонить»
 

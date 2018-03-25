@@ -1,23 +1,32 @@
 package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+@JsonFormat(shape= JsonFormat.Shape.ARRAY)
 
 @Entity
 @Table(name = "trainer")
 
 public class Trainer implements Serializable {
 
+
+
     @Id
+    @JsonProperty("email")
+
     public String email;
 
 
     @JsonProperty("surname")
     public String surname;
+
+
+
 
 
     @ManyToMany
