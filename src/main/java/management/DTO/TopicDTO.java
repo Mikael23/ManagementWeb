@@ -9,6 +9,7 @@ import management.ORM.entity.TopicEntity;
 public class TopicDTO extends TopicSwfDTO{
 //    @JsonProperty("topicName")
 //    String name;
+    //23
     @JsonProperty("topicDiscription")
     String discription;
 //    @JsonProperty("topicSwfLinc")
