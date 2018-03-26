@@ -214,12 +214,12 @@ public class Controller {
     }
 
 
-    @DeleteMapping("/admin/removecourse/{courseId}")
-    public Integer removeOfCourse(@PathVariable("courseId") String courseId) throws Exception {
+    @DeleteMapping("/admin/removecourse/{name}")
+    public Integer removeOfCourse(@PathVariable("name") String name) throws Exception {
 
         //    DELETE:
 //            /admin/removecourse
-        return courseServiceInt.removeCourse(courseId);
+        return courseServiceInt.removeCourse(name);
 
 
     }

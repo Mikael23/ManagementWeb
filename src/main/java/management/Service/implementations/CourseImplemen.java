@@ -52,8 +52,9 @@ public class CourseImplemen implements CourseServiceInt {
         }
         for (Course course : listOfCourses) {
             if (course.nameOfCourse == name) {
-
+          System.out.println(name);
                 name1 = course.nameOfCourse;
+                System.out.println(name1);
 
 
             }
