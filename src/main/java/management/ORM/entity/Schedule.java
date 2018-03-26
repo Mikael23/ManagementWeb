@@ -17,10 +17,19 @@ import java.util.*;
 
 public class Schedule implements Serializable {
 
+   @Transient // ne kladem v bazu
+   public String dateTime;
 
-//    boolean confirmed;
 
+    public String getMessageTOtrainer() {
+        return messageTOtrainer;
+    }
 
+    public void setMessageTOtrainer(String messageTOtrainer) {
+        this.messageTOtrainer = messageTOtrainer;
+    }
+
+    public String messageTOtrainer;
 
     @Column
     public String trainerName;
@@ -36,6 +45,8 @@ public class Schedule implements Serializable {
     }
 
     public String coursename;
+
+
     @GeneratedValue
     @Id
     public Integer id;

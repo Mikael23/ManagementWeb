@@ -215,7 +215,7 @@ public class Controller {
 
 
     @DeleteMapping("/admin/removecourse/{courseId}")
-    public Integer removeOfCourse(@PathVariable("courseId") Integer courseId) throws Exception {
+    public Integer removeOfCourse(@PathVariable("courseId") String courseId) throws Exception {
 
         //    DELETE:
 //            /admin/removecourse
@@ -262,6 +262,11 @@ public class Controller {
     @PostMapping("/admin/editcourse/")
     public Integer courseEdition(@RequestBody Course course) throws Exception {
         return courseServiceInt.etitionOfCourse(course);
+    }
+
+    @PostMapping("/userid/cancelusertime/")
+    public Integer cancelByUser(@RequestBody Schedule schedule) throws Exception{
+        return userService.cancellTimeByUser(schedule);
     }
 
 

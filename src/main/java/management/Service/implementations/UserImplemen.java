@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,6 +32,61 @@ public class UserImplemen implements UserService {
     @Override
     public boolean login(AllUsers allUsers) {
         return false;
+    }
+
+    @Override
+    public Integer cancellTimeByUser(Schedule schedule) throws Exception {
+
+
+      String datetime = schedule.dateTime;
+      String name = schedule.requestedUser;
+      String courseName = schedule.coursename;
+        //String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+
+//        String dateTime = schedule.data;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+
+       AllUsers user = em.find(AllUsers.class,name);
+       if(user==null){
+           throw new Exception("Please log in");
+       }
+
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+       LocalDateTime dateTime1 = LocalDateTime.parse(datetime,formatter);
+
+       String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer = true and r.busy = false and " +
+               "r.coursename =" + courseName + " " + " and r.dt =  ?1" + " ", Schedule.class);
+
+
+
+
+        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,dateTime1).getResultList();
+
+
+//        String query = "SELECT t FROM Tickets t  WHERE t.startdate > ?1 AND t.enddate < ?2 ORDER BY t.status DESC";
+//        Query q = em.createQuery(query).setParameter(1, startDate, TemporalType.TIMESTAMP).setParameter(2, endDate, TemporalType.DATE);
+
+//
+//        /userid/cancelusertime - отмена подтвержденной записи (фильтрация по confirmed = true).
+//        При нажатии вылезает форма «указать причину» (messagetotrainer).
+//                Body: {courseid, date, time, messagetotrainer, busy=false, confirmed = false}
+//        Response: проверка по данным на наличие записи на это время на этот курс этого юзера.
+//        Если все ок, отправка сообщения на e-mail trainerid об отмене, который ведет courseid, c данными:
+//        userid, user’s name, user’s surname, name of the course, date, time, messagetotrainer. date и
+//        time снова становятся свободными: поле busy меняется на false, поле confirmed меняется на false.
+
+
+
+
+
+        for (Schedule schedule1:list) {
+            System.out.println(schedule1);
+        }
+
+
+
+        return 2;
     }
 
     @Override
@@ -147,6 +203,7 @@ public class UserImplemen implements UserService {
         dtoUpdatingProfile.name = user2.name;
         dtoUpdatingProfile.surname = user2.surname;
         dtoUpdatingProfile.numberOfMistake = 200;
+
         return dtoUpdatingProfile;
 
 
