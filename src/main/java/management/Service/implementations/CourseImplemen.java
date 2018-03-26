@@ -51,7 +51,9 @@ public class CourseImplemen implements CourseServiceInt {
             throw new Exception("401, nothing to remove");
         }
         for (Course course : listOfCourses) {
-            if (course.nameOfCourse == name) {
+            System.out.println(course.nameOfCourse);
+            System.out.println(name);
+            if (course.nameOfCourse.equals(name)) {
           System.out.println(name);
                 name1 = course.nameOfCourse;
                 System.out.println(name1);
