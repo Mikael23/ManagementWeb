@@ -354,4 +354,27 @@ public class CourseImplemen implements CourseServiceInt {
     public String choosingAndBookingforCourse(Course course) {
         return null;
     }
+
+
+
+
+    //Evgeniy
+
+    @Override
+    public List<Course> getCoursesByName(List<String> names) {
+        List<Course> res = new ArrayList<>();
+
+        for (String name: names) {
+            res.add(getCourseByName(name));
+        }
+        return res;
+    }
+
+    @Override
+    public Course getCourseByName(String name) {
+        Course res = em.find(Course.class, name);
+        return res;
+    }
+
+    //Evgeniy
 }

@@ -26,6 +26,9 @@ public class Course implements Serializable {
 
     public String initiatorCourse;
 
+    @ManyToOne
+    TopicEntity topic;
+
     @Transient
     LocalDateTime UserChoosenTime;
 

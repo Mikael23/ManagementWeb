@@ -2,22 +2,22 @@ package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import management.ORM.entity.Course;
 import management.ORM.entity.TopicEntity;
 
+import java.util.List;
 
 
 public class TopicDTO extends TopicSwfDTO{
-//    @JsonProperty("topicName")
-//    String name;
-    //23
-    @JsonProperty("topicDiscription")
-    String discription;
-//    @JsonProperty("topicSwfLinc")
-//    String swfLinc;
+
+
+    @JsonProperty("coursesNames")
+    List<String> namesOfCourses;
+
+
     @JsonProperty("topicImgLinc")
     String imgLinc;
-//	@JsonProperty("coursesNames")
-//	List<CourseNameTrainer> coursesNames;
+
 
     @JsonCreator
     public TopicDTO(){
@@ -25,28 +25,39 @@ public class TopicDTO extends TopicSwfDTO{
     }
 
 
-
-    public TopicDTO(String name, String swfLinc, String discription, String imgLinc) {
-        super(name, swfLinc);
-        this.discription = discription;
+    public TopicDTO(List<String> namesOfCoursee, String imgLinc) {
+        this.namesOfCourses = namesOfCoursee;
         this.imgLinc = imgLinc;
     }
 
+    public TopicDTO(String name, String swfLinc, List<String> namesOfCoursee, String imgLinc) {
+        super(name, swfLinc);
+        this.namesOfCourses = namesOfCoursee;
+        this.imgLinc = imgLinc;
+    }
+
+//    public TopicDTO(TopicEntity topicEntity, List<String> namesOfCoursee, String imgLinc) {
+//        super(topicEntity);
+//        this.namesOfCourses = namesOfCoursee;
+//        this.imgLinc = imgLinc;
+//    }
 
     public TopicDTO(TopicEntity topicEntity) {
+
         super(topicEntity.getName(), topicEntity.getLincSwf());
-        discription = topicEntity.getDescription();
+
         this.imgLinc = topicEntity.getLincImg();
+
+        for (Course course:
+        topicEntity.getCourses()) {
+            namesOfCourses.add(course.getName());
+        };
+
     }
 
 
 
-    public String getDiscription() {
-        return discription;
-    }
-    public void setDiscription(String discription) {
-        this.discription = discription;
-    }
+
 
     public String getImgLinc() {
         return imgLinc;
@@ -55,18 +66,20 @@ public class TopicDTO extends TopicSwfDTO{
         this.imgLinc = imgLinc;
     }
 
-//	public List<CourseNameTrainer> getCoursesNames() {
-//		return coursesNames;
-//	}
-//	public void setcoursesNames(List<CourseNameTrainer> coursesNames) {
-//		this.coursesNames = coursesNames;
-//	}
+    public List<String> getNamesOfCourses() {
+        return namesOfCourses;
+    }
+
+    public void setNamesOfCourses(List<String> namesOfCourses) {
+        this.namesOfCourses = namesOfCourses;
+    }
+
 
 
     @Override
     public String toString() {
         return "TopicDTO{" +
-                "discription='" + discription + '\'' +
+                "discription='" + '\'' +
                 ", imgLinc='" + imgLinc + '\'' +
                 ", name='" + name + '\'' +
                 ", swfLinc='" + swfLinc + '\'' +

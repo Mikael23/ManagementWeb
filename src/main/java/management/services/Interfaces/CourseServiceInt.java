@@ -98,6 +98,12 @@ public interface CourseServiceInt {
 
     String choosingAndBookingforCourse(Course course);
 
+    //Evgeniy
+
+
+    List<Course> getCoursesByName(List<String> names);
+    Course getCourseByName(String name);
+    //Evgeniy
 
 //  POST:
 //            /courseid/choose – запись на курс на конкретное время

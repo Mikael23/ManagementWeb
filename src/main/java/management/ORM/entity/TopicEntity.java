@@ -2,14 +2,19 @@ package management.ORM.entity;
 
 
 import management.DTO.TopicDTO;
+import management.services.Interfaces.CourseServiceInt;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Topics")
 public class TopicEntity {
 
+    @Autowired
+    CourseServiceInt courseInterfase;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CodInner")
@@ -21,23 +26,28 @@ public class TopicEntity {
     private String lincImg;
     private String lincSwf;
 
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    private List<Course> courses;
+
     public TopicEntity() {
 
     }
 
-    public TopicEntity(String name, String description, String lincImg, String lincSwf) {
-
+    public TopicEntity(int codInner, String name, String description, String lincImg, String lincSwf, List<Course> courses) {
+        this.codInner = codInner;
         this.name = name;
         this.description = description;
         this.lincImg = lincImg;
         this.lincSwf = lincSwf;
+        this.courses = courses;
     }
 
     public TopicEntity(TopicDTO topicDTO){
+
         name = topicDTO.getName();
-        description = topicDTO.getDiscription();
         lincImg = topicDTO.getImgLinc();
         lincSwf = topicDTO.getSwfLinc();
+        courses = courseInterfase.getCoursesByName(topicDTO.getNamesOfCourses());
     }
 
     public int getCodInner() {
@@ -78,6 +88,14 @@ public class TopicEntity {
 
     public void setLincSwf(String lincSwf) {
         this.lincSwf = lincSwf;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     @Override
