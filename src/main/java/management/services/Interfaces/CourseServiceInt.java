@@ -21,7 +21,7 @@ public interface CourseServiceInt {
 //    Response: 200, 401.
 
 
-    Integer removeCourse(Integer courseId) throws Exception;
+    Integer removeCourse(String courseId) throws Exception;
 
 
 

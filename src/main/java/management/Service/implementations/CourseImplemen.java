@@ -36,7 +36,7 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Transactional
     @Override
-    public Integer removeCourse(Integer courseId) throws Exception {
+    public Integer removeCourse(String name) throws Exception {
         //   String jpql = "Select r from Course r where confirmed = false";
         String jpql = "Select r from Course r where confirmed=true";
 
@@ -45,22 +45,22 @@ public class CourseImplemen implements CourseServiceInt {
         List<Trainer> listOfTrainers = em.createQuery(jpql2, Trainer.class).getResultList();
 
         List<Course> listOfCourses = em.createQuery(jpql, Course.class).getResultList();
-        String name = null;
+        String name1 = null;
 
         if (listOfCourses == null) {
             throw new Exception("401, nothing to remove");
         }
         for (Course course : listOfCourses) {
-            if (course.id == courseId) {
+            if (course.nameOfCourse == name) {
 
-                name = course.nameOfCourse;
+                name1 = course.nameOfCourse;
 
 
             }
         }
 
 
-        Course course = em.find(Course.class, name);
+        Course course = em.find(Course.class, name1);
 
         for (Trainer trainer : listOfTrainers) {
             if (trainer.listOfCources.contains(course)) {

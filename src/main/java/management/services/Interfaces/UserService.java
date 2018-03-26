@@ -19,11 +19,12 @@ public interface UserService {
 
     boolean login(AllUsers allUsers);
 
-
-
-
-
     List<String>allUserId();
+
+
+
+
+    Integer cancellTimeByUser(Schedule schedule) throws Exception;
 
 
 //    GET:

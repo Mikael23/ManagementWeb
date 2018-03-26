@@ -30,6 +30,11 @@ public class TrainerImplemen implements TrainerInter {
 
     @Override
     public List<DtoGettingCourcesOnTrainerId> getingCourseOnTrainerId(Integer id) {
+
+
+
+
+
         return null;
     }
 
