@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "Topics")
 public class TopicEntity {
-
+ //23
     @Autowired
     CourseServiceInt courseInterfase;
 
