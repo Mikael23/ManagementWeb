@@ -36,6 +36,8 @@ public class Schedule implements Serializable {
     }
 
     public String coursename;
+
+
     @GeneratedValue
     @Id
     public Integer id;

@@ -147,6 +147,7 @@ public class UserImplemen implements UserService {
         dtoUpdatingProfile.name = user2.name;
         dtoUpdatingProfile.surname = user2.surname;
         dtoUpdatingProfile.numberOfMistake = 200;
+
         return dtoUpdatingProfile;
 
 

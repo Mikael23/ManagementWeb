@@ -84,7 +84,7 @@ public class Course implements Serializable {
     public Integer quantity;
 
 
-    // @JsonProperty("id")
+    @GeneratedValue
     public Integer id;
 
 
