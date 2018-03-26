@@ -1,6 +1,10 @@
 package management.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+
+import javax.persistence.Convert;
+import java.time.LocalDateTime;
 
 public class DtoGettingNewRequets {
 
@@ -18,16 +22,12 @@ public class DtoGettingNewRequets {
     public Integer courseId;
     @JsonProperty
     public String NameOfCourse;
-    @JsonProperty
-    Integer date;
 
-    public Integer getDate() {
-        return date;
-    }
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
 
-    public void setDate(Integer date) {
-        this.date = date;
-    }
+    public LocalDateTime localDateTime;
+
+
 
     public Integer getTime() {
         return time;

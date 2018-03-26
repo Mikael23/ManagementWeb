@@ -138,9 +138,9 @@ public class Controller {
     }
 
 
-    @GetMapping("/trainerid/newrequests/{trainerId}")
-    public DtoGettingNewRequets newRequets(@PathVariable("trainerId") Integer trainerId) {
-        return trainerInter.getingNewRequest(trainerId);
+    @GetMapping("/trainerid/newrequests/{trainerName}")
+    public List<DtoGettingNewRequets> newRequets(@PathVariable("trainerName") String trainerName) {
+        return trainerInter.getingNewRequest(trainerName);
 //    GET:
 //            /trainerid/newrequests – новые заявки (фильтруются по параметру busy=true, confirmed = false).
 //    Response: {courseid, name of the course, userid, user’s name, user’s surname, date, time }.

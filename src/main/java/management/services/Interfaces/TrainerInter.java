@@ -51,7 +51,7 @@ public interface TrainerInter {
     //  Response: 200 or 401, confirmed меняется на true.
 
 
-    DtoGettingNewRequets getingNewRequest(Integer id);
+    List<DtoGettingNewRequets> getingNewRequest(String name);
 
 //    GET:
 //            /trainerid/newrequests – новые заявки (фильтруются по параметру busy=true, confirmed = false).

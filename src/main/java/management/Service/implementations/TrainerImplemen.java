@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -100,8 +101,36 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Override
-    public DtoGettingNewRequets getingNewRequest(Integer id) {
-        return null;
+    public List<DtoGettingNewRequets> getingNewRequest(String name) {
+      //  String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+
+    String jpql =
+            String.format("SELECT r FROM Schedule r where r.busy=true and r.confirmedByTrainer=false and r.trainerName=' " + name + " '", Schedule.class);
+
+    List<Schedule>listoftrainers = em.createQuery(jpql,Schedule.class).getResultList();
+
+    System.out.println(name);
+ List<DtoGettingNewRequets>dtoGettingNewRequets = new LinkedList<>();
+ DtoGettingNewRequets dtoGettingNewRequets1=new DtoGettingNewRequets();
+
+        for (Schedule schedule:listoftrainers) {
+       System.out.println(schedule.confirmedByTrainer);
+            dtoGettingNewRequets1.NameOfCourse=schedule.coursename;
+            dtoGettingNewRequets1.userName=schedule.requestedUser;
+            dtoGettingNewRequets1.courseId=schedule.id;
+            dtoGettingNewRequets1.localDateTime=schedule.dt;
+            dtoGettingNewRequets.add(dtoGettingNewRequets1);
+
+
+        }
+
+
+//        GET:
+///trainerid/newrequests – новые заявки (фильтруются по параметру busy=true, confirmed = false).
+//        Response: {courseid, name of the course, userid, user’s name, user’s surname, date, time }.
+//        PUT:
+
+        return dtoGettingNewRequets;
     }
 
     @Override
