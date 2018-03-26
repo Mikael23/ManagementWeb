@@ -2,6 +2,7 @@ package management.ORM.entity;
 
 
 import management.DTO.TopicDTO;
+import management.Service.implementations.CourseImplemen;
 import management.services.Interfaces.CourseServiceInt;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,8 +14,7 @@ import java.util.List;
 @Table(name = "Topics")
 public class TopicEntity {
  //23
-    @Autowired
-    CourseServiceInt courseInterfase;
+
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CodInner")
@@ -43,10 +43,10 @@ public class TopicEntity {
     }
 
     public TopicEntity(TopicDTO topicDTO){
-
         name = topicDTO.getName();
         lincImg = topicDTO.getImgLinc();
         lincSwf = topicDTO.getSwfLinc();
+        CourseImplemen courseInterfase = new CourseImplemen();
         courses = courseInterfase.getCoursesByName(topicDTO.getNamesOfCourses());
     }
 
