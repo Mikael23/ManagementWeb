@@ -7,6 +7,7 @@ import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.AllUsers;
 import management.services.Interfaces.CourseServiceInt;
+import management.services.Interfaces.TopicInterfaceOut;
 import management.services.Interfaces.TrainerInter;
 import management.services.Interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class Controller {
     TrainerInter trainerInter;
     @Autowired
     UserService userService;
+
+    @Autowired
+    TopicInterfaceOut topicInterfaces;
 
 //
 //    @GetMapping("trainerid/getCources/{name}")
@@ -258,6 +262,36 @@ public class Controller {
     @PostMapping("/admin/editcourse/")
     public Integer courseEdition(@RequestBody Course course) throws Exception {
         return courseServiceInt.etitionOfCourse(course);
+    }
+
+
+    /////////////////////////////////////////////////////////
+
+
+    @RequestMapping("/top")
+    public int getInt() {
+        System.out.println("management/controller");
+        return 1;
+    }
+
+    @GetMapping("/topics")
+    public List<TopicDTO> getTopics() {
+        System.out.println(topicInterfaces.getAllTopics());
+        return topicInterfaces.getAllTopics();
+    }
+
+    @GetMapping("/topicsSwf")
+    public List<TopicSwfDTO> getTopicsSwf() {
+        System.out.println(topicInterfaces.getAllTopics());
+        return topicInterfaces.getAllTopicsSwf();
+    }
+
+    @PostMapping("/topic")
+    public int newTopic(@RequestBody TopicDTO topic) { //response create or no
+
+        int responce = topicInterfaces.addNewTopic(topic);
+
+        return responce;
     }
 
 
