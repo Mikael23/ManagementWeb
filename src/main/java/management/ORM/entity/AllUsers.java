@@ -16,6 +16,16 @@ import java.util.List;
 public class AllUsers implements Serializable {
 
 
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
+    }
+
+    public boolean waiting;
+
 
     public List<Course> getListOfRecords() {
         return listOfRecords;

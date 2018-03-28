@@ -13,7 +13,19 @@ import java.util.List;
 public interface TrainerInter {
 
 
-    List<DtoGettingCourcesOnTrainerId> getingCourseOnTrainerId(Integer id);
+
+    String addingToWaitingList(Schedule schedule);
+
+//    Если свободные дата и время не найдены, добавить userid, user’s name, user’s surname и name of the course в
+//    список ожидания (/waitinglist) тренера, добавить параметр waiting=true, и выдать сообщение о том, что,
+//    к сожалению, на данный курс пока нет свободного времени, но ваше имя добавлено
+//    в список ожидающих, и вы будете оповещены, когда появится время для записи.
+
+
+    List<DtoTrainerCancellationRecords> checkingCancelledRecords();
+
+
+    List<DtoGettingCourcesOnTrainerId> getingCourseOnTrainerId(String id);
 
 
     Integer deletionFreeTimeInterval(Course course, Integer trainerId);
@@ -36,13 +48,19 @@ public interface TrainerInter {
 //
 
 
-    Integer rejectionRequest(Integer id, Course course);
-//
-///trainerid/newrequests/reject – отклонение новой заявки по нажатию «отклонить».
-//    При нажатии вылезает форма «указать причину» (rejectmessage).
+    Integer rejectionRequest(Schedule schedule) throws Exception;
 //
 
-    Integer confirmationRequest(Course course);
+//    /trainerid/newrequests/reject – отклонение новой заявки по нажатию «отклонить».
+//    При нажатии вылезает форма «указать причину» (rejectmessage).
+//
+//    Body: { courseid, userid, date, time, rejectmessage, busy=false}
+//    Response: 200 or 401, параметр busy меняется на false.
+//    Отправка e-mail userid об отклонении с данными: name of the course, trainer’s name, trainer’s surname, date, time, rejectmessage.
+
+
+
+    Integer confirmationRequest(Schedule schedule) throws Exception;
 
 
 //    /trainerid/newrequests/confirmation – подтверждение новой заявки по нажатию «подтвердить»

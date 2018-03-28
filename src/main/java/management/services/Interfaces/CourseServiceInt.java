@@ -2,6 +2,7 @@ package management.services.Interfaces;
 
 import management.DTO.*;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface CourseServiceInt {
     DtoGettingCancelledRequest gettingCancelledRequest();
 
 
-    Integer deletionCancelledrecords(Integer courseId);
+    Integer deletionCancelledrecords(Schedule schedule) throws Exception;
 
 //    /userid/cancelledtime/seen – удаление отмененных заявок по кнопочке “просмотрено”:
 //    Body: {messagetouser: delete}

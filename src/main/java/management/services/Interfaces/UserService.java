@@ -4,7 +4,6 @@ import management.DTO.*;
 import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
 import management.ORM.entity.Schedule;
-import management.ORM.entity.Trainer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public interface UserService {
     List<String>allUserId();
 
 
-
+  Integer cancellOfNotConfirmedTime(Schedule schedule) throws Exception;
 
     Integer cancellTimeByUser(Schedule schedule) throws Exception;
 
@@ -101,7 +100,15 @@ public interface UserService {
 //    Body: {messagetouser: delete}
 //    Response: 200, 401.
 
+    Integer deleteRequests(Integer id) throws Exception;
 
+
+//    /userid/rejectrequests/seen – удаление отклоненных тренером заявок по кнопочке “просмотрено” (или галочке):
+//    Body: {rejectmessage: delete}
+//    Response: 200, 401.
+
+
+    List<DtoCancellation> checkingRejectedRequests();
 ///login
 //        Body: {email, password}
 //        Response: userid, name, surname, role: trainer or user,

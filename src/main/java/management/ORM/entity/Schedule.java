@@ -20,6 +20,34 @@ public class Schedule implements Serializable {
    @Transient // ne kladem v bazu
    public String dateTime;
 
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String data;
+
+    public String getTrainerMessage() {
+        return trainerMessage;
+    }
+
+    public void setTrainerMessage(String trainerMessage) {
+        this.trainerMessage = trainerMessage;
+    }
+
+    public String trainerMessage;
+
 
     public String getMessageTOtrainer() {
         return messageTOtrainer;
@@ -80,15 +108,11 @@ public class Schedule implements Serializable {
         this.id = id;
     }
 
-    public String getData() {
-        return data;
-    }
+   
 
-    public void setData(String data) {
-        this.data = data;
-    }
 
-    public String data;
+
+
     boolean busyness;
 
 

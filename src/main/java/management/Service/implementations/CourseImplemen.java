@@ -2,6 +2,7 @@ package management.Service.implementations;
 
 import management.DTO.*;
 import management.ORM.entity.Course;
+import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.AllUsers;
 import management.services.Interfaces.CourseServiceInt;
@@ -29,9 +30,48 @@ public class CourseImplemen implements CourseServiceInt {
         return null;
     }
 
+ @Transactional
     @Override
-    public Integer deletionCancelledrecords(Integer courseId) {
-        return null;
+    public Integer deletionCancelledrecords(Schedule schedule) throws Exception {
+
+        String name = schedule.coursename;
+        String message = schedule.messageTOtrainer;
+        String nameTrainer = schedule.trainerName;
+        Integer idd = schedule.id;
+
+//        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=false and r.busy = true and " +
+//                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
+//
+//
+//        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).getResultList();
+//        String jpql = String.format("SELECT r FROM Schedule r where r.messageTOtrainer IS NOT NULL" + " ", Schedule.class);
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.coursename ='" + name + "'" + "and r.messageTOtrainer " +
+                "='" + message + "'" + " ", Schedule.class);
+
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).getResultList();
+
+
+        if (list.isEmpty()) {
+            throw new Exception("We dont have such message or courseName");
+        }
+
+        for (Schedule schedule1 : list) {
+            if (schedule1.id == idd) {
+
+                Schedule schedule2 = em.find(Schedule.class, idd);
+                em.remove(schedule1);
+                schedule2.messageTOtrainer = null;
+                em.persist(schedule2);
+            }
+
+
+//  /trainerid/cancelledtime/seen - по кнопочке “просмотрено” поле messagetotrainer удаляется.
+//                Body: {messagetotrainer: delete}
+//        Response: 200, 401.
+
+        }
+        return 2;
     }
 
     @Transactional
@@ -54,7 +94,7 @@ public class CourseImplemen implements CourseServiceInt {
             System.out.println(course.nameOfCourse);
             System.out.println(name);
             if (course.nameOfCourse.equals(name)) {
-          System.out.println(name);
+                System.out.println(name);
                 name1 = course.nameOfCourse;
                 System.out.println(name1);
 
@@ -243,7 +283,7 @@ public class CourseImplemen implements CourseServiceInt {
         if (course.duration != null) {
             course1.duration = course.duration;
         }
-        if (course.quantity!= null) {
+        if (course.quantity != null) {
             course1.quantity = course.quantity;
         }
 
@@ -263,18 +303,18 @@ public class CourseImplemen implements CourseServiceInt {
             trainer.nameCourse = course1.nameOfCourse;
             trainer.listOfCources.remove(course1);
             Trainer trainer1 = new Trainer();
-            Trainer trainer2 = em.find(Trainer.class,course.trainerName);
+            Trainer trainer2 = em.find(Trainer.class, course.trainerName);
             trainer2.listOfCources.add(course1);
-            course1.trainerName=course.trainerName;
+            course1.trainerName = course.trainerName;
             em.remove(course1);
 
             em.persist(course1);
             return 200;
-           // trainer.listOfCources.add(course1);
-         //   em.persist(trainer);
+            // trainer.listOfCources.add(course1);
+            //   em.persist(trainer);
         }
         if (course.trainerName == null) {
-            Trainer trainer = em.find(Trainer.class,course1.trainerName);
+            Trainer trainer = em.find(Trainer.class, course1.trainerName);
 
             trainer.listOfCources.remove(course1);
             trainer.listOfCources.add(course1);
@@ -318,7 +358,7 @@ public class CourseImplemen implements CourseServiceInt {
             dtoGettingCourses.courseId = course.id;
             dtoGettingCourses.description = course.description;
             dtoGettingCourses.duration = course.duration;
-            dtoGettingCourses.quantity=course.quantity;
+            dtoGettingCourses.quantity = course.quantity;
             dtoGettingCourses.nameOfCourse = course.nameOfCourse;
             dtoGettingCourses.trainerId = course.trainerName;
             list.add(dtoGettingCourses);
@@ -359,15 +399,13 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
 
-
-
     //Evgeniy
 
     @Override
     public List<Course> getCoursesByName(List<String> names) {
         List<Course> res = new ArrayList<>();
 
-        for (String name: names) {
+        for (String name : names) {
             res.add(getCourseByName(name));
         }
         return res;

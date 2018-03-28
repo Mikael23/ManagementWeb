@@ -8,33 +8,43 @@ public class DtoCancellation {
     public DtoCancellation() {
     }
 
-    @JsonProperty
-    String trinerSurname;
+    public String getTrainerSurname() {
+        return trainerSurname;
+    }
 
-    @JsonProperty
-    String nameOfCourse;
+    public void setTrainerSurname(String trainerSurname) {
+        this.trainerSurname = trainerSurname;
+    }
 
-    @JsonProperty
-    Integer data;
+    public String getNameOfCourse() {
+        return nameOfCourse;
+    }
 
-    @JsonProperty
-    Integer time;
+    public void setNameOfCourse(String nameOfCourse) {
+        this.nameOfCourse = nameOfCourse;
+    }
 
-    @JsonProperty
-    String messageToUser;
+    public String getDataTime() {
+        return dataTime;
+    }
 
+    public void setDataTime(String dataTime) {
+        this.dataTime = dataTime;
+    }
 
-    @JsonProperty
-    Integer trainerid;
+    public String getMessageToUser() {
+        return messageToUser;
+    }
 
-    @JsonProperty
-    String trainerName;
+    public void setMessageToUser(String messageToUser) {
+        this.messageToUser = messageToUser;
+    }
 
-    public Integer getTrainerid() {
+    public String getTrainerid() {
         return trainerid;
     }
 
-    public void setTrainerid(Integer trainerid) {
+    public void setTrainerid(String trainerid) {
         this.trainerid = trainerid;
     }
 
@@ -46,45 +56,24 @@ public class DtoCancellation {
         this.trainerName = trainerName;
     }
 
-    public String getTrinerSurname() {
-        return trinerSurname;
-    }
+    @JsonProperty
+   private String trainerSurname;
 
-    public void setTrinerSurname(String trinerSurname) {
-        this.trinerSurname = trinerSurname;
-    }
+    @JsonProperty
+    private String nameOfCourse;
 
-    public String getNameOfCourse() {
-        return nameOfCourse;
-    }
+    private String dataTime;
 
-    public void setNameOfCourse(String nameOfCourse) {
-        this.nameOfCourse = nameOfCourse;
-    }
+    @JsonProperty
+   private String messageToUser;
 
-    public Integer getData() {
-        return data;
-    }
 
-    public void setData(Integer data) {
-        this.data = data;
-    }
+    @JsonProperty
+  private   String trainerid;
 
-    public Integer getTime() {
-        return time;
-    }
+    @JsonProperty
+   private String trainerName;
 
-    public void setTime(Integer time) {
-        this.time = time;
-    }
-
-    public String getMessageToUser() {
-        return messageToUser;
-    }
-
-    public void setMessageToUser(String messageToUser) {
-        this.messageToUser = messageToUser;
-    }
 
 
 

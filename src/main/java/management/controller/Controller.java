@@ -37,6 +37,25 @@ public class Controller {
 //    @GetMapping("trainerid/getCources/{name}")
 //    public List<String> listOfCources(@PathVariable("name") String name) {
 
+@GetMapping("/userid/gettingcancelledtimebytrainer")
+public List<DtoCancellation>gettingCancelledRequestsByTrainer(){
+
+    return userService.checkingRejectedRequests();
+}
+
+
+
+    @DeleteMapping("/userid/rejectrequests/seen/{id}")
+    public Integer deleteRequest(@PathVariable("id")Integer id) throws Exception {
+     return    userService.deleteRequests(id);
+    }
+
+
+    @PostMapping("/trainerid/newrequests/reject")
+    public Integer rejectionOfrequest(@RequestBody  Schedule schedule) throws Exception {
+
+        return trainerInter.rejectionRequest(schedule);
+    }
 
     @GetMapping("/trainers")
     public List<DtoGettingTrainers> trainers() {
@@ -104,9 +123,9 @@ public class Controller {
     }
 
 
-    @DeleteMapping("/userid/rejectrequests/seen/{courseId}")
-    public Integer deletionCancelledRequests(@PathVariable("courseId") Integer courseId) {
-        return courseServiceInt.deletionCancelledrecords(courseId);
+    @DeleteMapping("/userid/rejectrequests/seen/")
+    public Integer deletionCancelledRequests(@RequestBody Schedule schedule) throws Exception {
+        return courseServiceInt.deletionCancelledrecords(schedule);
     }
 
 
@@ -151,9 +170,9 @@ public class Controller {
     }
 
 
-    @PutMapping("/trainerid/newrequests/confirmation")
-    public Integer confirmation(@RequestBody Course course) {
-        return trainerInter.confirmationRequest(course);
+    @PostMapping ("/trainerid/newrequests/confirmation")
+    public Integer confirmation(@RequestBody Schedule schedule) throws Exception {
+        return trainerInter.confirmationRequest(schedule);
 
         //            /trainerid/newrequests/confirmation – подтверждение новой заявки
 
@@ -186,7 +205,7 @@ public class Controller {
     }
 
     @GetMapping("/trainerid/courses/{trainerId}")
-    public List<DtoGettingCourcesOnTrainerId> gettingCourcesOnTrainerId(@PathVariable("trainerId") Integer trainerId) {
+    public List<DtoGettingCourcesOnTrainerId> gettingCourcesOnTrainerId(@PathVariable("trainerId") String trainerId) {
         //  подгрузка курсов, которые ведет тренер
         return trainerInter.getingCourseOnTrainerId(trainerId);
     }
@@ -269,6 +288,17 @@ public class Controller {
         return userService.cancellTimeByUser(schedule);
     }
 
+    @PostMapping("/userid/cancelnonconfirmedusertime")
+    public Integer cancellOfNotConfirmedTime(@RequestBody Schedule schedule) throws Exception{
+
+
+        return userService.cancellOfNotConfirmedTime(schedule);
+    }
+
+    @GetMapping("/trainerid/cancelledtime")
+   public List<DtoTrainerCancellationRecords>cancelledRecords(){
+        return trainerInter.checkingCancelledRecords();
+    }
 
     /////////////////////////////////////////////////////////
 

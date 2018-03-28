@@ -29,13 +29,84 @@ public class TrainerImplemen implements TrainerInter {
     EntityManager em;
 
     @Override
-    public List<DtoGettingCourcesOnTrainerId> getingCourseOnTrainerId(Integer id) {
+    public String addingToWaitingList(Schedule schedule) {
+
+        AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+        Trainer trainer = em.find(Trainer.class, schedule.trainerName);
+
+//user.
+
+//trainer.waitingLists.add(user)
 
 
-
-
+//        Если свободные дата и время не найдены, добавить userid, user’s name, user’s surname и name of the course
+//        в список ожидания (/waitinglist) тренера, добавить параметр waiting=true, и выдать сообщение о том, что,
+//        к сожалению, на данный курс пока нет свободного времени,
+//        но ваше имя добавлено в список ожидающих, и вы будете оповещены, когда появится время для записи.
 
         return null;
+
+    }
+
+    @Override
+    public List<DtoTrainerCancellationRecords> checkingCancelledRecords() {
+
+//        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=false and r.busy = true and " +
+//                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
+
+
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//
+//        LocalDateTime dateTime = schedule1.dt;
+//
+//
+//        String formattedDateTime = dateTime.format(formatter);
+
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.messageTOtrainer IS NOT NULL" + " ", Schedule.class);
+        System.out.println(jpql);
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).getResultList();
+
+
+        List<DtoTrainerCancellationRecords> dtoTrainerCancellationRecords1 = new ArrayList<>();
+        for (Schedule schedule : list) {
+            DtoTrainerCancellationRecords dtoTrainerCancellationRecords = new DtoTrainerCancellationRecords();
+
+            dtoTrainerCancellationRecords.messagetotrainer = schedule.messageTOtrainer;
+            dtoTrainerCancellationRecords.NameOfCourse = schedule.coursename;
+            dtoTrainerCancellationRecords.UserName = schedule.requestedUser;
+            AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+            dtoTrainerCancellationRecords.UserSurname = user.surname;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = schedule.dt;
+            String formattedDateTime = dateTime.format(formatter);
+            dtoTrainerCancellationRecords.localDateTime = formattedDateTime;
+            dtoTrainerCancellationRecords1.add(dtoTrainerCancellationRecords);
+            System.out.println(dtoTrainerCancellationRecords.NameOfCourse);
+
+        }
+///trainerid/cancelledtime – слушать отмененные записи
+//        Response: как только появляется поле “messagetotrainer”, приходят поля:
+//        userid, user’s name, user’s surname, name of the course, date, time, messagetotrainer.
+        return dtoTrainerCancellationRecords1;
+    }
+
+    @Override
+    public List<DtoGettingCourcesOnTrainerId> getingCourseOnTrainerId(String id) {
+
+        Trainer trainer = em.find(Trainer.class, id);
+
+        List<DtoGettingCourcesOnTrainerId> list = new ArrayList<>();
+        for (Course course : trainer.listOfCources) {
+            DtoGettingCourcesOnTrainerId dtoGettingCourcesOnTrainerId = new DtoGettingCourcesOnTrainerId();
+            dtoGettingCourcesOnTrainerId.courseId = course.id;
+            dtoGettingCourcesOnTrainerId.nameOfCourse = course.nameOfCourse;
+            list.add(dtoGettingCourcesOnTrainerId);
+        }
+
+
+        return list;
     }
 
     @Override
@@ -51,7 +122,7 @@ public class TrainerImplemen implements TrainerInter {
 
         Course course = em.find(Course.class, courseName);
 
-        if(course==null){
+        if (course == null) {
             throw new Exception("No found course");
         }
 
@@ -75,7 +146,6 @@ public class TrainerImplemen implements TrainerInter {
         em.persist(schedule1);
 
 
-
 //        Поля дата, время, подгруженные курсы (которые можно выбрать галочками).
 //                Кнопка «добавить» запоминает выбранное и отображает в соседней форме.
 //                Поля дата, время, галочки на выбранных курсах обнуляются, чтобы можно было добавить еще один интервал.
@@ -95,35 +165,125 @@ public class TrainerImplemen implements TrainerInter {
         return null;
     }
 
+    @Transactional
     @Override
-    public Integer rejectionRequest(Integer id, Course course) {
-        return null;
+    public Integer rejectionRequest(Schedule schedule) throws Exception {
+
+        String nameOfCourse = schedule.coursename;
+        String nameOfUser = schedule.requestedUser;
+        String dateTime = schedule.data;
+        System.out.println(schedule.requestedUser);
+        System.out.println(schedule.coursename);
+        System.out.println(schedule.data);
+        String trainerMessage = schedule.trainerMessage;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.coursename=?1 " +
+                "and r.requestedUser=?2 and r.dt = ?3 and r.busy=true" + " ", Schedule.class);
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, nameOfCourse).setParameter(2, nameOfUser).setParameter(
+                3, dateTime1).getResultList();
+        if (list.isEmpty()) {
+            throw new Exception("No found result");
+        }
+
+        for (Schedule schedule1 : list) {
+            Schedule schedule2 = em.find(Schedule.class, schedule1.id);
+            em.remove(schedule1);
+            if (trainerMessage == null) {
+                schedule2.trainerMessage = "Sorry but now dont have plenty of time";
+            } else {
+                schedule2.trainerMessage = trainerMessage;
+            }
+
+            schedule2.busy = false;
+
+            em.persist(schedule2);
+        }
+
+
+        //    /trainerid/newrequests/reject – отклонение новой заявки по нажатию «отклонить».
+//    При нажатии вылезает форма «указать причину» (rejectmessage).
+//
+//    Body: { courseid, userid, date, time, rejectmessage, busy=false}
+//    Response: 200 or 401, параметр busy меняется на false.
+//    Отправка e-mail userid об отклонении с данными: name of the course, trainer’s name, trainer’s surname, date, time, rejectmessage.
+
+
+        return 200;
     }
 
+
+    @Transactional
     @Override
-    public Integer confirmationRequest(Course course) {
-        return null;
+    public Integer confirmationRequest(Schedule schedule) throws Exception {
+
+        String nameOfCourse = schedule.coursename;
+        String nameOfUser = schedule.requestedUser;
+        String str = schedule.data;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+//
+
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.coursename=?1 " +
+                "and r.requestedUser=?2 and r.dt = ?3 and r.confirmedByTrainer=false" + " ", Schedule.class);
+
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, nameOfCourse).setParameter(2, nameOfUser).setParameter(
+                3, dateTime).getResultList();
+        if (list.isEmpty()) {
+            throw new Exception("No found result");
+        }
+
+        for (Schedule schedule1 : list) {
+            Schedule schedule2 = em.find(Schedule.class, schedule1.id);
+            em.remove(schedule1);
+            schedule2.confirmedByTrainer = true;
+            em.persist(schedule2);
+        }
+
+
+// отправка e-mail userid
+//        о подтверждении с данными: name of the course, trainer’s name, trainer’s surname, date, time.
+//        PUT:
+
+        return 200;
     }
 
     @Override
     public List<DtoGettingNewRequets> getingNewRequest(String name) {
-      //  String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+        //  String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
 
-    String jpql =
-            String.format("SELECT r FROM Schedule r where r.busy=true and r.confirmedByTrainer=false and r.trainerName=' " + name + " '", Schedule.class);
+        String jpql =
+                String.format("SELECT r FROM Schedule r where r.busy=true and r.confirmedByTrainer=false and r.trainerName='" + name + "'", Schedule.class);
 
-    List<Schedule>listoftrainers = em.createQuery(jpql,Schedule.class).getResultList();
 
-    System.out.println(name);
- List<DtoGettingNewRequets>dtoGettingNewRequets = new LinkedList<>();
- DtoGettingNewRequets dtoGettingNewRequets1=new DtoGettingNewRequets();
+        System.out.println(jpql);
+        //   String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
 
-        for (Schedule schedule:listoftrainers) {
-       System.out.println(schedule.confirmedByTrainer);
-            dtoGettingNewRequets1.NameOfCourse=schedule.coursename;
-            dtoGettingNewRequets1.userName=schedule.requestedUser;
-            dtoGettingNewRequets1.courseId=schedule.id;
-            dtoGettingNewRequets1.localDateTime=schedule.dt;
+
+        List<Schedule> listoftrainers = em.createQuery(jpql, Schedule.class).getResultList();
+        if (listoftrainers.isEmpty()) {
+            System.out.println("Pizdec");
+        }
+        System.out.println(name);
+        List<DtoGettingNewRequets> dtoGettingNewRequets = new LinkedList<>();
+
+
+        for (Schedule schedule : listoftrainers) {
+            DtoGettingNewRequets dtoGettingNewRequets1 = new DtoGettingNewRequets();
+            System.out.println(schedule.confirmedByTrainer);
+            dtoGettingNewRequets1.NameOfCourse = schedule.coursename;
+            dtoGettingNewRequets1.userName = schedule.requestedUser;
+            dtoGettingNewRequets1.courseId = schedule.id;
+            AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+
+            dtoGettingNewRequets1.userSurname = user.surname;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = schedule.dt;
+            String formattedDateTime = dateTime.format(formatter);
+            dtoGettingNewRequets1.localDateTime = formattedDateTime;
+
             dtoGettingNewRequets.add(dtoGettingNewRequets1);
 
 
@@ -204,8 +364,7 @@ public class TrainerImplemen implements TrainerInter {
 //                em.createQuery("SELECT c FROM CompanyEntity AS c WHERE c.name='" + inputName + "'", CompanyEntity.class);
 
 
-
-        String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+        String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'", Schedule.class);
 
         List<Schedule> schedules = em.createQuery(jpql, Schedule.class).getResultList();
         DtoGettingDatesAndTimes dtoGettingDatesAndTimes = new DtoGettingDatesAndTimes();
@@ -224,7 +383,6 @@ public class TrainerImplemen implements TrainerInter {
             dtoGettingDatesAndTimes.setsId.add(schedule1.id);
 
         }
-
 
 
         return dtoGettingDatesAndTimes;

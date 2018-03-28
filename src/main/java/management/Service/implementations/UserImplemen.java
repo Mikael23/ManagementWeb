@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,6 +18,44 @@ import java.util.List;
 
 @Repository
 public class UserImplemen implements UserService {
+
+
+    @Override
+    public List<DtoCancellation> checkingRejectedRequests() {
+
+       String jpql = String.format("SELECT r from Schedule r where r.trainerMessage IS NOT NULL",Schedule.class);
+
+       List<Schedule>list = em.createQuery(jpql,Schedule.class).getResultList();
+
+
+       List<DtoCancellation>list1 = new ArrayList<>();
+
+        for (Schedule schedule1:list) {
+            DtoCancellation dtoCancellation = new DtoCancellation();
+            Trainer trainer = em.find(Trainer.class,schedule1.trainerName);
+            dtoCancellation.setTrainerName(trainer.name);
+            dtoCancellation.setTrainerSurname(trainer.surname);
+            dtoCancellation.setMessageToUser(schedule1.trainerMessage);
+            dtoCancellation.setNameOfCourse(schedule1.coursename);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = schedule1.dt;
+            String formattedDateTime = dateTime.format(formatter);
+            dtoCancellation.setDataTime(formattedDateTime);
+            dtoCancellation.setTrainerid(trainer.email);
+            list1.add(dtoCancellation);
+        }
+
+
+ return list1;
+
+//        /userid/cancelledtime – слушать отмененные заявки
+//        Response: как только появляется поле “messagetouser”, приходят поля:
+//        trainerid, trainer’s name, trainer’s surname, name of the course, date, time,
+//                messagetouser. Tut peredat ID metoda; TUT SMOTRET KOGDA ONI UZGE DOGOVORILIS
+
+
+    }
+
 
     @PersistenceContext
     EntityManager em;
@@ -35,55 +72,56 @@ public class UserImplemen implements UserService {
     }
 
     @Override
+    @Transactional
     public Integer cancellTimeByUser(Schedule schedule) throws Exception {
 
 
-      String datetime = schedule.dateTime;
-      String name = schedule.requestedUser;
-      String courseName = schedule.coursename;
+        String datetime = schedule.dateTime;
+        String name = schedule.requestedUser;
+        String courseName = schedule.coursename;
         //String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
 
 //        String dateTime = schedule.data;
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 //        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
 
-       AllUsers user = em.find(AllUsers.class,name);
-       if(user==null){
-           throw new Exception("Please log in");
-       }
-
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-       LocalDateTime dateTime1 = LocalDateTime.parse(datetime,formatter);
-
-       String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer = true and r.busy = false and " +
-               "r.coursename =" + courseName + " " + " and r.dt =  ?1" + " ", Schedule.class);
-
-
-
-
-        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,dateTime1).getResultList();
-
-
-//        String query = "SELECT t FROM Tickets t  WHERE t.startdate > ?1 AND t.enddate < ?2 ORDER BY t.status DESC";
-//        Query q = em.createQuery(query).setParameter(1, startDate, TemporalType.TIMESTAMP).setParameter(2, endDate, TemporalType.DATE);
-
-//
-//        /userid/cancelusertime - отмена подтвержденной записи (фильтрация по confirmed = true).
-//        При нажатии вылезает форма «указать причину» (messagetotrainer).
-//                Body: {courseid, date, time, messagetotrainer, busy=false, confirmed = false}
-//        Response: проверка по данным на наличие записи на это время на этот курс этого юзера.
-//        Если все ок, отправка сообщения на e-mail trainerid об отмене, который ведет courseid, c данными:
-//        userid, user’s name, user’s surname, name of the course, date, time, messagetotrainer. date и
-//        time снова становятся свободными: поле busy меняется на false, поле confirmed меняется на false.
-
-
-
-
-
-        for (Schedule schedule1:list) {
-            System.out.println(schedule1);
+        AllUsers user = em.find(AllUsers.class, name);
+        if (user == null) {
+            throw new Exception("Please log in");
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(datetime, formatter);
+
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=true and r.busy = true and " +
+                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
+
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).getResultList();
+
+
+
+
+
+        for (Schedule schedule1 : list) {
+
+            Schedule schedule2 = em.find(Schedule.class, schedule1.id);
+            if (schedule2 == null) {
+                throw new Exception("You are not registered for this time");
+            }
+            em.remove(schedule2);
+            schedule2.busy = false;
+            schedule2.confirmedByTrainer = false;
+            if (schedule.messageTOtrainer == null) {
+                schedule2.messageTOtrainer = "The User didnt leave a message with explanaition of cancelling";
+            } else {
+                schedule2.messageTOtrainer = schedule.messageTOtrainer;
+            }
+
+            em.persist(schedule2);
+
+            System.out.println(schedule1);
+        }
 
 
         return 2;
@@ -105,6 +143,62 @@ public class UserImplemen implements UserService {
 
         return usersId;
 
+
+    }
+
+    @Transactional
+    @Override
+    public Integer cancellOfNotConfirmedTime(Schedule schedule) throws Exception {
+
+
+        String datetime = schedule.dateTime;
+        String name = schedule.requestedUser;
+        String courseName = schedule.coursename;
+
+        AllUsers user = em.find(AllUsers.class, name);
+        if (user == null) {
+            throw new Exception("Please log in");
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(datetime, formatter);
+        //String jpql = String.format("SELECT r FROM Schedule r where r.busy=false and r.coursename ='" + name + "'",Schedule.class);
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=false and r.busy = true and " +
+                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
+
+
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).getResultList();
+
+        if (list.isEmpty()) {
+            throw new Exception("You are not registered for this time");
+        }
+
+
+        for (Schedule schedule1 : list) {
+            System.out.println("Zashli v for");
+            if (schedule1 == null) {
+                throw new Exception("You are not registered for this time");
+            }
+            Schedule schedule2 = em.find(Schedule.class, schedule1.id);
+            if (schedule2 == null) {
+                throw new Exception("You are not registered for this time");
+            }
+            em.remove(schedule2);
+            schedule2.busy = false;
+            schedule2.confirmedByTrainer = false;
+            if (schedule.messageTOtrainer == null) {
+                schedule2.messageTOtrainer = "The User didnt leave a message with explanaition of cancelling";
+            } else {
+                schedule2.messageTOtrainer = schedule.messageTOtrainer;
+            }
+
+            em.persist(schedule2);
+
+            System.out.println(schedule2);
+        }
+
+
+        return 2;
 
     }
 
@@ -237,7 +331,10 @@ public class UserImplemen implements UserService {
         Schedule schedule1 = em.find(Schedule.class, schedule.id);
 
         em.remove(schedule1);
-
+        AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+        if (user == null) {
+            throw new Exception("Please logg in");
+        }
 
         if (schedule1.busy == true) {
             throw new Exception("Sorry the time is not free");
@@ -273,6 +370,41 @@ public class UserImplemen implements UserService {
     public DtoGettingThisDateN dtoGettinThisDateN(AllUsers allUsers) {
         return null;
     }
+@Transactional
+    @Override
+    public Integer deleteRequests(Integer id) throws Exception {
+
+//        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=false and r.busy = true and " +
+//                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
+//
+//
+//        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).getResultList();
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.trainerMessage IS NOT NULL and r.id =?1" + " ",Schedule.class);
+        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,id).getResultList();
+
+
+
+        if(list.isEmpty()){
+            throw new Exception("No found resut");
+        }
+        for (Schedule schedule:list) {
+            Schedule schedule1 = em.find(Schedule.class,schedule.id);
+            em.remove(schedule);
+            schedule1.trainerMessage=null;
+            schedule1.requestedUser=null;
+            em.persist(schedule1);
+        }
+
+
+        return 200;
+
+//        /userid/rejectrequests/seen – удаление отклоненных тренером заявок по кнопочке “просмотрено” (или галочке):
+//        Body: {rejectmessage: delete}
+//        Response: 200, 401.
+
+    }
+
 
     @Transactional
     @Override
