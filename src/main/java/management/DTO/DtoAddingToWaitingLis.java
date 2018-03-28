@@ -5,20 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DtoAddingToWaitingLis {
 
 
-    public String getMessage() {
-        return "Sorry, we don't have free time for this course, but you name is added to waiting list and you will be informed when there is free time";
-    }
+
 
     public DtoAddingToWaitingLis() {
     }
 
-    public void setMessage(String message) {
-        message = "Sorry, we don't have free time for this course, but you name is added to waiting list and you will be informed when there is free time";
-        this.message = message;
-    }
+
 
     @JsonProperty
    public String message;
+
+    public DtoAddingToWaitingLis(String message) {
+        this.message = message;
+    }
 }
 
 

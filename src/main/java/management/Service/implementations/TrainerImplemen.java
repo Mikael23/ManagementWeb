@@ -27,16 +27,26 @@ public class TrainerImplemen implements TrainerInter {
 
     @PersistenceContext
     EntityManager em;
-
+@Transactional
     @Override
-    public String addingToWaitingList(Schedule schedule) {
+    public DtoAddingToWaitingLis addToWaitingList(Schedule schedule) throws Exception {
 
         AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+        if(user==null){
+            throw new Exception("We dont have this user in base");
+        }
         Trainer trainer = em.find(Trainer.class, schedule.trainerName);
+        if(trainer==null){
+            throw new Exception("We dont have this user in base");
+        }
 
-//user.
+       user.waiting=true;
 
-//trainer.waitingLists.add(user)
+
+        trainer.waitingLists.add(user);
+
+        DtoAddingToWaitingLis dtoAddingToWaitingLis = new DtoAddingToWaitingLis("Unfortenately we dont hace free time for you");
+
 
 
 //        Если свободные дата и время не найдены, добавить userid, user’s name, user’s surname и name of the course
@@ -44,7 +54,7 @@ public class TrainerImplemen implements TrainerInter {
 //        к сожалению, на данный курс пока нет свободного времени,
 //        но ваше имя добавлено в список ожидающих, и вы будете оповещены, когда появится время для записи.
 
-        return null;
+        return dtoAddingToWaitingLis;
 
     }
 
@@ -346,10 +356,7 @@ public class TrainerImplemen implements TrainerInter {
         return null;
     }
 
-    @Override
-    public DtoAddingToWaitingLis addToWaitingList(AllUsers allUsers) {
-        return null;
-    }
+
 
     @Override
     public DtoGettingDatesAndTimes gettingDatesAndTimes(String name) {

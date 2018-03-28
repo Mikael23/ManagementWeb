@@ -14,13 +14,6 @@ public interface TrainerInter {
 
 
 
-    String addingToWaitingList(Schedule schedule);
-
-//    Если свободные дата и время не найдены, добавить userid, user’s name, user’s surname и name of the course в
-//    список ожидания (/waitinglist) тренера, добавить параметр waiting=true, и выдать сообщение о том, что,
-//    к сожалению, на данный курс пока нет свободного времени, но ваше имя добавлено
-//    в список ожидающих, и вы будете оповещены, когда появится время для записи.
-
 
     List<DtoTrainerCancellationRecords> checkingCancelledRecords();
 
@@ -87,7 +80,7 @@ public interface TrainerInter {
 //    /trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
 
 
-    DtoAddingToWaitingLis addToWaitingList(AllUsers allUsers);
+    DtoAddingToWaitingLis addToWaitingList(Schedule schedule) throws Exception;
 
 
 //    Если свободные дата и время найдены, то response: date и time.
