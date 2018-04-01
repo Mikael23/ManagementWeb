@@ -37,8 +37,36 @@ public class Controller {
 //    public List<String> listOfCources(@PathVariable("name") String name) {
 
 
+
+    @DeleteMapping("/trainerid/waitinglist/solved/{name}")
+
+       public Integer removingFromWaitingList(@PathVariable("name")String name){
+             return trainerInter.removingFromWaitingList(name);
+        }
+
+
+    @PostMapping("/trainerid/cancelusertime")
+    public String cancelusertime(@RequestBody Schedule schedule) {
+
+      return   trainerInter.cancelusertime(schedule);
+
+    }
+
+
+    @GetMapping("/trainer/prof/{name}")
+    public List<DtoGettingThisDate> trainerConfirmedAndNonConfRequests(@PathVariable("name") String name) {
+
+        return trainerInter.trainerConfirmedandNonconfirmed(name);
+    }
+
+    @GetMapping("/userid/{date}")
+    public List<DtoGettingThisDateN> dtoGettingThisDateN(@RequestBody AllUsers user, @PathVariable("date") String date) {
+
+        return userService.dtoGettinThisDateN(user, date);
+    }
+
     @PostMapping("userid/addingToWaitingList")
-    public DtoAddingToWaitingLis addTowaintingList(Schedule schedule) throws Exception {
+    public DtoAddingToWaitingLis addTowaintingList(@RequestBody Schedule schedule) throws Exception {
         return trainerInter.addToWaitingList(schedule);
     }
 
@@ -153,9 +181,9 @@ public class Controller {
         return userService.update(allUsers);
     }
 
-    @GetMapping("/trainerid/waitinglist/{userId}")
-    public List<DtoGettingWaitingList> getingWaitingList(@PathVariable("userId") Integer userId) {
-        return trainerInter.gettingWaitingList(userId);
+    @GetMapping("/trainerid/waitinglist/{email}")
+    public List<DtoGettingWaitingList> getingWaitingList(@PathVariable("email") String email) {
+        return trainerInter.gettingWaitingList(email);
 //
 ///trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
 //    Response: userid, user’s name, user’s surname,
@@ -208,11 +236,20 @@ public class Controller {
 
     }
 
-    @GetMapping("/trainerid/courses/{trainerId}")
-    public List<DtoGettingCourcesOnTrainerId> gettingCourcesOnTrainerId(@PathVariable("trainerId") String trainerId) {
+    @GetMapping("/trainerid/courses/{email}")
+    public List<DtoGettingCourcesOnTrainerId> gettingCourcesOnTrainerId(@PathVariable("email") String email) {
         //  подгрузка курсов, которые ведет тренер
-        return trainerInter.getingCourseOnTrainerId(trainerId);
+        return trainerInter.getingCourseOnTrainerId(email);
     }
+
+
+    @GetMapping("trainerid/schedule/{email}")
+    public List<DtoGettingCourcesOnTrainerId>gettingTrainersNameAndTheirNumberInScheduleTable(@PathVariable("email")String email) throws Exception {
+
+
+        return trainerInter.gettingTrainersNameAndTheirNumberInScheduleTable(email);
+    }
+
 
     @CrossOrigin
     @PostMapping("trainerid/addinterval/")
@@ -222,10 +259,12 @@ public class Controller {
     }
 
 
-    @DeleteMapping("/trainerid/removeinterval/{trainerId}")
-    public Integer deletionOffreeIntervals(@PathVariable("trainerId") Integer trainerId, @RequestBody Course course) {
-        return trainerInter.deletionFreeTimeInterval(course, trainerId);
-        //  /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
+    @DeleteMapping("/trainerid/removeinterval/")
+    public Integer deletionO(@RequestBody Schedule schedule) throws Exception {
+        return trainerInter.deletionOfInterval(schedule);
+
+
+        // /  /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
     }
 
     @CrossOrigin
@@ -276,7 +315,7 @@ public class Controller {
     }
 
 
-    @GetMapping("admin/usersid")
+    @GetMapping("admin/allUsersId")
     public List<String> usersId() {
         return userService.allUserId();
     }

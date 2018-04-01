@@ -5,100 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DtoGettingThisDate {
 
 
-    @JsonProperty
-
-    Integer userId;
-    @JsonProperty
-    String userName;
-    @JsonProperty
-    String usersurname;
-    @JsonProperty
-    String[]NameOfcources;
-    @JsonProperty
-    Integer[]Freedate;
-    @JsonProperty
-    double[]freeTimes;
-
+    public String busyTime;
 
     @JsonProperty
-    String NameOfCourse;
 
-@JsonProperty
-    Integer [] bysuDates;
-@JsonProperty
-    double[]busyTimes;
+    public String userId;
+    @JsonProperty
+    public String userName;
+    @JsonProperty
+    public String usersurname;
+    @JsonProperty
+    public String NameOfcources;
 
-    public String getNameOfCourse() {
-        return NameOfCourse;
-    }
+    public String freeTimes;
 
-    public void setNameOfCourse(String nameOfCourse) {
-        NameOfCourse = nameOfCourse;
-    }
+    @JsonProperty
+    public String NameOfCourse;
 
-    public Integer[] getBysuDates() {
-        return bysuDates;
-    }
+    public boolean confirmed;
 
-    public void setBysuDates(Integer[] bysuDates) {
-        this.bysuDates = bysuDates;
-    }
-
-    public double[] getBusyTimes() {
-        return busyTimes;
-    }
-
-    public void setBusyTimes(double[] busyTimes) {
-        this.busyTimes = busyTimes;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUsersurname() {
-        return usersurname;
-    }
-
-    public void setUsersurname(String usersurname) {
-        this.usersurname = usersurname;
-    }
-
-    public String[] getNameOfcources() {
-        return NameOfcources;
-    }
-
-    public void setNameOfcources(String[] nameOfcources) {
-        NameOfcources = nameOfcources;
-    }
-
-    public Integer[] getFreedate() {
-        return Freedate;
-    }
-
-    public void setFreedate(Integer[] freedate) {
-        Freedate = freedate;
-    }
-
-    public double[] getFreeTimes() {
-        return freeTimes;
-    }
-
-    public void setFreeTimes(double[] freeTimes) {
-        this.freeTimes = freeTimes;
-    }
 
 
 
@@ -107,3 +32,9 @@ public class DtoGettingThisDate {
 }
 
 
+///trainerid/”текущая дата, от которой будет выстраиваться неделя” – возвращает подтвержденные заявки,
+//        фильтрация по confirmed=true, и свободные интервалы (фильтрация по busy = false)
+//        Response: подтвержденные заявки: name of the course, date (относительно текущего дня + неделя),
+//        time, userid, user’s name, user’s surname. свободные интервалы: name of the course
+//        (массив курсов, которые гипотетически будут проводиться в этот интервал времени), date, time. Vozvrashau and confirmed and free intervals
+//        PUT:

@@ -15,17 +15,10 @@ public class DtoGettingWaitingList {
 @JsonProperty
     public String nameOfCourse;
 
+public String email;
 
-    public List<String> getListOfUserNames() {
-        return listOfUserNames;
-    }
 
-    public void setListOfUserNames(List<String> listOfUserNames) {
-        this.listOfUserNames = listOfUserNames;
-    }
 
-    @JsonProperty
-    List<String>listOfUserNames;
 
     public Integer getUserId() {
         return userId;

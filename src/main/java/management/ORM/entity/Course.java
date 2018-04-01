@@ -33,7 +33,6 @@ public class Course implements Serializable {
     LocalDateTime UserChoosenTime;
 
 
-
     public boolean confirmed;
 
     public boolean isTimeConfirmedForUser() {
@@ -80,16 +79,12 @@ public class Course implements Serializable {
     public String nameOfCourse;
 
 
-    
-
-
     //@JsonProperty("quantatity")
     public Integer quantity;
 
 
     @GeneratedValue
     public Integer id;
-
 
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -136,8 +131,6 @@ public class Course implements Serializable {
     }
 
 
-
-
     public Integer getId() {
         return id;
     }
@@ -154,7 +147,7 @@ public class Course implements Serializable {
         this.nameOfCourse = coursename;
     }
 
-  
+
     public Integer getQuantity() {
         return quantity;
     }

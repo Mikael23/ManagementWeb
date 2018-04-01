@@ -84,7 +84,7 @@ public interface UserService {
 //    date и time снова становятся свободными: поле busy меняется на false, поле confirmed меняется на false.
 
 
-    DtoGettingThisDateN dtoGettinThisDateN(AllUsers allUsers);
+    List<DtoGettingThisDateN> dtoGettinThisDateN(AllUsers allUsers, String date);
 
 
 //    /userid/”текущая дата, от которой будет выстраиваться месяц” –
@@ -94,11 +94,6 @@ public interface UserService {
 //    Ниже кнопка «отменить запись».
 
 
-    //   DeletionCanceledTime deletionCancelledTime(Course course);
-
-//        /userid/cancelledtime/seen – удаление отмененных заявок по кнопочке “просмотрено”:
-//    Body: {messagetouser: delete}
-//    Response: 200, 401.
 
     Integer deleteRequests(Integer id) throws Exception;
 

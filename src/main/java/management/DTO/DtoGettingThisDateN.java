@@ -11,76 +11,31 @@ package management.DTO;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 public class DtoGettingThisDateN {
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String surname;
     @JsonProperty
     public String nameOfCourse;
-    @JsonProperty Integer date;
-    @JsonProperty Integer time;
-    @JsonProperty Integer trainerId;
-    @JsonProperty String trainerName;
+  public String dateTime;
+    @JsonProperty public String trainerId;
+    @JsonProperty public String trainerName;
 
     public DtoGettingThisDateN() {
     }
 
-    @JsonProperty String trainerSurname;
-    @JsonProperty boolean confirmationStatus;
+    @JsonProperty public  String trainerSurname;
+    @JsonProperty public  boolean confirmationStatus;
 
-    public String getNameOfCourse() {
-        return nameOfCourse;
-    }
-
-    public void setNameOfCourse(String nameOfCourse) {
-        this.nameOfCourse = nameOfCourse;
-    }
-
-    public Integer getDate() {
-        return date;
-    }
-
-    public void setDate(Integer date) {
-        this.date = date;
-    }
-
-    public Integer getTime() {
-        return time;
-    }
-
-    public void setTime(Integer time) {
-        this.time = time;
-    }
-
-    public Integer getTrainerId() {
-        return trainerId;
-    }
-
-    public void setTrainerId(Integer trainerId) {
-        this.trainerId = trainerId;
-    }
-
-    public String getTrainerName() {
-        return trainerName;
-    }
-
-    public void setTrainerName(String trainerName) {
-        this.trainerName = trainerName;
-    }
-
-    public String getTrainerSurname() {
-        return trainerSurname;
-    }
-
-    public void setTrainerSurname(String trainerSurname) {
-        this.trainerSurname = trainerSurname;
-    }
-
-    public boolean isConfirmationStatus() {
-        return confirmationStatus;
-    }
-
-    public void setConfirmationStatus(boolean confirmationStatus) {
-        this.confirmationStatus = confirmationStatus;
-    }
 
 
 }

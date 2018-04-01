@@ -9,11 +9,11 @@ import java.util.List;
 public class DtoGettingTrainers {
 
     @JsonProperty
-      public String name;
+    public String name;
     @JsonProperty
-  public  String description;
+    public String description;
     @JsonProperty
-  public  String URLPhoto;
+    public String URLPhoto;
 
     public List<String> getNameOfCources() {
         return nameOfCources;
@@ -24,7 +24,7 @@ public class DtoGettingTrainers {
     }
 
     @JsonProperty
-    public List<String>nameOfCources= new ArrayList<>();
+    public List<String> nameOfCources = new ArrayList<>();
 
     public String getNameOfTopic() {
         return nameOfTopic;
@@ -36,7 +36,6 @@ public class DtoGettingTrainers {
 
     @JsonProperty
     public String nameOfTopic;
-
 
 
     public DtoGettingTrainers() {

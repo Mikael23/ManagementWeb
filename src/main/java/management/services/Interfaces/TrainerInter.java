@@ -1,7 +1,6 @@
 package management.services.Interfaces;
 
 import management.DTO.*;
-import management.ORM.entity.AllUsers;
 import management.ORM.entity.Course;
 import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
@@ -34,7 +33,7 @@ public interface TrainerInter {
 
 
 
-    DtoGettingTrainers gettingTrainers(String email);
+    List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(String email) throws Exception;
 //    GET:
 //            /trainerid/courses – при добавлении свободного времени (интервала) подгрузка курсов, которые ведет тренер
 //    Response: courseid, name of the course (которые ведет тренер).
@@ -76,7 +75,7 @@ public interface TrainerInter {
     Trainer gettingTrainer(String name);
 
 
-    List<DtoGettingWaitingList> gettingWaitingList(Integer id);
+    List<DtoGettingWaitingList> gettingWaitingList(String email);
 //    /trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
 
 
@@ -132,16 +131,26 @@ public interface TrainerInter {
 
     List<String> listOfcources(Trainer trainer);
 
-    double[] deletionOfInterval(String name);
+    Integer deletionOfInterval(Schedule schedule) throws Exception;
 
     double[] addingSuggestedCourseInterval(Course course);
 
     Integer makerTrainer(String userName) throws Exception;
 
 
+    List<DtoGettingThisDate>trainerConfirmedandNonconfirmed(String name);
+
+
     //    POST:
 //            /admin/addtrainer - добавить тренера на страницу тренеров:
 //    Body: {name, description, photo}
 //    Response: 200 or 401
+
+
+    String cancelusertime(Schedule schedule);
+
+
+    Integer removingFromWaitingList(String name);
+
 
 }

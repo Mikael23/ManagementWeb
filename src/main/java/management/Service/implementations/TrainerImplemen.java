@@ -27,26 +27,26 @@ public class TrainerImplemen implements TrainerInter {
 
     @PersistenceContext
     EntityManager em;
-@Transactional
+
+    @Transactional
     @Override
     public DtoAddingToWaitingLis addToWaitingList(Schedule schedule) throws Exception {
 
         AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
-        if(user==null){
+        if (user == null) {
             throw new Exception("We dont have this user in base");
         }
         Trainer trainer = em.find(Trainer.class, schedule.trainerName);
-        if(trainer==null){
+        if (trainer == null) {
             throw new Exception("We dont have this user in base");
         }
 
-       user.waiting=true;
+        user.waiting = true;
 
 
         trainer.waitingLists.add(user);
 
         DtoAddingToWaitingLis dtoAddingToWaitingLis = new DtoAddingToWaitingLis("Unfortenately we dont hace free time for you");
-
 
 
 //        Если свободные дата и время не найдены, добавить userid, user’s name, user’s surname и name of the course
@@ -171,8 +171,31 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Override
-    public DtoGettingTrainers gettingTrainers(String email) {
-        return null;
+    public List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(String email) throws Exception {
+        Trainer trainer = em.find(Trainer.class,email);
+
+
+
+        String jpql1 = String.format("Select r FROM Schedule r where r.trainerName=?2",Schedule.class);
+
+        List<Schedule>list1=em.createQuery(jpql1,Schedule.class).setParameter(2,email).getResultList();
+
+        if(list1.isEmpty()){
+            throw new Exception("This trainer doesnt have courses");
+        }
+
+        List<DtoGettingCourcesOnTrainerId>list2 = new ArrayList<>();
+
+        for (Schedule course:list1) {
+            DtoGettingCourcesOnTrainerId dtoGettingCourcesOnTrainerId=new DtoGettingCourcesOnTrainerId();
+            dtoGettingCourcesOnTrainerId.nameOfCourse=course.coursename;
+            dtoGettingCourcesOnTrainerId.courseId=course.id;
+            list2.add(dtoGettingCourcesOnTrainerId);
+        }
+
+
+
+        return list2;
     }
 
     @Transactional
@@ -352,10 +375,40 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Override
-    public List<DtoGettingWaitingList> gettingWaitingList(Integer id) {
-        return null;
-    }
+    public List<DtoGettingWaitingList> gettingWaitingList(String email) {
 
+       Trainer trainer = em.find(Trainer.class,email);
+   List<DtoGettingWaitingList>list=new ArrayList<>();
+        for (AllUsers users:trainer.waitingLists) {
+            DtoGettingWaitingList dtoGettingWaitingList = new DtoGettingWaitingList();
+            dtoGettingWaitingList.email=users.email;
+            String name1=users.email;
+            String jpql = String.format("Select r from Schedule r where r.requestedUser=?1 and r.trainerName=?2 and r.confirmedByTrainer=false",Schedule.class);
+            List<Schedule>list1=em.createQuery(jpql,Schedule.class).setParameter(1,name1).setParameter(2,email).getResultList();
+            for (Schedule schedule:list1) {
+                System.out.println(schedule.coursename);
+                dtoGettingWaitingList.nameOfCourse=schedule.coursename;
+            }
+            AllUsers user = em.find(AllUsers.class,users.email);
+            dtoGettingWaitingList.userId=user.id;
+            dtoGettingWaitingList.userName=user.name;
+            dtoGettingWaitingList.userSurname=user.surname;
+            list.add(dtoGettingWaitingList);
+        }
+
+
+
+
+
+
+
+//
+//        /trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
+//        Response: userid, user’s name, user’s surname, name of the course - пользователи,
+//                которые пытались записаться на конкретный курс этого тренера, но не нашли свободное время для сеанса.
+
+        return list;
+    }
 
 
     @Override
@@ -454,9 +507,39 @@ public class TrainerImplemen implements TrainerInter {
         return null;
     }
 
+    @Transactional
     @Override
-    public double[] deletionOfInterval(String name) {
-        return new double[0];
+    public Integer deletionOfInterval(Schedule schedule) throws Exception {
+
+
+        String dateTime = schedule.data;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+        String jpql = String.format("Select r from Schedule r where r.dt=?1 and r.busy=false and r.coursename=?2",Schedule.class);
+
+        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,dateTime1).setParameter(2,schedule.coursename).getResultList();
+
+
+        if(list.isEmpty()){
+            throw  new Exception("We dont have this record");
+        }
+
+
+        for (Schedule schedule1:list) {
+
+            Schedule schedule2=em.find(Schedule.class,schedule1.id);
+            em.remove(schedule2);
+        }
+
+
+
+
+///trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
+//        Body: date, time, {массив выбранных courseid}, busy=false}.
+//    Response: date, time, {массив выбранных courseid}, busy=false} – все удалить. 200 or 401
+
+
+        return 200;
     }
 
     @Override
@@ -487,4 +570,118 @@ public class TrainerImplemen implements TrainerInter {
 
         return 200;
     }
+
+    @Override
+    public List<DtoGettingThisDate> trainerConfirmedandNonconfirmed(String name) {
+//        String jpql = String.format("SELECT r FROM Schedule r where r.coursename=?1 " +
+//                "and r.requestedUser=?2 and r.dt = ?3 and r.confirmedByTrainer=false" + " ", Schedule.class);
+
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        LocalDateTime dateTime = schedule.dt;
+//        String formattedDateTime = dateTime.format(formatter);
+
+
+        String jpql = String.format("Select r FROM Schedule r WHERE   r.confirmedByTrainer=true OR r.busy = false and r.trainerName=?1 " +
+                " ", Schedule.class);
+        // r.dt <?2 and
+        LocalDateTime today = LocalDateTime.now();
+
+        LocalDateTime nextWeek = today.plusWeeks(1);
+        System.out.println(nextWeek);
+
+
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, name).getResultList();
+        List<DtoGettingThisDate> list1 = new ArrayList<>();
+        for (Schedule schedule : list) {
+            if (schedule.dt.isBefore(nextWeek) && schedule.dt.isAfter(today.minusDays(1))) {
+                DtoGettingThisDate dtoGettingThisDate = new DtoGettingThisDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime dateTime = schedule.dt;
+                String formattedDateTime = dateTime.format(formatter);
+                if (schedule.busy == false) {
+                    dtoGettingThisDate.NameOfcources = schedule.coursename;
+
+                    dtoGettingThisDate.freeTimes = formattedDateTime;
+                    list1.add(dtoGettingThisDate);
+                } else {
+                    dtoGettingThisDate.NameOfcources = schedule.coursename;
+                    dtoGettingThisDate.busyTime = formattedDateTime;
+                    dtoGettingThisDate.userId = schedule.requestedUser;
+                    AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+                    dtoGettingThisDate.userName = user.name;
+                    dtoGettingThisDate.usersurname = user.surname;
+                    dtoGettingThisDate.confirmed = schedule.confirmedByTrainer;
+                    list1.add(dtoGettingThisDate);
+                }
+            }
+
+        }
+        return list1;
+
+    }
+
+@Transactional
+    public String cancelusertime(Schedule schedule) {
+
+    String dateTime = schedule.data;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+
+
+    String jpql = String.format("SELECT r FROM Schedule r where r.requestedUser=?1 and r.coursename=?2 and r.dt=?3", Schedule.class);
+
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, schedule.requestedUser).setParameter(2, schedule.coursename).setParameter(3, dateTime1).getResultList();
+
+        if (list.isEmpty()) {
+            return "We dont have this record";
+        }
+
+        for (Schedule schedule1 : list) {
+            em.remove(schedule1);
+            schedule1.busy = false;
+            schedule1.confirmedByTrainer = false;
+            schedule1.requestedUser = null;
+            schedule1.trainerMessage = null;
+            em.persist(schedule1);
+        }
+        return "The record is removed";
+    }
+
+ @Transactional
+    @Override
+    public Integer removingFromWaitingList(String name) {
+
+
+        String jpql = String.format("Select r from Trainer r", Trainer.class);
+        AllUsers user=em.find(AllUsers.class,name);
+
+        List<Trainer>list = em.createQuery(jpql,Trainer.class).getResultList();
+
+        for (Trainer trainer:list) {
+            if(trainer.waitingLists.contains(user)){
+                trainer.waitingLists.remove(user);
+                em.remove(user);
+                user.waiting=false;
+                em.persist(user);
+            }
+        }
+
+
+
+//
+///trainerid/waitinglist/solved – «решено» с заявкой в листе ожидания (если не нужно, чтобы заявка оставалась на виду)
+//        Body: {userid: delete}
+//        Response: userid, user’s name, user’s surname, name of the course, waiting – все удалить
+//
+   return 200;
+    }
+
+
+///trainerid/cancelusertime - удаление заявки, освобождаем время. При нажатии вылезает форма «указать причину» (messagetouser).
+//    Body: {userid, courseid, date, time, messagetouser, busy = false, confirmed = false }
+//    Response: проверка по данным на наличие записи на это время на этот курс этого юзера.
+//    Если все ок, отправка сообщения на email userid, c данными: trainerid, name of the course,
+//    date, time, messagetouser. date-time снова становятся свободными: поле busy меняется на false, confirmed меняется на false.
+
 }

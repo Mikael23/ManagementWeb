@@ -10,11 +10,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class UserImplemen implements UserService {
@@ -367,8 +369,47 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public DtoGettingThisDateN dtoGettinThisDateN(AllUsers allUsers) {
-        return null;
+    public List<DtoGettingThisDateN> dtoGettinThisDateN(AllUsers allUsers, String date) {
+
+
+
+   AllUsers user = em.find(AllUsers.class,allUsers.email);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(date, formatter);
+
+
+
+        String jpql = String.format("Select r from Schedule r where r.requestedUser=?1" + " " + "and r.dt>?2", Schedule.class);
+
+        List<Schedule>list=em.createQuery(jpql,Schedule.class).setParameter(1,user.email).setParameter(2,dateTime1).getResultList();
+        List<DtoGettingThisDateN>list1=new ArrayList<>();
+
+        for (Schedule schedule:list) {
+            DtoGettingThisDateN dtoGettingThisDateN = new DtoGettingThisDateN();
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = schedule.dt;
+            String formattedDateTime = dateTime.format(formatter);
+            dtoGettingThisDateN.nameOfCourse=schedule.coursename;
+            dtoGettingThisDateN.dateTime=formattedDateTime;
+            dtoGettingThisDateN.confirmationStatus=schedule.confirmedByTrainer;
+            dtoGettingThisDateN.trainerId=schedule.trainerName;
+            Trainer trainer = em.find(Trainer.class,schedule.trainerName);
+            dtoGettingThisDateN.trainerName=trainer.name;
+            dtoGettingThisDateN.surname=trainer.surname;
+   list1.add(dtoGettingThisDateN);
+
+        }
+
+
+
+///userid/”текущая дата, от которой будет выстраиваться месяц” – возвращает подтвержденные
+//        и неподтвержденные записи юзера на курсы.
+//        Response: name of the course, date (относительно текущего месяца),
+//        time, trainerid, trainer’s name, trainer’s surname, confirmed.
+//        Ниже кнопка «отменить запись».
+
+
+        return list1;
     }
 @Transactional
     @Override
@@ -410,12 +451,14 @@ public class UserImplemen implements UserService {
     @Override
     public DtoPostRegistration registration(AllUsers allUsers) throws Exception {
 
+        AtomicInteger count1 = new AtomicInteger(0);
+        Integer id = count1.getAndIncrement();
 
         AllUsers allUsers1 = em.find(AllUsers.class, allUsers.email);
         if (allUsers1 != null) {
             throw new Exception("We have got this allUsers already");
         }
-        System.out.println(allUsers.id);
+        System.out.println(allUsers.id );
         String pas = allUsers.password;
         String repeatOfPas = allUsers.repeatPassword;
         if (!pas.equals(repeatOfPas)) {
@@ -440,6 +483,8 @@ public class UserImplemen implements UserService {
             }
         }
 
+
+        allUsers.id=id;
 
         em.persist(allUsers);
         DtoPostRegistration dtoPostRegistration = new DtoPostRegistration();
