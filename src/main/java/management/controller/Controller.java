@@ -10,10 +10,11 @@ import management.services.Interfaces.CourseServiceInt;
 import management.services.Interfaces.TopicInterfaceOut;
 import management.services.Interfaces.TrainerInter;
 import management.services.Interfaces.UserService;
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -37,18 +38,23 @@ public class Controller {
 //    public List<String> listOfCources(@PathVariable("name") String name) {
 
 
+    @GetMapping("trainerid/gettingUndefiniedTime/{email}/{Newdate}")
+    public Set<String>gettingUndefiniedTime(@PathVariable("email") String email,@PathVariable("Newdate") String Newdate) throws Exception {
+
+        return trainerInter.gettingUndefiniedTime(email,Newdate);
+    }
 
     @DeleteMapping("/trainerid/waitinglist/solved/{name}")
 
-       public Integer removingFromWaitingList(@PathVariable("name")String name){
-             return trainerInter.removingFromWaitingList(name);
-        }
+    public Integer removingFromWaitingList(@PathVariable("name") String name) {
+        return trainerInter.removingFromWaitingList(name);
+    }
 
 
     @PostMapping("/trainerid/cancelusertime")
     public String cancelusertime(@RequestBody Schedule schedule) {
 
-      return   trainerInter.cancelusertime(schedule);
+        return trainerInter.cancelusertime(schedule);
 
     }
 
@@ -244,7 +250,10 @@ public class Controller {
 
 
     @GetMapping("trainerid/schedule/{email}")
-    public List<DtoGettingCourcesOnTrainerId>gettingTrainersNameAndTheirNumberInScheduleTable(@PathVariable("email")String email) throws Exception {
+    public List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(@PathVariable("email") String email) throws Exception {
+
+
+
 
 
         return trainerInter.gettingTrainersNameAndTheirNumberInScheduleTable(email);

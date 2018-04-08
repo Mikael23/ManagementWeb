@@ -1,6 +1,7 @@
 package management.ORM.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
+@JsonSerialize
 @Entity
 @Table(name = "schedule")
 
@@ -20,73 +21,33 @@ public class Schedule implements Serializable {
    @Transient // ne kladem v bazu
    public String dateTime;
 
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
 
     public String data;
 
-    public String getTrainerMessage() {
-        return trainerMessage;
+    public String[] getIntervals() {
+        return intervals;
     }
 
-    public void setTrainerMessage(String trainerMessage) {
-        this.trainerMessage = trainerMessage;
+    public void setIntervals(String[] intervals) {
+        this.intervals = intervals;
     }
+
+    public String[]intervals;
 
     public String trainerMessage;
-
-
-    public String getMessageTOtrainer() {
-        return messageTOtrainer;
-    }
-
-    public void setMessageTOtrainer(String messageTOtrainer) {
-        this.messageTOtrainer = messageTOtrainer;
-    }
 
     public String messageTOtrainer;
 
     @Column
     public String trainerName;
 
-   public boolean confirmedByTrainer;// Odobreno li trenerom ili net:
-
-    public boolean isConfirmedByTrainer() {
-        return confirmedByTrainer;
-    }
-
-    public void setConfirmedByTrainer(boolean confirmedByTrainer) {
-        this.confirmedByTrainer = confirmedByTrainer;
-    }
+    public boolean confirmedByTrainer;// Odobreno li trenerom ili net:
 
     public String coursename;
-
 
     @GeneratedValue
     @Id
     public Integer id;
-
-
-    public String getRequestedUser() {
-        return requestedUser;
-    }
-
-    public void setRequestedUser(String requestedUser) {
-        this.requestedUser = requestedUser;
-    }
 
     public String requestedUser; // Imya zaprashimaemogo studenta;
 
@@ -100,57 +61,15 @@ public class Schedule implements Serializable {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     public LocalDateTime dt;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-   
-
-
-
 
     boolean busyness;
 
-
-
-
-
-
-
-
-
     public Integer date;
-
-    public String getCourse() {
-        return coursename;
-    }
-
-    public void setCourse(String courseName) {
-        this.coursename = courseName;
-    }
-
-    public Trainer getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(Trainer trainer) {
-        this.trainer = trainer;
-    }
 
     public Trainer trainer;
 
 
-    public boolean isBusy() {
-        return busy;
-    }
 
-    public void setBusy(boolean busy) {
-        this.busy = busy;
-    }
 
     public boolean busy;
 
@@ -206,5 +125,77 @@ public class Schedule implements Serializable {
 
     public void setDt(LocalDateTime dt) {
         this.dt = dt;
+    }
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+    public String getTrainerMessage() {
+        return trainerMessage;
+    }
+
+    public void setTrainerMessage(String trainerMessage) {
+        this.trainerMessage = trainerMessage;
+    }
+    public String getCourse() {
+        return coursename;
+    }
+
+    public void setCourse(String courseName) {
+        this.coursename = courseName;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+    public boolean isConfirmedByTrainer() {
+        return confirmedByTrainer;
+    }
+
+    public void setConfirmedByTrainer(boolean confirmedByTrainer) {
+        this.confirmedByTrainer = confirmedByTrainer;
+    }
+    public String getMessageTOtrainer() {
+        return messageTOtrainer;
+    }
+
+    public void setMessageTOtrainer(String messageTOtrainer) {
+        this.messageTOtrainer = messageTOtrainer;
+    }
+    public String getRequestedUser() {
+        return requestedUser;
+    }
+
+    public void setRequestedUser(String requestedUser) {
+        this.requestedUser = requestedUser;
+    }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public boolean isBusy() {
+        return busy;
+    }
+
+    public void setBusy(boolean busy) {
+        this.busy = busy;
     }
 }

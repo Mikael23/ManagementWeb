@@ -229,6 +229,10 @@ public class CourseImplemen implements CourseServiceInt {
 
         Course course1 = new Course();
         String name = course.nameOfCourse;
+        Course course2 = em.find(Course.class,name);
+        if(course2==null){
+            throw new Exception("Please change the name, we have got this already");
+        }
         AllUsers allUsers1 = new AllUsers();
         allUsers1.email = course.initiatorCourse;
 
@@ -241,8 +245,8 @@ public class CourseImplemen implements CourseServiceInt {
 
         course1.nameOfCourse = course.nameOfCourse;
 
-        Course course2 = em.find(Course.class, course1.nameOfCourse);
-        if (course2 != null) {
+        Course course3 = em.find(Course.class, course1.nameOfCourse);
+        if (course3 != null) {
 
             name = course1.nameOfCourse + "2";
             course.nameOfCourse = name;

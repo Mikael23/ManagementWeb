@@ -15,6 +15,8 @@ public class DtoGettingTrainers {
     @JsonProperty
     public String URLPhoto;
 
+    public String email;
+
     public List<String> getNameOfCources() {
         return nameOfCources;
     }

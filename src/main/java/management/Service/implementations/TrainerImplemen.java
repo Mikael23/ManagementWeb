@@ -11,16 +11,74 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class TrainerImplemen implements TrainerInter {
 
+    @Override
+    public Set<String> gettingUndefiniedTime(String email, String newDate) throws Exception {
+
+//        String jpql1 = String.format("Select r FROM Schedule r where r.trainerName=?2", Schedule.class);
+//
+//        List<Schedule> list1 = em.createQuery(jpql1, Schedule.class).setParameter(2, email).getResultList();
+
+
+        String jpql = String.format("Select r From Schedule r where r.trainerName=?1", Schedule.class);
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, email).getResultList();
+
+        Set<String> list1 = new HashSet<>();
+        List<LocalDateTime> list2 = new ArrayList<>();
+
+        for (Schedule schedule : list) {
+            System.out.println(schedule.coursename);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HHmm");
+            if (schedule.dt == null) {
+                throw new Exception("No difinied dateTime for subject");
+
+            }
+            LocalDateTime dateTime = schedule.dt;
+
+            String formattedDateTime = dateTime.format(formatter);
+            String date1 = dateTime.toLocalDate().format(formatter1);
+            if (date1.equals(newDate)) {
+                list1.add(dateTime.toLocalTime().format(formatter2));
+            }
+
+            List<Integer>list3=new ArrayList<>();
+
+
+            for (String date:list1) {
+
+                Integer er = Integer.valueOf(date);
+                list3.add(er);
+                Collections.sort(list3);
+
+
+            }
+            List<Integer>list4=new ArrayList<>();
+
+            for(int r=0;r+1<=list3.size();r++){
+                if(list3.get(r+1)-list3.get(r)>4000){
+                    list4.add(list3.get(r)+2000);
+                }
+            }
+
+
+        }
+
+
+
+
+
+        return list1;
+    }
 
     private static AtomicInteger ID_GENERATOR = new AtomicInteger();
 
@@ -57,6 +115,7 @@ public class TrainerImplemen implements TrainerInter {
         return dtoAddingToWaitingLis;
 
     }
+
 
     @Override
     public List<DtoTrainerCancellationRecords> checkingCancelledRecords() {
@@ -128,43 +187,87 @@ public class TrainerImplemen implements TrainerInter {
     @Override
     public Integer addingInterval(Schedule schedule) throws Exception {
 
-        String courseName = schedule.coursename;
+//        String courseName = schedule.coursename;
+//
+//        Course course = em.find(Course.class, courseName);
+//
+//        if (course == null) {
+//            throw new Exception("No found course");
+//        }
+//
+//        Schedule schedule1 = new Schedule();
+//
+//        String dateTime = schedule.data;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+//
+//
+//        String trainerName = schedule.trainerName;
+//        Trainer trainer = em.find(Trainer.class, trainerName);
+//        System.out.println(dateTime1);
+//
+//
+//        schedule1.dates.add(dateTime1);
+//        schedule1.dt = dateTime1;
+//        schedule1.busy = false;
+//        schedule1.coursename = course.nameOfCourse;
+//        schedule1.trainerName = trainer.email;
+//        em.persist(schedule1);
 
-        Course course = em.find(Course.class, courseName);
 
-        if (course == null) {
-            throw new Exception("No found course");
+        //Character.isDigit(str.charAt(i)
+
+        String date = schedule.data;
+
+        String course = null;
+        DateTimeFormatter formatter = null;
+        String dateAndTime = null;
+        LocalDateTime dateTime = null;
+        for (int i = 0; i <= schedule.intervals.length - 1; i++) {
+
+
+            if (schedule.intervals[i].matches("\\d+")) {
+
+                System.out.println("Ya v cifrah");
+                String time = schedule.intervals[i];
+                formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
+                dateAndTime = date + " " + time;
+
+                dateTime = LocalDateTime.parse(dateAndTime, formatter);
+
+
+            }
+            if (!schedule.intervals[i].matches("\\d+")) {
+                System.out.println("Ya v bukvah");
+
+                Schedule schedule1 = new Schedule();
+
+                schedule1.dates.add(dateTime);
+                schedule1.dt = dateTime;
+                schedule1.busy = false;
+                schedule1.trainerName = schedule.trainerName;
+                schedule1.coursename = schedule.intervals[i];
+                em.persist(schedule1);
+
+            }
+
+
         }
 
-        Schedule schedule1 = new Schedule();
 
-        String dateTime = schedule.data;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
-
-
-        String trainerName = schedule.trainerName;
-        Trainer trainer = em.find(Trainer.class, trainerName);
-        System.out.println(dateTime1);
-
-
-        schedule1.dates.add(dateTime1);
-        schedule1.dt = dateTime1;
-        schedule1.busy = false;
-        schedule1.coursename = course.nameOfCourse;
-        schedule1.trainerName = trainer.email;
-        em.persist(schedule1);
-
-
-//        Поля дата, время, подгруженные курсы (которые можно выбрать галочками).
-//                Кнопка «добавить» запоминает выбранное и отображает в соседней форме.
-//                Поля дата, время, галочки на выбранных курсах обнуляются, чтобы можно было добавить еще один интервал.
-//        По кнопке «сохранить» выполняется запрос.
-//        Body: interval: date, массив из {time, {массив выбранных courseid}, busy=false}.
-//
-//        String str = "1986-04-08 12:30";
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+//        Миш, еще один момент, довольно важный.. Запрос https://managementproject.herokuapp.com/trainerid/addinterval/
+//        У меня в body было там написано, что я буду тебе присылать массив из {time, {массив выбранных courseid}}.
+//        Вот было бы идеально, чтобы так действительно можно было сделать. Чтобы в одной date я могла
+//        тебе прислать НЕСКОЛЬКО time и массив курсов к одному time.
+//        Типа:
+//“date”: “2018-04-06",
+//“times”: {
+//   “10:00": “JAVA, Javascript, PHP”,
+//   “11:00": “Javascript, PHP, Pyton”,
+//   “12:00": “Maths, Yoga, Cooking”
+//        }
+//“trainerName”: “me”
 
 
         return 200;
@@ -172,27 +275,25 @@ public class TrainerImplemen implements TrainerInter {
 
     @Override
     public List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(String email) throws Exception {
-        Trainer trainer = em.find(Trainer.class,email);
+        Trainer trainer = em.find(Trainer.class, email);
 
 
+        String jpql1 = String.format("Select r FROM Schedule r where r.trainerName=?2", Schedule.class);
 
-        String jpql1 = String.format("Select r FROM Schedule r where r.trainerName=?2",Schedule.class);
+        List<Schedule> list1 = em.createQuery(jpql1, Schedule.class).setParameter(2, email).getResultList();
 
-        List<Schedule>list1=em.createQuery(jpql1,Schedule.class).setParameter(2,email).getResultList();
-
-        if(list1.isEmpty()){
+        if (list1.isEmpty()) {
             throw new Exception("This trainer doesnt have courses");
         }
 
-        List<DtoGettingCourcesOnTrainerId>list2 = new ArrayList<>();
+        List<DtoGettingCourcesOnTrainerId> list2 = new ArrayList<>();
 
-        for (Schedule course:list1) {
-            DtoGettingCourcesOnTrainerId dtoGettingCourcesOnTrainerId=new DtoGettingCourcesOnTrainerId();
-            dtoGettingCourcesOnTrainerId.nameOfCourse=course.coursename;
-            dtoGettingCourcesOnTrainerId.courseId=course.id;
+        for (Schedule course : list1) {
+            DtoGettingCourcesOnTrainerId dtoGettingCourcesOnTrainerId = new DtoGettingCourcesOnTrainerId();
+            dtoGettingCourcesOnTrainerId.nameOfCourse = course.coursename;
+            dtoGettingCourcesOnTrainerId.courseId = course.id;
             list2.add(dtoGettingCourcesOnTrainerId);
         }
-
 
 
         return list2;
@@ -377,29 +478,24 @@ public class TrainerImplemen implements TrainerInter {
     @Override
     public List<DtoGettingWaitingList> gettingWaitingList(String email) {
 
-       Trainer trainer = em.find(Trainer.class,email);
-   List<DtoGettingWaitingList>list=new ArrayList<>();
-        for (AllUsers users:trainer.waitingLists) {
+        Trainer trainer = em.find(Trainer.class, email);
+        List<DtoGettingWaitingList> list = new ArrayList<>();
+        for (AllUsers users : trainer.waitingLists) {
             DtoGettingWaitingList dtoGettingWaitingList = new DtoGettingWaitingList();
-            dtoGettingWaitingList.email=users.email;
-            String name1=users.email;
-            String jpql = String.format("Select r from Schedule r where r.requestedUser=?1 and r.trainerName=?2 and r.confirmedByTrainer=false",Schedule.class);
-            List<Schedule>list1=em.createQuery(jpql,Schedule.class).setParameter(1,name1).setParameter(2,email).getResultList();
-            for (Schedule schedule:list1) {
+            dtoGettingWaitingList.email = users.email;
+            String name1 = users.email;
+            String jpql = String.format("Select r from Schedule r where r.requestedUser=?1 and r.trainerName=?2 and r.confirmedByTrainer=false", Schedule.class);
+            List<Schedule> list1 = em.createQuery(jpql, Schedule.class).setParameter(1, name1).setParameter(2, email).getResultList();
+            for (Schedule schedule : list1) {
                 System.out.println(schedule.coursename);
-                dtoGettingWaitingList.nameOfCourse=schedule.coursename;
+                dtoGettingWaitingList.nameOfCourse = schedule.coursename;
             }
-            AllUsers user = em.find(AllUsers.class,users.email);
-            dtoGettingWaitingList.userId=user.id;
-            dtoGettingWaitingList.userName=user.name;
-            dtoGettingWaitingList.userSurname=user.surname;
+            AllUsers user = em.find(AllUsers.class, users.email);
+            dtoGettingWaitingList.userId = user.id;
+            dtoGettingWaitingList.userName = user.name;
+            dtoGettingWaitingList.userSurname = user.surname;
             list.add(dtoGettingWaitingList);
         }
-
-
-
-
-
 
 
 //
@@ -465,6 +561,8 @@ public class TrainerImplemen implements TrainerInter {
             System.out.println(trainer.name);
             dtoGettingTrainers.description = trainer.description;
             dtoGettingTrainers.name = trainer.name;
+            dtoGettingTrainers.email = trainer.email;
+
             System.out.println(trainer.listOfCources.toString());
 
             for (Course nameOfCourse : trainer.listOfCources) {
@@ -515,23 +613,21 @@ public class TrainerImplemen implements TrainerInter {
         String dateTime = schedule.data;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
-        String jpql = String.format("Select r from Schedule r where r.dt=?1 and r.busy=false and r.coursename=?2",Schedule.class);
+        String jpql = String.format("Select r from Schedule r where r.dt=?1 and r.busy=false and r.coursename=?2", Schedule.class);
 
-        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,dateTime1).setParameter(2,schedule.coursename).getResultList();
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).setParameter(2, schedule.coursename).getResultList();
 
 
-        if(list.isEmpty()){
-            throw  new Exception("We dont have this record");
+        if (list.isEmpty()) {
+            throw new Exception("We dont have this record");
         }
 
 
-        for (Schedule schedule1:list) {
+        for (Schedule schedule1 : list) {
 
-            Schedule schedule2=em.find(Schedule.class,schedule1.id);
+            Schedule schedule2 = em.find(Schedule.class, schedule1.id);
             em.remove(schedule2);
         }
-
-
 
 
 ///trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
@@ -621,15 +717,15 @@ public class TrainerImplemen implements TrainerInter {
 
     }
 
-@Transactional
+    @Transactional
     public String cancelusertime(Schedule schedule) {
 
-    String dateTime = schedule.data;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
+        String dateTime = schedule.data;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
 
 
-    String jpql = String.format("SELECT r FROM Schedule r where r.requestedUser=?1 and r.coursename=?2 and r.dt=?3", Schedule.class);
+        String jpql = String.format("SELECT r FROM Schedule r where r.requestedUser=?1 and r.coursename=?2 and r.dt=?3", Schedule.class);
 
         List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, schedule.requestedUser).setParameter(2, schedule.coursename).setParameter(3, dateTime1).getResultList();
 
@@ -648,25 +744,24 @@ public class TrainerImplemen implements TrainerInter {
         return "The record is removed";
     }
 
- @Transactional
+    @Transactional
     @Override
     public Integer removingFromWaitingList(String name) {
 
 
         String jpql = String.format("Select r from Trainer r", Trainer.class);
-        AllUsers user=em.find(AllUsers.class,name);
+        AllUsers user = em.find(AllUsers.class, name);
 
-        List<Trainer>list = em.createQuery(jpql,Trainer.class).getResultList();
+        List<Trainer> list = em.createQuery(jpql, Trainer.class).getResultList();
 
-        for (Trainer trainer:list) {
-            if(trainer.waitingLists.contains(user)){
+        for (Trainer trainer : list) {
+            if (trainer.waitingLists.contains(user)) {
                 trainer.waitingLists.remove(user);
                 em.remove(user);
-                user.waiting=false;
+                user.waiting = false;
                 em.persist(user);
             }
         }
-
 
 
 //
@@ -674,7 +769,7 @@ public class TrainerImplemen implements TrainerInter {
 //        Body: {userid: delete}
 //        Response: userid, user’s name, user’s surname, name of the course, waiting – все удалить
 //
-   return 200;
+        return 200;
     }
 
 
