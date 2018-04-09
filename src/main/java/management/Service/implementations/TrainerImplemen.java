@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -21,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TrainerImplemen implements TrainerInter {
 
     @Override
-    public Set<String> gettingUndefiniedTime(String email, String newDate) throws Exception {
+    public List<Integer> gettingUndefiniedTime(String email, String newDate) throws Exception {
 
 //        String jpql1 = String.format("Select r FROM Schedule r where r.trainerName=?2", Schedule.class);
 //
@@ -33,6 +32,7 @@ public class TrainerImplemen implements TrainerInter {
 
         Set<String> list1 = new HashSet<>();
         List<LocalDateTime> list2 = new ArrayList<>();
+        List<Integer>list3=new ArrayList<>();
 
         for (Schedule schedule : list) {
             System.out.println(schedule.coursename);
@@ -48,36 +48,40 @@ public class TrainerImplemen implements TrainerInter {
             String formattedDateTime = dateTime.format(formatter);
             String date1 = dateTime.toLocalDate().format(formatter1);
             if (date1.equals(newDate)) {
+                System.out.println("date1" + date1);
                 list1.add(dateTime.toLocalTime().format(formatter2));
             }
 
-            List<Integer>list3=new ArrayList<>();
 
-
-            for (String date:list1) {
-
+            for (String date : list1) {
+                System.out.println("date" + date);
                 Integer er = Integer.valueOf(date);
                 list3.add(er);
                 Collections.sort(list3);
 
 
             }
+        }
+
+
             List<Integer>list4=new ArrayList<>();
 
-            for(int r=0;r+1<=list3.size();r++){
+            for(int r=0;r+1<=list3.size()-1;r++){
                 if(list3.get(r+1)-list3.get(r)>4000){
+                    System.out.println(list3.get(r+1));
+                    System.out.println(list3.get(r));
                     list4.add(list3.get(r)+2000);
                 }
             }
 
 
-        }
 
 
 
 
 
-        return list1;
+
+        return list4;
     }
 
     private static AtomicInteger ID_GENERATOR = new AtomicInteger();
@@ -678,7 +682,7 @@ public class TrainerImplemen implements TrainerInter {
 //        String formattedDateTime = dateTime.format(formatter);
 
 
-        String jpql = String.format("Select r FROM Schedule r WHERE   r.confirmedByTrainer=true OR r.busy = false and r.trainerName=?1 " +
+        String jpql = String.format("Select r FROM Schedule r WHERE   r.confirmedByTrainer=true AND r.busy = false and r.trainerName=?1 " +
                 " ", Schedule.class);
         // r.dt <?2 and
         LocalDateTime today = LocalDateTime.now();
@@ -700,6 +704,7 @@ public class TrainerImplemen implements TrainerInter {
 
                     dtoGettingThisDate.freeTimes = formattedDateTime;
                     list1.add(dtoGettingThisDate);
+                    dtoGettingThisDate.busy=false;
                 } else {
                     dtoGettingThisDate.NameOfcources = schedule.coursename;
                     dtoGettingThisDate.busyTime = formattedDateTime;
@@ -708,6 +713,7 @@ public class TrainerImplemen implements TrainerInter {
                     dtoGettingThisDate.userName = user.name;
                     dtoGettingThisDate.usersurname = user.surname;
                     dtoGettingThisDate.confirmed = schedule.confirmedByTrainer;
+                    dtoGettingThisDate.busy=true;
                     list1.add(dtoGettingThisDate);
                 }
             }

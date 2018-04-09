@@ -7,12 +7,11 @@ import management.ORM.entity.Trainer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public interface TrainerInter {
 
-    Set<String> gettingUndefiniedTime(String email, String date) throws Exception;
+    List<Integer> gettingUndefiniedTime(String email, String date) throws Exception;
 
 
 

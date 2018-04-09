@@ -10,7 +10,6 @@ import management.services.Interfaces.CourseServiceInt;
 import management.services.Interfaces.TopicInterfaceOut;
 import management.services.Interfaces.TrainerInter;
 import management.services.Interfaces.UserService;
-import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +38,7 @@ public class Controller {
 
 
     @GetMapping("trainerid/gettingUndefiniedTime/{email}/{Newdate}")
-    public Set<String>gettingUndefiniedTime(@PathVariable("email") String email,@PathVariable("Newdate") String Newdate) throws Exception {
+    public List<Integer> gettingUndefiniedTime(@PathVariable("email") String email, @PathVariable("Newdate") String Newdate) throws Exception {
 
         return trainerInter.gettingUndefiniedTime(email,Newdate);
     }

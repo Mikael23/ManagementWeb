@@ -19,10 +19,10 @@ public class DtoGettingThisDate {
 
     public String freeTimes;
 
-    @JsonProperty
-    public String NameOfCourse;
 
     public boolean confirmed;
+
+    public boolean busy;
 
 
 
