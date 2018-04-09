@@ -7,11 +7,12 @@ import management.ORM.entity.Trainer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface TrainerInter {
 
-    List<Integer> gettingUndefiniedTime(String email, String date) throws Exception;
+    Map<Integer, String> gettingUndefiniedTime(String email) throws Exception;
 
 
 

@@ -37,10 +37,10 @@ public class Controller {
 //    public List<String> listOfCources(@PathVariable("name") String name) {
 
 
-    @GetMapping("trainerid/gettingUndefiniedTime/{email}/{Newdate}")
-    public List<Integer> gettingUndefiniedTime(@PathVariable("email") String email, @PathVariable("Newdate") String Newdate) throws Exception {
+    @GetMapping("trainerid/gettingUndefiniedTime/{email}")
+    public Map<Integer,String> gettingUndefiniedTime(@PathVariable("email") String email) throws Exception {
 
-        return trainerInter.gettingUndefiniedTime(email,Newdate);
+        return trainerInter.gettingUndefiniedTime(email);
     }
 
     @DeleteMapping("/trainerid/waitinglist/solved/{name}")
@@ -250,9 +250,6 @@ public class Controller {
 
     @GetMapping("trainerid/schedule/{email}")
     public List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(@PathVariable("email") String email) throws Exception {
-
-
-
 
 
         return trainerInter.gettingTrainersNameAndTheirNumberInScheduleTable(email);
