@@ -394,4 +394,14 @@ public class Controller {
     }
 
 
+    ////////
+    private String[] getUsernameAndPassword(String data){
+        data = data.split(" ")[1];
+        byte[] decoded = Base64.getDecoder().decode(data);
+        String namePass = new String(decoded);
+        String[] res = namePass.split(":");
+        return res;
+    }
+
+
 }
