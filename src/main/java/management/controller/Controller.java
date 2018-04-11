@@ -6,11 +6,12 @@ import management.ORM.entity.Course;
 import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.ORM.entity.AllUsers;
-import management.services.Interfaces.CourseServiceInt;
-import management.services.Interfaces.TopicInterfaceOut;
-import management.services.Interfaces.TrainerInter;
-import management.services.Interfaces.UserService;
+import management.UnauthorizedException;
+import management.services.Interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -21,6 +22,9 @@ import java.util.*;
 
 public class Controller {
 
+
+    @Autowired
+    TokenInter tokenInter;
 
     @Autowired
     CourseServiceInt courseServiceInt;
@@ -135,16 +139,28 @@ public class Controller {
     @PostMapping("/registration")
     public DtoPostRegistration registration(@RequestBody AllUsers allUsers) throws Exception {
 
-//            /registration
+        System.out.println("registraciya" + " " +allUsers.password);
         return userService.registration(allUsers);
     }
 
 
+//    @PostMapping("/login")
+//    public DTOlogging loging(@RequestBody AllUsers allUsers) throws Exception {
+//        //            /login
+//        return userService.logging(allUsers);
+//    }
+
     @PostMapping("/login")
-    public DTOlogging loging(@RequestBody AllUsers allUsers) throws Exception {
-        //            /login
-        return userService.logging(allUsers);
+    public ResponseEntity logging(@RequestBody AllUsers allUsers) throws UnauthorizedException{
+
+        System.out.println("controller" + " " + allUsers.password);
+            String token = tokenInter.getToken(allUsers);
+            HttpHeaders heades = new HttpHeaders();
+            heades.add("Authorization", token);
+            return new ResponseEntity(heades, HttpStatus.OK);
+
     }
+
 
     @GetMapping("/cancelledtime/userid/{messageTouser}")
     public DtoCancellation controlCancelledTime(@PathVariable("messageTouser") String messageTouser) {

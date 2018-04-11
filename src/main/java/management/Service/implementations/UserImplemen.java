@@ -6,6 +6,7 @@ import management.ORM.entity.Course;
 import management.ORM.entity.Schedule;
 import management.ORM.entity.Trainer;
 import management.services.Interfaces.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -459,30 +460,36 @@ public class UserImplemen implements UserService {
             throw new Exception("We have got this allUsers already");
         }
         System.out.println(allUsers.id );
-        String pas = allUsers.password;
-        String repeatOfPas = allUsers.repeatPassword;
-        if (!pas.equals(repeatOfPas)) {
-            throw new Exception("The passwords are not equals");
-        }
 
-        if (pas.length() < 8) {
-            throw new Exception("No enough of numbers in password");
-        } else {
-            char c;
-            int count = 0;
-            for (int i = 0; i < pas.length(); i++) {
-                c = pas.charAt(i);
-                if (!Character.isLetterOrDigit(c)) {
-                    throw new Exception("The symbol not correct");
-                } else if (Character.isDigit(c)) {
-                    count++;
-                }
-            }
-            if (count < 2) {
-                throw new Exception("No enough of numbers");
-            }
-        }
 
+
+
+
+//        String repeatOfPas = allUsers.repeatPassword;
+//        if (!pas.equals(repeatOfPas)) {
+//            throw new Exception("The passwords are not equals");
+//        }
+
+//        if (pas.length() < 8) {
+//            throw new Exception("No enough of numbers in password");
+//        } else {
+//            char c;
+//            int count = 0;
+//            for (int i = 0; i < pas.length(); i++) {
+//                c = pas.charAt(i);
+//                if (!Character.isLetterOrDigit(c)) {
+//                    throw new Exception("The symbol not correct");
+//                } else if (Character.isDigit(c)) {
+//                    count++;
+//                }
+//            }
+//            if (count < 2) {
+//                throw new Exception("No enough of numbers");
+//            }
+//        }
+
+        String password = BCrypt.hashpw(allUsers.password,BCrypt.gensalt());
+        allUsers.password=password;
 
         allUsers.id=id;
 

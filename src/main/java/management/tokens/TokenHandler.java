@@ -22,8 +22,9 @@ public class TokenHandler {
 //        String jwtKey = "MyJwtKey1234567890";
 //        byte[] decodeKey = BaseEncoding.base64().decode(jwtKey);
 
-        secretKey = KeyGenerator.getInstance("AES").generateKey();
+        secretKey = KeyGenerator.getInstance("AES").generateKey(); //generatot shifrovaniya. Generate Key - shifrovka i sgenenerirovann kluch
 //                new SecretKeySpec(decodeKey, "AES");
+        //AES - algoritm shifrovaniya
     }
 
     public String extractUserLogin(String token) {
@@ -36,7 +37,7 @@ public class TokenHandler {
         }
     }
 
-    public String generateAccessToken(String login, LocalDateTime expires) {
+    public String generateAccessToken(String login,  LocalDateTime expires) {
         String res = Jwts.builder()
                 .setId(login)
                 .setExpiration(Date.from(expires.atZone(ZoneId.systemDefault()).toInstant()))

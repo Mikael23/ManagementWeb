@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -113,7 +114,11 @@ public class AllUsers implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+
+        this.password=password;
+
+
     }
 
     public String getRepeatPassword() {
