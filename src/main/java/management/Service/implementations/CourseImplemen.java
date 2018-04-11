@@ -30,7 +30,7 @@ public class CourseImplemen implements CourseServiceInt {
         return null;
     }
 
- @Transactional
+    @Transactional
     @Override
     public Integer deletionCancelledrecords(Schedule schedule) throws Exception {
 
@@ -87,7 +87,7 @@ public class CourseImplemen implements CourseServiceInt {
         List<Course> listOfCourses = em.createQuery(jpql, Course.class).getResultList();
         String name1 = null;
 
-        if (listOfCourses == null) {
+        if (listOfCourses.isEmpty()) {
             throw new Exception("401, nothing to remove");
         }
         for (Course course : listOfCourses) {
@@ -115,6 +115,15 @@ public class CourseImplemen implements CourseServiceInt {
 
 
             }
+        }
+
+        String jpql3 = "Select r from Schedule r where r.coursename=?1";
+        List<Schedule> list = em.createQuery(jpql3, Schedule.class).setParameter(1, name1).getResultList();
+
+        for (Schedule schedule : list) {
+            Integer id = schedule.id;
+            System.out.println(id);
+            em.remove(id);
         }
 
         // em.remove(course);
@@ -229,8 +238,8 @@ public class CourseImplemen implements CourseServiceInt {
 
         Course course1 = new Course();
         String name = course.nameOfCourse;
-        Course course2 = em.find(Course.class,name);
-        if(course2==null){
+        Course course2 = em.find(Course.class, name);
+        if (course2 == null) {
             throw new Exception("Please change the name, we have got this already");
         }
         AllUsers allUsers1 = new AllUsers();

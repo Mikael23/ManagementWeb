@@ -137,7 +137,13 @@ public class Controller {
 //    }
 
     @PostMapping("/registration")
-    public DtoPostRegistration registration(@RequestBody AllUsers allUsers) throws Exception {
+    public DtoPostRegistration registration(@RequestBody AllUsers allUsers,@RequestHeader("Authorization")String data) throws Exception {
+
+
+     String[]Idname=getIdAndPassword(data);
+     allUsers.setEmail(Idname[0]);
+     allUsers.setPassword(Idname[1]);
+
 
         System.out.println("registraciya" + " " +allUsers.password);
         return userService.registration(allUsers);
@@ -151,16 +157,35 @@ public class Controller {
 //    }
 
     @PostMapping("/login")
-    public ResponseEntity logging(@RequestBody AllUsers allUsers) throws UnauthorizedException{
+    public ResponseEntity logging(@RequestHeader("Authorization")String data) throws UnauthorizedException{
+
+        AllUsers allUsers = getUser(data);
 
         System.out.println("controller" + " " + allUsers.password);
+
             String token = tokenInter.getToken(allUsers);
             HttpHeaders heades = new HttpHeaders();
             heades.add("Authorization", token);
             return new ResponseEntity(heades, HttpStatus.OK);
 
+
+
+
     }
 
+
+    @PostMapping("/login1")
+    public ResponseEntity logging1(@RequestBody AllUsers allUsers) throws UnauthorizedException{
+
+       // AllUsers allUsers = getUser(data);
+
+        System.out.println("controller" + " " + allUsers.password);
+        String token = tokenInter.getToken(allUsers);
+        HttpHeaders heades = new HttpHeaders();
+        heades.add("Authorization", token);
+        return new ResponseEntity(heades, HttpStatus.OK);
+
+    }
 
     @GetMapping("/cancelledtime/userid/{messageTouser}")
     public DtoCancellation controlCancelledTime(@PathVariable("messageTouser") String messageTouser) {
@@ -189,10 +214,11 @@ public class Controller {
     }
 
 
-    @PutMapping("/userid/cancelusertime/{userId}")
-    public DtoPuttingCancellTime puttingCancellTime(@PathVariable("userId") Integer userId, @RequestBody Course course) {
+    @PutMapping("/userid/cancelusertime/")
+    public DtoPuttingCancellTime puttingCancellTime(@RequestHeader("Authorization")String token, @RequestBody Course course) throws UnauthorizedException {
         //    /userid/cancelusertime - отмена записи. При нажатии вылезает форма «указать причину» (messagetotrainer).
 
+        String userId = tokenInter.checkToken(token);
         return userService.puttingCancellTime(course, userId);
     }
 
@@ -264,9 +290,10 @@ public class Controller {
     }
 
 
-    @GetMapping("trainerid/schedule/{email}")
-    public List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(@PathVariable("email") String email) throws Exception {
+    @GetMapping("trainerid/schedule/")
+    public List<DtoGettingCourcesOnTrainerId> gettingTrainersNameAndTheirNumberInScheduleTable(@RequestHeader("Authorization")String token) throws Exception {
 
+        String email = tokenInter.checkToken(token);
 
         return trainerInter.gettingTrainersNameAndTheirNumberInScheduleTable(email);
     }
@@ -395,13 +422,27 @@ public class Controller {
 
 
     ////////
-    private String[] getUsernameAndPassword(String data){
+    private AllUsers getUser(String data){
+        AllUsers allUsers = new AllUsers();
         data = data.split(" ")[1];
         byte[] decoded = Base64.getDecoder().decode(data);
         String namePass = new String(decoded);
         String[] res = namePass.split(":");
-        return res;
+        allUsers.setPassword(res[1]);
+        allUsers.setEmail(res[0]);
+        return allUsers;
     }
 
+    private String[]getIdAndPassword(String data){
+
+
+            data = data.split(" ")[1];
+            byte[] decoded = Base64.getDecoder().decode(data);
+            String namePass = new String(decoded);
+            String[] res = namePass.split(":");
+
+            return res;
+
+    }
 
 }

@@ -25,6 +25,7 @@ public class TokenImplemen implements TokenInter {
 
 
         AllUsers allUsers1 = em.find(AllUsers.class, allUsers.email);
+        System.out.println(allUsers.email);
         if (allUsers1 == null) {
 
             throw new UnauthorizedException("Wrong login");
@@ -59,17 +60,18 @@ public class TokenImplemen implements TokenInter {
     }
 
     @Override
-    public boolean checkToken(String token) throws UnauthorizedException {
+    public String checkToken(String token) throws UnauthorizedException {
         String emailId = tokenHandler.extractUserLogin(token);
-        boolean res = true;
+
         AllUsers user = em.find(AllUsers.class, emailId);
         if (user == null) {
-            res = false;
+
+            throw new UnauthorizedException("No user");
 
 
         }
 
-        return res;
+        return emailId;
 
     }
 }

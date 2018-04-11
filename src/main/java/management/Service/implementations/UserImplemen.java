@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -365,7 +364,7 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public DtoPuttingCancellTime puttingCancellTime(Course course, Integer userId) {
+    public DtoPuttingCancellTime puttingCancellTime(Course course, String userId) {
         return null;
     }
 
@@ -374,7 +373,7 @@ public class UserImplemen implements UserService {
 
 
 
-   AllUsers user = em.find(AllUsers.class,allUsers.email);
+        AllUsers user = em.find(AllUsers.class,allUsers.email);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime1 = LocalDateTime.parse(date, formatter);
 

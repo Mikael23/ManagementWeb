@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public interface TokenInter {
 
    String getToken(AllUsers allUsers) throws UnauthorizedException;
-   boolean checkToken(String token) throws UnauthorizedException;
+   String checkToken(String token) throws UnauthorizedException;
 
 }

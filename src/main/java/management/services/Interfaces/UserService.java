@@ -73,7 +73,7 @@ public interface UserService {
     DTOlogging dtoLogging(AllUsers allUsers);
 
 
-    DtoPuttingCancellTime puttingCancellTime(Course course, Integer userId);
+    DtoPuttingCancellTime puttingCancellTime(Course course, String userId);
 
 
 //    /userid/cancelusertime - отмена записи. При нажатии вылезает форма «указать причину» (messagetotrainer).
