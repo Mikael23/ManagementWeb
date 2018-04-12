@@ -149,10 +149,10 @@ public interface TrainerInter {
 //    Response: 200 or 401
 
 
-    String cancelusertime(Schedule schedule);
+    String cancelusertime(Schedule schedule, String email);
 
 
-    Integer removingFromWaitingList(String name);
+    Integer removingFromWaitingList(String name, String email);
 
 
 }

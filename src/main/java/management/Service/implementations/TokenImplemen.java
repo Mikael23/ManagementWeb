@@ -63,6 +63,8 @@ public class TokenImplemen implements TokenInter {
     public String checkToken(String token) throws UnauthorizedException {
         String emailId = tokenHandler.extractUserLogin(token);
 
+       System.out.println(emailId);
+
         AllUsers user = em.find(AllUsers.class, emailId);
         if (user == null) {
 

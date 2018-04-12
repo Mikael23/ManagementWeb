@@ -682,16 +682,16 @@ public class TrainerImplemen implements TrainerInter {
     }
 
     @Transactional
-    public String cancelusertime(Schedule schedule) {
+    public String cancelusertime(Schedule schedule, String email) {
 
         String dateTime = schedule.data;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
 
 
-        String jpql = String.format("SELECT r FROM Schedule r where r.requestedUser=?1 and r.coursename=?2 and r.dt=?3", Schedule.class);
+        String jpql = String.format("SELECT r FROM Schedule r where r.requestedUser=?1 and r.coursename=?2 and r.dt=?3 and r.trainerName=?4", Schedule.class);
 
-        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, schedule.requestedUser).setParameter(2, schedule.coursename).setParameter(3, dateTime1).getResultList();
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, schedule.requestedUser).setParameter(2, schedule.coursename).setParameter(3, dateTime1).setParameter(4,email).getResultList();
 
         if (list.isEmpty()) {
             return "We dont have this record";
@@ -710,10 +710,10 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer removingFromWaitingList(String name) {
+    public Integer removingFromWaitingList(String name, String email) {
 
 
-        String jpql = String.format("Select r from Trainer r", Trainer.class);
+        String jpql = String.format("Select r from Trainer r where r.email=?", Trainer.class);
         AllUsers user = em.find(AllUsers.class, name);
 
         List<Trainer> list = em.createQuery(jpql, Trainer.class).getResultList();
