@@ -173,6 +173,7 @@ public class Controller {
             String token = tokenInter.getToken(allUsers);
             HttpHeaders heades = new HttpHeaders();
             heades.add("Authorization", token);
+             heades.add("Access-Control-Expose-Headers", "Authorization");
             return new ResponseEntity(heades, HttpStatus.OK);
 
 
@@ -181,18 +182,18 @@ public class Controller {
     }
 
 
-    @PostMapping("/login1")
-    public ResponseEntity logging1(@RequestBody AllUsers allUsers) throws UnauthorizedException{
-
-       // AllUsers allUsers = getUser(data);
-
-        System.out.println("controller" + " " + allUsers.password);
-        String token = tokenInter.getToken(allUsers);
-        HttpHeaders heades = new HttpHeaders();
-        heades.add("Authorization", token);
-        return new ResponseEntity(heades, HttpStatus.OK);
-
-    }
+//    @PostMapping("/login1")
+//    public ResponseEntity logging1(@RequestBody AllUsers allUsers) throws UnauthorizedException{
+//
+//       // AllUsers allUsers = getUser(data);
+//
+//        System.out.println("controller" + " " + allUsers.password);
+//        String token = tokenInter.getToken(allUsers);
+//        HttpHeaders heades = new HttpHeaders();
+//        heades.add("Authorization", token);
+//        return new ResponseEntity(heades, HttpStatus.OK);
+//
+//    }
 
     @GetMapping("/cancelledtime/userid/{messageTouser}")
     public DtoCancellation controlCancelledTime(@PathVariable("messageTouser") String messageTouser) {
