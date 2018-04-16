@@ -50,7 +50,7 @@ public class Controller {
 
     @DeleteMapping("/trainerid/waitinglist/solved/{name}")
 
-    public Integer removingFromWaitingList(@PathVariable("name") String name, @RequestHeader String token) throws UnauthorizedException {
+    public Integer removingFromWaitingList(@PathVariable("name") String name, @RequestHeader("Authorization") String token) throws UnauthorizedException {
 
         String email = tokenInter.checkToken(token);
 
@@ -59,7 +59,7 @@ public class Controller {
 
 
     @PostMapping("/trainerid/cancelusertime")
-    public String cancelusertime(@RequestBody Schedule schedule, @RequestHeader String token) throws UnauthorizedException {
+    public String cancelusertime(@RequestBody Schedule schedule, @RequestHeader("Authorization") String token) throws UnauthorizedException {
 
         String email = tokenInter.checkToken(token);
 
@@ -70,7 +70,7 @@ public class Controller {
 
 
     @GetMapping("/trainer/prof/")
-    public List<DtoGettingThisDate> trainerConfirmedAndNonConfRequests(@RequestHeader String token) throws UnauthorizedException {
+    public List<DtoGettingThisDate> trainerConfirmedAndNonConfRequests(@RequestHeader("Authorization") String token) throws UnauthorizedException {
 
         String email = tokenInter.checkToken(token);
 
@@ -79,7 +79,7 @@ public class Controller {
     }
 
     @GetMapping("/userid/{date}")
-    public List<DtoGettingThisDateN> dtoGettingThisDateN(@RequestHeader String token, @PathVariable("date") String date) throws UnauthorizedException {
+    public List<DtoGettingThisDateN> dtoGettingThisDateN(@RequestHeader ("Authorization")String token, @PathVariable("date") String date) throws UnauthorizedException {
 
         String email = tokenInter.checkToken(token);
 
@@ -87,7 +87,7 @@ public class Controller {
     }
 
     @PostMapping("userid/addingToWaitingList")
-    public DtoAddingToWaitingLis addTowaintingList(@RequestBody Schedule schedule, @RequestHeader String token) throws Exception {
+    public DtoAddingToWaitingLis addTowaintingList(@RequestBody Schedule schedule, @RequestHeader("Authorization") String token) throws Exception {
 
         String email = tokenInter.checkToken(token);
 
@@ -95,21 +95,21 @@ public class Controller {
     }
 
     @GetMapping("/userid/gettingcancelledtimebytrainer")
-    public List<DtoCancellation> gettingCancelledRequestsByTrainer(@RequestHeader String token) throws Exception {
+    public List<DtoCancellation> gettingCancelledRequestsByTrainer(@RequestHeader("Authorization") String token) throws Exception {
         String email = tokenInter.checkToken(token);
         return userService.checkingRejectedRequests(email);
     }
 
 
     @DeleteMapping("/userid/rejectrequests/seen/{id}")
-    public Integer deleteRequest(@PathVariable("id") Integer id,@RequestHeader String token) throws Exception {
+    public Integer deleteRequest(@PathVariable("id") Integer id,@RequestHeader("Authorization") String token) throws Exception {
         String email = tokenInter.checkToken(token);
         return userService.deleteRequests(id,email);
     }
 
 
     @PostMapping("/trainerid/newrequests/reject")
-    public Integer rejectionOfrequest(@RequestBody Schedule schedule,@RequestHeader String token) throws Exception {
+    public Integer rejectionOfrequest(@RequestBody Schedule schedule,@RequestHeader("Authorization") String token) throws Exception {
 
         String email = tokenInter.checkToken(token);
 
@@ -125,9 +125,13 @@ public class Controller {
     }
 
     @PostMapping("/proposeCourse")
-    public Integer ppoposeOfCourse(@RequestBody Course course,@RequestHeader String token) throws Exception {
+    public Integer ppoposeOfCourse(@RequestBody Course course,@RequestHeader("Authorization") String token) throws Exception {
+
+        System.out.println(token);
 
         String email = tokenInter.checkToken(token);
+
+
 
         return courseServiceInt.proposeCourse(course,email);
 
