@@ -47,15 +47,15 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public DtoAddingToWaitingLis addToWaitingList(Schedule schedule) throws Exception {
+    public DtoAddingToWaitingLis addToWaitingList(Schedule schedule, String email) throws Exception {
 
-        AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+        AllUsers user = em.find(AllUsers.class, email);
         if (user == null) {
             throw new Exception("We dont have this user in base");
         }
         Trainer trainer = em.find(Trainer.class, schedule.trainerName);
         if (trainer == null) {
-            throw new Exception("We dont have this user in base");
+            throw new Exception("We dont have this trainer in base");
         }
 
         user.waiting = true;
@@ -263,7 +263,7 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer rejectionRequest(Schedule schedule) throws Exception {
+    public Integer rejectionRequest(Schedule schedule,String email) throws Exception {
 
         String nameOfCourse = schedule.coursename;
         String nameOfUser = schedule.requestedUser;
@@ -276,9 +276,9 @@ public class TrainerImplemen implements TrainerInter {
         LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
 
         String jpql = String.format("SELECT r FROM Schedule r where r.coursename=?1 " +
-                "and r.requestedUser=?2 and r.dt = ?3 and r.busy=true" + " ", Schedule.class);
+                "and r.requestedUser=?2 and r.dt = ?3 and r.busy=true and r.trainerName" + " ", Schedule.class);
         List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, nameOfCourse).setParameter(2, nameOfUser).setParameter(
-                3, dateTime1).getResultList();
+                3, dateTime1).setParameter(4,email).getResultList();
         if (list.isEmpty()) {
             throw new Exception("No found result");
         }
@@ -470,7 +470,7 @@ public class TrainerImplemen implements TrainerInter {
 
 
     @Override
-    public DtoGettingDatesAndTimes gettingDatesAndTimes(String name) {
+    public DtoGettingDatesAndTimes gettingDatesAndTimes(String name, String email) {
 
         Schedule schedule = new Schedule();
 //        String jpql=String.format("select r from Record r where "

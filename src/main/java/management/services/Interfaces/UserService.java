@@ -68,7 +68,7 @@ public interface UserService {
 //    Response: name, surname, 200 or 401
 
 
-    Integer choosingTime(Schedule schedule) throws Exception;
+    Integer choosingTime(Schedule schedule, String email) throws Exception;
 
     DTOlogging dtoLogging(AllUsers allUsers);
 
@@ -84,7 +84,7 @@ public interface UserService {
 //    date и time снова становятся свободными: поле busy меняется на false, поле confirmed меняется на false.
 
 
-    List<DtoGettingThisDateN> dtoGettinThisDateN(AllUsers allUsers, String date);
+    List<DtoGettingThisDateN> dtoGettinThisDateN(String allUsers, String date);
 
 
 //    /userid/”текущая дата, от которой будет выстраиваться месяц” –
@@ -95,7 +95,7 @@ public interface UserService {
 
 
 
-    Integer deleteRequests(Integer id) throws Exception;
+    Integer deleteRequests(Integer id, String email) throws Exception;
 
 
 //    /userid/rejectrequests/seen – удаление отклоненных тренером заявок по кнопочке “просмотрено” (или галочке):
@@ -103,7 +103,7 @@ public interface UserService {
 //    Response: 200, 401.
 
 
-    List<DtoCancellation> checkingRejectedRequests();
+    List<DtoCancellation> checkingRejectedRequests(String email);
 ///login
 //        Body: {email, password}
 //        Response: userid, name, surname, role: trainer or user,

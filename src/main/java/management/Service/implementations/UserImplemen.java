@@ -23,11 +23,11 @@ public class UserImplemen implements UserService {
 
 
     @Override
-    public List<DtoCancellation> checkingRejectedRequests() {
+    public List<DtoCancellation> checkingRejectedRequests(String email) {
 
-       String jpql = String.format("SELECT r from Schedule r where r.trainerMessage IS NOT NULL",Schedule.class);
+       String jpql = String.format("SELECT r from Schedule r where r.trainerMessage IS NOT NULL and r.requestedUser=?1",Schedule.class);
 
-       List<Schedule>list = em.createQuery(jpql,Schedule.class).getResultList();
+       List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,email).getResultList();
 
 
        List<DtoCancellation>list1 = new ArrayList<>();
@@ -307,7 +307,7 @@ public class UserImplemen implements UserService {
 
     @Transactional
     @Override
-    public Integer choosingTime(Schedule schedule) throws Exception {
+    public Integer choosingTime(Schedule schedule, String email) throws Exception {
 
 //        /courseid/choose – запись на курс на конкретное время
 //        Body: { courseid, userid, date, time, confirmed = false }
@@ -333,7 +333,7 @@ public class UserImplemen implements UserService {
         Schedule schedule1 = em.find(Schedule.class, schedule.id);
 
         em.remove(schedule1);
-        AllUsers user = em.find(AllUsers.class, schedule.requestedUser);
+        AllUsers user = em.find(AllUsers.class,email);
         if (user == null) {
             throw new Exception("Please logg in");
         }
@@ -344,7 +344,7 @@ public class UserImplemen implements UserService {
 
         schedule1.busy = true;
         schedule1.confirmedByTrainer = false;
-        schedule1.requestedUser = schedule.requestedUser;
+        schedule1.requestedUser = email;
         em.persist(schedule1);
 
 
@@ -369,11 +369,11 @@ public class UserImplemen implements UserService {
     }
 
     @Override
-    public List<DtoGettingThisDateN> dtoGettinThisDateN(AllUsers allUsers, String date) {
+    public List<DtoGettingThisDateN> dtoGettinThisDateN(String allUsers, String date) {
 
 
 
-        AllUsers user = em.find(AllUsers.class,allUsers.email);
+        AllUsers user = em.find(AllUsers.class,allUsers);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime1 = LocalDateTime.parse(date, formatter);
 
@@ -413,7 +413,7 @@ public class UserImplemen implements UserService {
     }
 @Transactional
     @Override
-    public Integer deleteRequests(Integer id) throws Exception {
+    public Integer deleteRequests(Integer id, String email) throws Exception {
 
 //        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=false and r.busy = true and " +
 //                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
@@ -421,8 +421,8 @@ public class UserImplemen implements UserService {
 //
 //        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).getResultList();
 
-        String jpql = String.format("SELECT r FROM Schedule r where r.trainerMessage IS NOT NULL and r.id =?1" + " ",Schedule.class);
-        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,id).getResultList();
+        String jpql = String.format("SELECT r FROM Schedule r where r.trainerMessage IS NOT NULL and r.id =?1 and r.requestedUser=?2" + " ",Schedule.class);
+        List<Schedule>list = em.createQuery(jpql,Schedule.class).setParameter(1,id).setParameter(2,email).getResultList();
 
 
 

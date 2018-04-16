@@ -234,16 +234,16 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Override
     @Transactional
-    public int proposeCourse(Course course) throws Exception {
+    public int proposeCourse(Course course, String email) throws Exception {
 
         Course course1 = new Course();
         String name = course.nameOfCourse;
         Course course2 = em.find(Course.class, name);
-        if (course2 == null) {
+        if (course2 != null) {
             throw new Exception("Please change the name, we have got this already");
         }
         AllUsers allUsers1 = new AllUsers();
-        allUsers1.email = course.initiatorCourse;
+        allUsers1.email =email;
 
         AllUsers allUsers = em.find(AllUsers.class, allUsers1.email);
 
@@ -267,7 +267,7 @@ public class CourseImplemen implements CourseServiceInt {
         course1.description = course.description;
         course1.duration = course.duration;
         course1.quantity = course.quantity;
-        course1.initiatorCourse = course.initiatorCourse;
+        course1.initiatorCourse = email;
         course1.phoneInitiator = course.phoneInitiator;
         course1.confirmed = false;
         em.persist(course1);

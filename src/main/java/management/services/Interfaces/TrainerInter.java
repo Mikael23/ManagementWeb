@@ -42,7 +42,7 @@ public interface TrainerInter {
 //
 
 
-    Integer rejectionRequest(Schedule schedule) throws Exception;
+    Integer rejectionRequest(Schedule schedule, String email) throws Exception;
 //
 
 //    /trainerid/newrequests/reject – отклонение новой заявки по нажатию «отклонить».
@@ -81,7 +81,7 @@ public interface TrainerInter {
 //    /trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
 
 
-    DtoAddingToWaitingLis addToWaitingList(Schedule schedule) throws Exception;
+    DtoAddingToWaitingLis addToWaitingList(Schedule schedule, String email) throws Exception;
 
 
 //    Если свободные дата и время найдены, то response: date и time.
@@ -93,7 +93,7 @@ public interface TrainerInter {
 //    но ваше имя добавлено в список ожидающих, и вы будете оповещены, когда появится время для записи.
 
 
-    DtoGettingDatesAndTimes gettingDatesAndTimes(String name);
+    DtoGettingDatesAndTimes gettingDatesAndTimes(String name, String email);
 
 
 

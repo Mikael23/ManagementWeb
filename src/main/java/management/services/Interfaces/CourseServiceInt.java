@@ -72,7 +72,7 @@ public interface CourseServiceInt {
 //        quantity (максимальное количество записей на сессию), yourname, phone }
 
 
-    int proposeCourse(Course course) throws Exception;
+    int proposeCourse(Course course, String email) throws Exception;
 
 
 
