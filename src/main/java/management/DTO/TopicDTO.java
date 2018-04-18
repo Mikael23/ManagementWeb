@@ -5,14 +5,52 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import management.ORM.entity.Course;
 import management.ORM.entity.TopicEntity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
-public class TopicDTO extends TopicSwfDTO{
+public class TopicDTO {
 
+
+    @JsonProperty("topicName")
+    String name;
+    @JsonProperty("topicSwfLinc")
+    String swfLinc;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSwfLinc() {
+        return swfLinc;
+    }
+
+    public void setSwfLinc(String swfLinc) {
+        this.swfLinc = swfLinc;
+    }
+
+    public TopicDTO(String name, String swfLinc, String[] namesOfCourses, String imgLinc) {
+        this.name = name;
+        this.swfLinc = swfLinc;
+        this.courseNames = namesOfCourses;
+        this.imgLinc = imgLinc;
+    }
+
+    public String[] getCourseNames() {
+        return courseNames;
+    }
+
+    public void setCourseNames(String[] courseNames) {
+        this.courseNames = courseNames;
+    }
 
     @JsonProperty("coursesNames")
-    List<String> namesOfCourses;
+    String[]courseNames;
 
 
     @JsonProperty("topicImgLinc")
@@ -21,38 +59,23 @@ public class TopicDTO extends TopicSwfDTO{
 
     @JsonCreator
     public TopicDTO(){
-    super();
+
     }
 
 
-    public TopicDTO(List<String> namesOfCoursee, String imgLinc) {
-        this.namesOfCourses = namesOfCoursee;
-        this.imgLinc = imgLinc;
-    }
 
-    public TopicDTO(String name, String swfLinc, List<String> namesOfCoursee, String imgLinc) {
-        super(name, swfLinc);
-        this.namesOfCourses = namesOfCoursee;
-        this.imgLinc = imgLinc;
-    }
-
-//    public TopicDTO(TopicEntity topicEntity, List<String> namesOfCoursee, String imgLinc) {
-//        super(topicEntity);
-//        this.namesOfCourses = namesOfCoursee;
-//        this.imgLinc = imgLinc;
-//    }
 
     public TopicDTO(TopicEntity topicEntity) {
 
-        super(topicEntity.getName(), topicEntity.getLincSwf());
+
+        this.name=topicEntity.getName();
+        this.swfLinc=topicEntity.getLincSwf();
 
         this.imgLinc = topicEntity.getLincImg();
 
-        for (Course course:
-        topicEntity.getCourses()) {
-            namesOfCourses.add(course.getName());
-        };
-
+        for(int i =0; i<=topicEntity.getCourses().size()-1;i++){
+            this.courseNames[i]=topicEntity.getCourses().get(i).nameOfCourse;
+        }
     }
 
 
@@ -66,13 +89,7 @@ public class TopicDTO extends TopicSwfDTO{
         this.imgLinc = imgLinc;
     }
 
-    public List<String> getNamesOfCourses() {
-        return namesOfCourses;
-    }
 
-    public void setNamesOfCourses(List<String> namesOfCourses) {
-        this.namesOfCourses = namesOfCourses;
-    }
 
 
 

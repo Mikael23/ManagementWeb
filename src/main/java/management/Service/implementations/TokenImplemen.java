@@ -65,7 +65,7 @@ public class TokenImplemen implements TokenInter {
 
         String emailId = tokenHandler.extractUserLogin(token);
 
-       System.out.println(emailId);
+       System.out.println("eto email" + emailId);
 
         AllUsers user = em.find(AllUsers.class, emailId);
         if (user == null) {

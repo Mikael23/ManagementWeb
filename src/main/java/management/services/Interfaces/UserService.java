@@ -59,7 +59,7 @@ public interface UserService {
 //    кабинет пользователя как тренера или юзера. После логина - направлению на страницу, с которой был запуск логина.
 
 
-    DtoUpdatingProfile update(AllUsers user) throws Exception;
+    DtoUpdatingProfile update(AllUsers user, String userId) throws Exception;
 
 //    PUT: - кнопка «редактировать личные данные»
 //            /userid/update – обновляет информацию профиля пользователя

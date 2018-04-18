@@ -27,7 +27,7 @@ public interface TrainerInter {
 //            /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
 
 
-    Integer addingInterval(Schedule schedule) throws Exception;
+    Integer addingInterval(Schedule schedule, String email) throws Exception;
 
 
 
@@ -54,7 +54,7 @@ public interface TrainerInter {
 
 
 
-    Integer confirmationRequest(Schedule schedule) throws Exception;
+    Integer confirmationRequest(Schedule schedule, String userId) throws Exception;
 
 
 //    /trainerid/newrequests/confirmation – подтверждение новой заявки по нажатию «подтвердить»
@@ -72,7 +72,7 @@ public interface TrainerInter {
 //
 
 
-    Integer addingTrainer(Trainer trainer) throws Exception;
+    Integer addingTrainer(Trainer trainer, String email) throws Exception;
 
     Trainer gettingTrainer(String name);
 
@@ -133,11 +133,11 @@ public interface TrainerInter {
 
     List<String> listOfcources(Trainer trainer);
 
-    Integer deletionOfInterval(Schedule schedule) throws Exception;
+    Integer deletionOfInterval(Schedule schedule, String email) throws Exception;
 
     double[] addingSuggestedCourseInterval(Course course);
 
-    Integer makerTrainer(String userName) throws Exception;
+    Integer makerTrainer(String userName, String email) throws Exception;
 
 
     List<DtoGettingThisDate>trainerConfirmedandNonconfirmed(String name);

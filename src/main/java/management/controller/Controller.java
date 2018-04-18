@@ -42,7 +42,7 @@ public class Controller {
 
 
     @GetMapping("trainerid/gettingUndefiniedTime/")
-    public Map<Integer, String> gettingUndefiniedTime(@RequestHeader String token) throws Exception {
+    public Map<Integer, String> gettingUndefiniedTime(@RequestHeader ("Authorization") String token) throws Exception {
 
         String email = tokenInter.checkToken(token);
         return trainerInter.gettingUndefiniedTime(email);
@@ -219,49 +219,67 @@ public class Controller {
 //    }
 
     @GetMapping("/cancelledtime/userid/{messageTouser}")
-    public DtoCancellation controlCancelledTime(@PathVariable("messageTouser") String messageTouser) {
+    public DtoCancellation controlCancelledTime(@PathVariable("messageTouser") String messageTouser, @RequestHeader("Authorization")String token) throws UnauthorizedException {
         //    /userid/cancelledtime – слушать отмененные заявки
+
+        String email = tokenInter.checkToken(token);
+
+
         return trainerInter.cancellation(messageTouser);
     }
 
 
     @GetMapping("/userid/rejectrequests/")
     public DtoGettingCancelledRequest gettingCancelledRequest() {
-///userid/cancelledtime/seen – удаление отмененных заявок по кнопочке “просмотрено”:
+
+
         return courseServiceInt.gettingCancelledRequest();
     }
 
 
     @DeleteMapping("/userid/rejectrequests/seen/")
-    public Integer deletionCancelledRequests(@RequestBody Schedule schedule) throws Exception {
-        return courseServiceInt.deletionCancelledrecords(schedule);
+    public Integer deletionCancelledRequests(@RequestBody Schedule schedule,@RequestHeader("Authorization")String token) throws Exception {
+
+//        удаление отклоненных тренером заявок по кнопочке “просмотрено” (или галочке):
+//        Body: {rejectmessage: delete}
+//        Response: 200, 401.
+
+        String email = tokenInter.checkToken(token);
+
+
+        return courseServiceInt.deletionCancelledrecords(schedule,token);
     }
 
 
     @GetMapping("/userid/gettingAllRecords{userId}")
     public List<DtoGettingAllUserRecords> getingUserRecords(@PathVariable("userId") Integer userId) {
-        // возвращает подтвержденные и неподтвержденные записи юзера на курсы.
+        // возвращает подтвержденные и неподтвержденные записи юзера на курсы. NE napisan
         return userService.gettingAllUserRecords(userId);
     }
 
 
     @PutMapping("/userid/cancelusertime/")
     public DtoPuttingCancellTime puttingCancellTime(@RequestHeader("Authorization") String token, @RequestBody Course course) throws UnauthorizedException {
-        //    /userid/cancelusertime - отмена записи. При нажатии вылезает форма «указать причину» (messagetotrainer).
+        //    /userid/cancelusertime - отмена записи. При нажатии вылезает форма «указать причину» (messagetotrainer). ne napisan
 
         String userId = tokenInter.checkToken(token);
         return userService.puttingCancellTime(course, userId);
     }
 
     @PutMapping("/userid/update/")
-    public DtoUpdatingProfile updatingProfile(@RequestBody AllUsers allUsers) throws Exception {
+    public DtoUpdatingProfile updatingProfile(@RequestBody AllUsers allUsers, @RequestHeader("Authorization")String token) throws Exception {
         // /userid/update – обновляет информацию профиля пользователя
-        return userService.update(allUsers);
+
+        String userId = tokenInter.checkToken(token);
+
+        return userService.update(allUsers,userId);
     }
 
-    @GetMapping("/trainerid/waitinglist/{email}")
-    public List<DtoGettingWaitingList> getingWaitingList(@PathVariable("email") String email) {
-        return trainerInter.gettingWaitingList(email);
+    @GetMapping("/trainerid/waitinglist/")
+    public List<DtoGettingWaitingList> getingWaitingList(@RequestHeader("Authorization")String token) throws UnauthorizedException {
+
+        String userId = tokenInter.checkToken(token);
+        return trainerInter.gettingWaitingList(userId);
 //
 ///trainerid/waitinglist – лист ожидания, слушать по параметру «waiting»
 //    Response: userid, user’s name, user’s surname,
@@ -271,9 +289,12 @@ public class Controller {
     }
 
 
-    @GetMapping("/trainerid/newrequests/{trainerName}")
-    public List<DtoGettingNewRequets> newRequets(@PathVariable("trainerName") String trainerName) {
-        return trainerInter.getingNewRequest(trainerName);
+    @GetMapping("/trainerid/newrequests/")
+    public List<DtoGettingNewRequets> newRequets(@RequestHeader("Authorization") String token) throws UnauthorizedException {
+
+        String userId = tokenInter.checkToken(token);
+
+        return trainerInter.getingNewRequest(userId);
 //    GET:
 //            /trainerid/newrequests – новые заявки (фильтруются по параметру busy=true, confirmed = false).
 //    Response: {courseid, name of the course, userid, user’s name, user’s surname, date, time }.
@@ -281,33 +302,54 @@ public class Controller {
 
 
     @PostMapping("/trainerid/newrequests/confirmation")
-    public Integer confirmation(@RequestBody Schedule schedule) throws Exception {
-        return trainerInter.confirmationRequest(schedule);
+    public Integer confirmation(@RequestBody Schedule schedule,@RequestHeader("Authorization") String token) throws Exception {
+        String userId = tokenInter.checkToken(token);
 
-        //            /trainerid/newrequests/confirmation – подтверждение новой заявки
+
+        return trainerInter.confirmationRequest(schedule,userId);
+
+
+
+
+///trainerid/newrequests/confirmation – подтверждение новой заявки по нажатию «подтвердить»
+//        Body: я отправляю {courseid, userid, date, time, confirmed = true}, нужная заявка находится по courseid, userid, date, time.
+//                Response: 200 or 401, confirmed меняется на true, отправка e-mail userid о
+//        подтверждении с данными: name of the course, trainer’s name, trainer’s surname, date, time.
 
     }
 
     @GetMapping("admin/proposedcourses")
-    public List<DtoGettingProposedCourse> newProposedCourse() {
+    public List<DtoGettingProposedCourse> newProposedCourse(@RequestHeader("Authorization") String token) throws Exception {
 
+        String userId = tokenInter.checkToken(token);
 
-        return courseServiceInt.getingProposedCourse();
+        return courseServiceInt.getingProposedCourse(userId);
         //admin/proposedcourses – получение новых заявок на новые курсы, фильтруется по параметру
     }
 
 
     @DeleteMapping("/admin/proposedcourses/reject/{coursename}")
-    public Integer proposedCourseRejection(@PathVariable("coursename") String courseName) throws Exception {
+    public Integer proposedCourseRejection(@PathVariable("coursename") String courseName, @RequestHeader("Authorization") String token) throws Exception {
 
         //            /admin/proposedcourses/reject – удаление предложения курса по нажатию «отклонить»
 
-        return courseServiceInt.deletionProposedCourse(courseName);
+        String userId = tokenInter.checkToken(token);
+        return courseServiceInt.deletionProposedCourse(courseName,userId);
     }
 
     @GetMapping("/trainerid/{trainerId}")
     public DtoGettingConfirmedRequests gettingConfirmedRequests(@PathVariable("trainerId") Integer trainerId) {
 
+
+
+
+//        /trainerid/”текущая дата, от которой будет выстраиваться неделя” – возвращает подтвержденные заявки,
+//                фильтрация по confirmed=true, и свободные интервалы (фильтрация по busy = false)
+//        Response: подтвержденные заявки: name of the course, date (относительно текущего дня + неделя),
+//        t ime, userid, user’s name, user’s surname. свободные интервалы: name of the course
+//        (массив курсов, которые гипотетически будут проводиться в этот интервал времени), date, time.
+
+        // ne sdelan
 
         return courseServiceInt.gettingConfirmedRequests(trainerId);
 ///trainerid/”текущая дата, от которой будет выстраиваться неделя” –
@@ -315,9 +357,10 @@ public class Controller {
     }
 
     @GetMapping("/trainerid/courses/{email}")
-    public List<DtoGettingCourcesOnTrainerId> gettingCourcesOnTrainerId(@PathVariable("email") String email) {
+    public List<DtoGettingCourcesOnTrainerId> gettingCourcesOnTrainerId(@RequestHeader("Authorization")String token) throws UnauthorizedException {
         //  подгрузка курсов, которые ведет тренер
-        return trainerInter.getingCourseOnTrainerId(email);
+        String userId = tokenInter.checkToken(token);
+        return trainerInter.getingCourseOnTrainerId(userId);
     }
 
 
@@ -332,15 +375,19 @@ public class Controller {
 
     @CrossOrigin
     @PostMapping("trainerid/addinterval/")
-    public Integer addingInterval(@RequestBody Schedule schedule) throws Exception {
+    public Integer addingInterval(@RequestBody Schedule schedule,@RequestHeader("Authorization")String token) throws Exception {
         ///trainerid/addinterval – непосредственно добавление интервала.
-        return trainerInter.addingInterval(schedule);
+        String email = tokenInter.checkToken(token);
+        return trainerInter.addingInterval(schedule,email);
     }
 
 
     @DeleteMapping("/trainerid/removeinterval/")
-    public Integer deletionO(@RequestBody Schedule schedule) throws Exception {
-        return trainerInter.deletionOfInterval(schedule);
+    public Integer deletionO(@RequestBody Schedule schedule,@RequestHeader("Authorization")String token) throws Exception {
+
+        String email = tokenInter.checkToken(token);
+
+        return trainerInter.deletionOfInterval(schedule,email);
 
 
         // /  /trainerid/removeinterval - удалить ранее заданное как свободное время, кнопочка на календаре
@@ -349,34 +396,43 @@ public class Controller {
     @CrossOrigin
 
     @PostMapping("/admin/addcourse")
-    public DtoPostAddingCourse postAddingCourse(@RequestBody Course course) throws Exception {
+    public DtoPostAddingCourse postAddingCourse(@RequestBody Course course, @RequestHeader("Authorization")String token) throws Exception {
         //    /admin/addcourse - добавить course и привязать его к тренеру:
-        return courseServiceInt.addingCourse(course);
+
+        String email = tokenInter.checkToken(token);
+
+        return courseServiceInt.addingCourse(course,email);
     }
 
 
     @DeleteMapping("/admin/removecourse/{name}")
-    public Integer removeOfCourse(@PathVariable("name") String name) throws Exception {
+    public Integer removeOfCourse(@PathVariable("name") String name,@RequestHeader("Authorization")String token) throws Exception {
 
         //    DELETE:
 //            /admin/removecourse
-        return courseServiceInt.removeCourse(name);
+        String email = tokenInter.checkToken(token);
+
+        return courseServiceInt.removeCourse(name,email);
 
 
     }
 
     @PostMapping("/admin/addtrainer")
-    public Integer addingTrainer(@RequestBody Trainer trainer) throws Exception {
+    public Integer addingTrainer(@RequestBody Trainer trainer,@RequestHeader("Authorization")String token) throws Exception {
 
 
-        return trainerInter.addingTrainer(trainer);
+        String email = tokenInter.checkToken(token);
+
+        return trainerInter.addingTrainer(trainer,email);
     }
 
 
     @PostMapping("/admin/maketrainer/")
-    public Integer makertrainer(@RequestBody AllUsers allUsers) throws Exception {
+    public Integer makertrainer(@RequestBody AllUsers allUsers, @RequestHeader("Authorization")String token) throws Exception {
 
-        return trainerInter.makerTrainer(allUsers.email);
+        String email = tokenInter.checkToken(token);
+
+        return trainerInter.makerTrainer(allUsers.email,email);
     }
 
 
@@ -443,9 +499,10 @@ public class Controller {
         return topicInterfaces.getAllTopicsSwf();
     }
 
-    @PostMapping("/topic")
+    @PostMapping("/addtopic")
     public int newTopic(@RequestBody TopicDTO topic) { //response create or no
 
+        System.out.println(topic);
         int responce = topicInterfaces.addNewTopic(topic);
 
         return responce;

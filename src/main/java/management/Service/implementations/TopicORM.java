@@ -19,6 +19,7 @@ public class TopicORM implements TopicCRUD {
     @Override
     @Transactional
     public boolean addTopic(TopicEntity topic) {
+        System.out.println(topic);
         boolean result = false;
         if (em.find(TopicEntity.class, topic.getName()) == null) {
             em.persist(topic);

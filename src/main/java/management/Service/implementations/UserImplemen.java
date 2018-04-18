@@ -235,11 +235,11 @@ public class UserImplemen implements UserService {
 
     @Transactional
     @Override
-    public DtoUpdatingProfile update(AllUsers user) throws Exception {
-        String email = user.email;
+    public DtoUpdatingProfile update(AllUsers user, String userId) throws Exception {
+
         DtoUpdatingProfile dtoUpdatingProfile = new DtoUpdatingProfile();
 
-        AllUsers allUsers1 = em.find(AllUsers.class, email);
+        AllUsers allUsers1 = em.find(AllUsers.class, userId);
         if (allUsers1 == null) {
             throw new Exception("Please log in");
 

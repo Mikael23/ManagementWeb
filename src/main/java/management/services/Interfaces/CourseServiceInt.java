@@ -15,14 +15,14 @@ public interface CourseServiceInt {
     DtoGettingCancelledRequest gettingCancelledRequest();
 
 
-    Integer deletionCancelledrecords(Schedule schedule) throws Exception;
+    Integer deletionCancelledrecords(Schedule schedule, String token) throws Exception;
 
 //    /userid/cancelledtime/seen – удаление отмененных заявок по кнопочке “просмотрено”:
 //    Body: {messagetouser: delete}
 //    Response: 200, 401.
 
 
-    Integer removeCourse(String courseId) throws Exception;
+    Integer removeCourse(String courseId, String email) throws Exception;
 
 
 
@@ -33,7 +33,7 @@ public interface CourseServiceInt {
 //
 
 
-    DtoPostAddingCourse addingCourse(Course course) throws Exception;
+    DtoPostAddingCourse addingCourse(Course course, String email) throws Exception;
 
 //
 //    POST:
@@ -55,7 +55,7 @@ public interface CourseServiceInt {
 //
 
 
-    Integer deletionProposedCourse(String courseId) throws Exception;
+    Integer deletionProposedCourse(String courseId, String userId) throws Exception;
 //
 ///admin/proposedcourses/reject – удаление предложения курса по нажатию «отклонить»
 //    Body: {courseid (если уже сформирован): delete}
@@ -64,7 +64,7 @@ public interface CourseServiceInt {
 //    yourname, phone, confirmed = false, 200 or 401
 
 
-    List<DtoGettingProposedCourse> getingProposedCourse();
+    List<DtoGettingProposedCourse> getingProposedCourse(String token) throws Exception;
 
 
 ///admin/proposedcourses – получение новых заявок на новые курсы, фильтруется по параметру confirmed = false

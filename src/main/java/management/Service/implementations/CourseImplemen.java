@@ -32,22 +32,22 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Transactional
     @Override
-    public Integer deletionCancelledrecords(Schedule schedule) throws Exception {
+    public Integer deletionCancelledrecords(Schedule schedule, String token) throws Exception {
 
         String name = schedule.coursename;
-        String message = schedule.messageTOtrainer;
-        String nameTrainer = schedule.trainerName;
+        String message = schedule.trainerMessage;
+      //  String nameTrainer = schedule.trainerName;
         Integer idd = schedule.id;
 
-//        String jpql = String.format("SELECT r FROM Schedule r where r.confirmedByTrainer=false and r.busy = true and " +
-//                "r.coursename = '" + courseName + "'" + " " + " and r.dt =  ?1" + " ", Schedule.class);
-//
-//
-//        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).getResultList();
-//        String jpql = String.format("SELECT r FROM Schedule r where r.messageTOtrainer IS NOT NULL" + " ", Schedule.class);
+        AllUsers user = em.find(AllUsers.class,token);
 
-        String jpql = String.format("SELECT r FROM Schedule r where r.coursename ='" + name + "'" + "and r.messageTOtrainer " +
-                "='" + message + "'" + " ", Schedule.class);
+        if(user==null){
+            throw new Exception("no user in database");
+        }
+
+
+        String jpql = String.format("SELECT r FROM Schedule r where r.coursename ='" + name + "'" + "and r.trainerMessage " +
+                "='" + message + "'" + " "+ "and r.requestedUser='"+token, Schedule.class);
 
         List<Schedule> list = em.createQuery(jpql, Schedule.class).getResultList();
 
@@ -61,14 +61,15 @@ public class CourseImplemen implements CourseServiceInt {
 
                 Schedule schedule2 = em.find(Schedule.class, idd);
                 em.remove(schedule1);
-                schedule2.messageTOtrainer = null;
+                schedule2.trainerMessage= null;
                 em.persist(schedule2);
             }
 
 
-//  /trainerid/cancelledtime/seen - по кнопочке “просмотрено” поле messagetotrainer удаляется.
-//                Body: {messagetotrainer: delete}
-//        Response: 200, 401.
+//userid/rejectrequests/seen – удаление отклоненных тренером заявок по кнопочке “просмотрено” (или галочке):
+     //       Body: {rejectmessage: delete}
+      //      Response: 200, 401.
+
 
         }
         return 2;
@@ -76,8 +77,13 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Transactional
     @Override
-    public Integer removeCourse(String name) throws Exception {
+    public Integer removeCourse(String name, String email) throws Exception {
         //   String jpql = "Select r from Course r where confirmed = false";
+
+        AllUsers user = em.find(AllUsers.class,email);
+        if(!user.role.equals("ADMIN")){
+            throw new Exception("You are not admin");
+        }
         String jpql = "Select r from Course r where confirmed=true";
 
         String jpql2 = "Select r from Trainer r";
@@ -135,7 +141,13 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Override
     @Transactional
-    public DtoPostAddingCourse addingCourse(Course course) throws Exception {
+    public DtoPostAddingCourse addingCourse(Course course, String email) throws Exception {
+
+
+        AllUsers user = em.find(AllUsers.class,email);
+        if(!user.role.equals("ADMIN")){
+            throw new Exception("You are not admin");
+        }
 
 
         Integer id = ID_GENERATOR.getAndIncrement();
@@ -179,9 +191,15 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Override
     @Transactional
-    public Integer deletionProposedCourse(String courseName) throws Exception {
+    public Integer deletionProposedCourse(String courseName, String userId) throws Exception {
 
         List<Course> cources = new ArrayList<>();
+
+        AllUsers user = em.find(AllUsers.class,userId);
+
+        if(!user.equals("ADMIN")){
+            throw new Exception("You are not admin");
+        }
 
         String jpql = "Select r from Course r where confirmed = false";
 
@@ -205,8 +223,14 @@ public class CourseImplemen implements CourseServiceInt {
     }
 
     @Override
-    public List<DtoGettingProposedCourse> getingProposedCourse() {
+    public List<DtoGettingProposedCourse> getingProposedCourse(String token) throws Exception {
         List<Course> list = new ArrayList<>();
+
+        AllUsers users = em.find(AllUsers.class,token);
+
+        if(!users.role.equals("ADMIN")){
+            throw new Exception("You are not admin");
+        }
 
         String jpql = "SELECT r FROM Course r where confirmed=false";
         list = em.createQuery(jpql, Course.class).getResultList();

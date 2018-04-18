@@ -144,7 +144,7 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer addingInterval(Schedule schedule) throws Exception {
+    public Integer addingInterval(Schedule schedule, String email) throws Exception {
 
 //        String courseName = schedule.coursename;
 //
@@ -205,7 +205,7 @@ public class TrainerImplemen implements TrainerInter {
                 schedule1.dates.add(dateTime);
                 schedule1.dt = dateTime;
                 schedule1.busy = false;
-                schedule1.trainerName = schedule.trainerName;
+                schedule1.trainerName = email;
                 schedule1.coursename = schedule.intervals[i];
                 em.persist(schedule1);
 
@@ -312,7 +312,7 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer confirmationRequest(Schedule schedule) throws Exception {
+    public Integer confirmationRequest(Schedule schedule, String userId) throws Exception {
 
         String nameOfCourse = schedule.coursename;
         String nameOfUser = schedule.requestedUser;
@@ -323,10 +323,10 @@ public class TrainerImplemen implements TrainerInter {
 
 
         String jpql = String.format("SELECT r FROM Schedule r where r.coursename=?1 " +
-                "and r.requestedUser=?2 and r.dt = ?3 and r.confirmedByTrainer=false" + " ", Schedule.class);
+                "and r.requestedUser=?2 and r.dt = ?3 and r.confirmedByTrainer=false and r.trainerName=?4" + " ", Schedule.class);
 
         List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, nameOfCourse).setParameter(2, nameOfUser).setParameter(
-                3, dateTime).getResultList();
+                3, dateTime).setParameter(4,userId).getResultList();
         if (list.isEmpty()) {
             throw new Exception("No found result");
         }
@@ -396,8 +396,15 @@ public class TrainerImplemen implements TrainerInter {
 
     @Override
     @Transactional
-    public Integer addingTrainer(Trainer trainer) throws Exception {
+    public Integer addingTrainer(Trainer trainer, String email) throws Exception {
         String name = trainer.email;
+
+        AllUsers user = em.find(AllUsers.class,email);
+
+        if(!user.role.equals("ADMIN")){
+
+            throw new Exception("You are not ADMIN");
+        }
 
         AllUsers allUsers = em.find(AllUsers.class, name);
         if (allUsers == null) {
@@ -569,15 +576,15 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer deletionOfInterval(Schedule schedule) throws Exception {
+    public Integer deletionOfInterval(Schedule schedule, String email) throws Exception {
 
 
         String dateTime = schedule.data;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime1 = LocalDateTime.parse(dateTime, formatter);
-        String jpql = String.format("Select r from Schedule r where r.dt=?1 and r.busy=false and r.coursename=?2", Schedule.class);
+        String jpql = String.format("Select r from Schedule r where r.dt=?1 and r.busy=false and r.coursename=?2 and r.trainerName=?3", Schedule.class);
 
-        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).setParameter(2, schedule.coursename).getResultList();
+        List<Schedule> list = em.createQuery(jpql, Schedule.class).setParameter(1, dateTime1).setParameter(2, schedule.coursename).setParameter(3,email).getResultList();
 
 
         if (list.isEmpty()) {
@@ -607,8 +614,14 @@ public class TrainerImplemen implements TrainerInter {
 
     @Transactional
     @Override
-    public Integer makerTrainer(String userName) throws Exception {
+    public Integer makerTrainer(String userName, String email) throws Exception {
 
+
+        AllUsers user = em.find(AllUsers.class,email);
+
+        if(!user.role.equals("ADMIN")){
+            throw new Exception("You are not admin");
+        }
 
         AllUsers allUsers = em.find(AllUsers.class, userName);
         if (allUsers == null) {

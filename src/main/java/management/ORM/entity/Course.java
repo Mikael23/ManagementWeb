@@ -26,7 +26,7 @@ public class Course implements Serializable {
 
     public String initiatorCourse;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     TopicEntity topic;
 
     @Transient

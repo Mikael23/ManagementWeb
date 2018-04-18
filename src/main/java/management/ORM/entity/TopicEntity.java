@@ -16,6 +16,7 @@ public class TopicEntity {
  //23
 
 
+
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CodInner")
     private int codInner; // primary key?
@@ -42,12 +43,20 @@ public class TopicEntity {
         this.courses = courses;
     }
 
+
     public TopicEntity(TopicDTO topicDTO){
         name = topicDTO.getName();
         lincImg = topicDTO.getImgLinc();
         lincSwf = topicDTO.getSwfLinc();
         CourseImplemen courseInterfase = new CourseImplemen();
-        courses = courseInterfase.getCoursesByName(topicDTO.getNamesOfCourses());
+        for(int i=0;i<=topicDTO.getCourseNames().length-1;i++){
+
+            String name = topicDTO.getCourseNames()[i];
+            System.out.println(name);
+            Course course = courseInterfase.getCourseByName(name);
+            this.courses.add(course);
+
+        }
     }
 
     public int getCodInner() {
