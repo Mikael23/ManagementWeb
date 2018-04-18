@@ -509,6 +509,14 @@ public class Controller {
     }
 
 
+
+    @GetMapping("/getcourseByName")
+    public Course getCourseByName(@RequestBody Course course){
+        Course course1 = courseServiceInt.getCourseByName(course.nameOfCourse);
+        System.out.println(course);
+        return course;
+    }
+
     ////////
     private AllUsers getUser(String data) {
         AllUsers allUsers = new AllUsers();

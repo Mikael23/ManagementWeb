@@ -5,6 +5,7 @@ import management.DTO.TopicDTO;
 import management.Service.implementations.CourseImplemen;
 import management.services.Interfaces.CourseServiceInt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
 
 import javax.persistence.*;
@@ -14,6 +15,10 @@ import java.util.List;
 @Table(name = "Topics")
 public class TopicEntity {
  //23
+
+//    @Transient
+//    @Autowired
+//    CourseServiceInt courseServiceInt;
 
 
 
@@ -43,17 +48,22 @@ public class TopicEntity {
         this.courses = courses;
     }
 
-
     public TopicEntity(TopicDTO topicDTO){
         name = topicDTO.getName();
         lincImg = topicDTO.getImgLinc();
         lincSwf = topicDTO.getSwfLinc();
-        CourseImplemen courseInterfase = new CourseImplemen();
+            setCoursesByName(topicDTO);
+
+    }
+
+    @Bean
+    public void setCoursesByName(TopicDTO topicDTO){
+CourseServiceInt courseImplemen = new CourseImplemen();
         for(int i=0;i<=topicDTO.getCourseNames().length-1;i++){
 
             String name = topicDTO.getCourseNames()[i];
-            System.out.println(name);
-            Course course = courseInterfase.getCourseByName(name);
+            System.out.println("nameTopivaIzTopicEntity" + name);
+            Course course = courseImplemen.getCourseByName(name);
             this.courses.add(course);
 
         }

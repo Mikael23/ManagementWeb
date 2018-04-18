@@ -450,9 +450,14 @@ public class CourseImplemen implements CourseServiceInt {
 
     @Override
     public Course getCourseByName(String name) {
+        System.out.println(name);
+
         Course res = em.find(Course.class, name);
+
         return res;
     }
+
+
 
     //Evgeniy
 }
