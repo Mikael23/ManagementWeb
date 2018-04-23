@@ -4,6 +4,7 @@ package management.Service.implementations;
 import management.DTO.TopicDTO;
 import management.DTO.TopicSwfDTO;
 import management.ORM.entity.TopicEntity;
+import management.services.Interfaces.CourseServiceInt;
 import management.services.Interfaces.TopicCRUD;
 import management.services.Interfaces.TopicInterfaceOut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class TopicImplementationOut implements TopicInterfaceOut {
 
     @Autowired
     TopicCRUD topicCRUD;
+
+    @Autowired
+    CourseServiceInt courseServiceInt;
 
 //    @Autowired
 //    TimeCRUD timeCRUD;
@@ -51,6 +55,7 @@ public class TopicImplementationOut implements TopicInterfaceOut {
     public int addNewTopic(TopicDTO topic) {
         int res = 0;
         TopicEntity topicEntity = new TopicEntity(topic);
+        
         if (topicCRUD.addTopic(topicEntity)) {
             res = 1;
         }

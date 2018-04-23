@@ -398,10 +398,12 @@ public class TrainerImplemen implements TrainerInter {
     @Transactional
     public Integer addingTrainer(Trainer trainer, String email) throws Exception {
         String name = trainer.email;
-
+   System.out.println(name);
         AllUsers user = em.find(AllUsers.class,email);
 
-        if(!user.role.equals("ADMIN")){
+        System.out.println(user.role);
+
+        if(!user.role.equals("admin")){
 
             throw new Exception("You are not ADMIN");
         }
@@ -619,7 +621,7 @@ public class TrainerImplemen implements TrainerInter {
 
         AllUsers user = em.find(AllUsers.class,email);
 
-        if(!user.role.equals("ADMIN")){
+        if(!user.role.equals("admin")){
             throw new Exception("You are not admin");
         }
 
@@ -630,13 +632,14 @@ public class TrainerImplemen implements TrainerInter {
 
         Trainer trainer = new Trainer();
         em.remove(allUsers);
+        System.out.println(allUsers.email);
         trainer.email = allUsers.email;
         trainer.surname = allUsers.surname;
         trainer.name = allUsers.name;
 
         allUsers.role = "trainer";
 
-        em.persist(trainer);
+        //em.persist(trainer);
         em.persist(allUsers);
 
         return 200;

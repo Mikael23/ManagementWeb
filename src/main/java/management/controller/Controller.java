@@ -430,9 +430,13 @@ public class Controller {
     @PostMapping("/admin/maketrainer/")
     public Integer makertrainer(@RequestBody AllUsers allUsers, @RequestHeader("Authorization")String token) throws Exception {
 
-        String email = tokenInter.checkToken(token);
+        String emaill = tokenInter.checkToken(token);
 
-        return trainerInter.makerTrainer(allUsers.email,email);
+        System.out.println(emaill);
+
+
+
+        return trainerInter.makerTrainer(allUsers.email,emaill);
     }
 
 
