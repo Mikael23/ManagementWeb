@@ -640,6 +640,8 @@ public class TrainerImplemen implements TrainerInter {
         allUsers.role = "trainer";
 
         //em.persist(trainer);
+
+
         em.persist(allUsers);
 
         return 200;
