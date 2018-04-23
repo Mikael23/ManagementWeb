@@ -630,6 +630,10 @@ public class TrainerImplemen implements TrainerInter {
             throw new Exception("We dont have this allUsers");
         }
 
+
+
+
+
         Trainer trainer = new Trainer();
         em.remove(allUsers);
         System.out.println(allUsers.email);
